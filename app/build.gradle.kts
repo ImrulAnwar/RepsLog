@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("kapt")
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -13,8 +15,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner ="com.imrul.cleanarchitecturenotes.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -40,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
@@ -50,6 +52,48 @@ android {
 }
 
 dependencies {
+    // Architectural Components
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+// Unit Test
+    testImplementation(libs.junit) // default
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit) // default
+    testImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.core.testing)
+
+// Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+// Turbine for Flows Testing
+    testImplementation(libs.turbine)
+    androidTestImplementation(libs.turbine)
+
+// Lifecycle Scopes
+    implementation(libs.androidx.lifecycle.viewmodel.ktx.v262)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v262)
+
+// Dagger - Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+// Truth
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.truth)
+
+// Room
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+// Kotlin Extensions and Coroutines support for Room
+    implementation(libs.androidx.room.ktx)
+// Dagger - Hilt Android Test
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler.v248)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
