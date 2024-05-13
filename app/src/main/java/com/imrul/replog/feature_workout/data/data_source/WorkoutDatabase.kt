@@ -3,9 +3,7 @@ package com.imrul.replog.feature_workout.data.data_source
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.imrul.replog.feature_workout.domain.model.Exercise
-import com.imrul.replog.feature_workout.domain.model.ExercisesInWorkout
 import com.imrul.replog.feature_workout.domain.model.Set
-import com.imrul.replog.feature_workout.domain.model.SetsInExercise
 import com.imrul.replog.feature_workout.domain.model.Workout
 
 @Database(
