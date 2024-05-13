@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import java.sql.Date
+import java.util.Date
 
 @Entity
 data class Workout(
@@ -12,7 +12,7 @@ data class Workout(
     val workoutId: Long? = null,
     val name: String = "",
     val duration: Int = 0,
-    val date: Date
+    val date: String
 )
 
 data class ExercisesInWorkout(
