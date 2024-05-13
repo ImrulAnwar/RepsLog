@@ -9,5 +9,5 @@ data class Workout(
     val workoutId: Long? = null,
     val name: String = "",
     val duration: Int = 0,
-    val date: String
+    val date: String="01.01.2001"
 )

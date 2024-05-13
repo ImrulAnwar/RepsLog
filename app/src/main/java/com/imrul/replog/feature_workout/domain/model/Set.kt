@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Set(
     @PrimaryKey
-    val setId: Long,
+    val setId: Long? = null,
     val setType: String = setTypes[0],
     val weightValue: Float = 0f,
     val weightUnit: String = weightUnits[0],

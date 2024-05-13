@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="WorkoutDaoTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
@@ -28,6 +31,18 @@
             </Target>
           </targetsSelectedWithDialog>
         </State>
+      </entry>
+      <entry key="deleteSet()">
+        <State />
+      </entry>
+      <entry key="insertExercise()">
+        <State />
+      </entry>
+      <entry key="insertSet()">
+        <State />
+      </entry>
+      <entry key="insertWorkout()">
+        <State />
       </entry>
     </value>
   </component>
