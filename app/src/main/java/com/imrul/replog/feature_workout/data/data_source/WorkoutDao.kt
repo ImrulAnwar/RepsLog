@@ -34,13 +34,13 @@ interface WorkoutDao {
     fun getAllWorkouts(): Flow<List<Workout>>
 
     @Query("SELECT * FROM Exercise WHERE workoutIdForeign = :workoutId")
-    fun getAllExerciseByWorkoutId(workoutId: Long): Flow<List<Exercise>>
+    fun getAllExerciseByWorkoutId(workoutId: Long?): Flow<List<Exercise>>
 
     @Query("SELECT * FROM `Set` WHERE exerciseIdForeign = :exerciseId")
-    fun getAllSetsByExerciseId(exerciseId: Long): Flow<List<Set>>
+    fun getAllSetsByExerciseId(exerciseId: Long?): Flow<List<Set>>
 
     @Query("SELECT * FROM Workout where workoutId = :workoutId")
 
-    fun getWorkoutById(workoutId: Long): Workout
+    fun getWorkoutById(workoutId: Long?): Workout
 
 }

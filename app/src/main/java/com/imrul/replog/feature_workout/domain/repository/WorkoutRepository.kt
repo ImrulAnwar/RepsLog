@@ -20,9 +20,9 @@ interface WorkoutRepository {
 
     fun getAllWorkouts(): Flow<List<Workout>>
 
-    fun getAllExerciseByWorkoutId(workoutId: Long): Flow<List<Exercise>>
+    fun getAllExerciseByWorkoutId(workoutId: Long?): Flow<List<Exercise>>
 
-    fun getAllSetsByExerciseId(exerciseId: Long): Flow<List<Set>>
+    fun getAllSetsByExerciseId(exerciseId: Long?): Flow<List<Set>>
 
-    fun getWorkoutById(workoutId: Long): Workout
+    fun getWorkoutById(workoutId: Long?): Workout
 }
