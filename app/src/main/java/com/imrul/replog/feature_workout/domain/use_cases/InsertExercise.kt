@@ -1,9 +1,10 @@
 package com.imrul.replog.feature_workout.domain.use_cases
 
+import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
 
-class GetAllExercisesByWorkoutId(
+class InsertExercise(
     private val repository: WorkoutRepository
 ) {
-    operator fun invoke(workoutId: Long) = repository.getAllExerciseByWorkoutId(workoutId)
+    suspend operator fun invoke(exercise: Exercise) = repository.insertExercise(exercise)
 }

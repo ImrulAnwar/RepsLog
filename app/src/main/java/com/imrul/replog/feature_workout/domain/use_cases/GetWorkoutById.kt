@@ -2,8 +2,8 @@ package com.imrul.replog.feature_workout.domain.use_cases
 
 import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
 
-class GetAllExercisesByWorkoutId(
+class GetWorkoutById(
     private val repository: WorkoutRepository
 ) {
-    operator fun invoke(workoutId: Long) = repository.getAllExerciseByWorkoutId(workoutId)
+    operator fun invoke(workoutId: Long) = repository.getWorkoutById(workoutId)
 }

@@ -35,10 +35,10 @@
       <entry key="deleteSet()">
         <State />
       </entry>
-      <entry key="insertExercise()">
+      <entry key="getWorkoutById()">
         <State />
       </entry>
-      <entry key="insertSet()">
+      <entry key="insertExercise()">
         <State />
       </entry>
       <entry key="insertWorkout()">
