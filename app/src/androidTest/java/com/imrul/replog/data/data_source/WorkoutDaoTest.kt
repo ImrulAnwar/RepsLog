@@ -1,6 +1,7 @@
 package com.imrul.replog.data.data_source
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.ui.platform.isDebugInspectorInfoEnabled
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth
 import com.imrul.replog.core.Constants.TEST_DATABASE_NAME
@@ -153,6 +154,15 @@ class WorkoutDaoTest {
         testScheduler.apply { runCurrent() }
         job.cancelAndJoin()
         Truth.assertThat(allWorkouts?.isEmpty())
+    }
+
+    @Test
+    fun getWorkoutById() = runTest {
+        val workoutId = 1L
+        val workout1 = Workout(workoutId = workoutId)
+        dao.insertWorkout(workout1)
+        val workout2 = dao.getWorkoutById(workoutId)
+        Truth.assertThat(workout1 == workout2)
     }
 
 
