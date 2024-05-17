@@ -42,11 +42,11 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideWorkoutRepository(dao: WorkoutDao) = WorkoutRepositoryImp(dao)
+    fun provideWorkoutRepository(dao: WorkoutDao): WorkoutRepository = WorkoutRepositoryImp(dao)
 
     @Singleton
     @Provides
-    fun provideWokroutUseCases(repository: WorkoutRepository) = WorkoutUseCases(
+    fun provideWorkoutUseCases(repository: WorkoutRepository) = WorkoutUseCases(
         deleteExercise = DeleteExercise(repository),
         deleteSet = DeleteSet(repository),
         deleteWorkout = DeleteWorkout(repository),

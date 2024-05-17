@@ -12,7 +12,10 @@ data class Set(
     val weightUnit: String = weightUnits[0],
     val reps: Float = 0f,
     val isDone: Boolean = false,
-    val exerciseIdForeign: Long? = null
+    val exerciseIdForeign: Long? = null,
+    val previousWeightValue: Float = 0f,
+    val previousWeightUnit: String = weightUnits[0],
+    val previousReps: Float = 0f
 ) {
     companion object {
         val setTypes = listOf("regular set", "drop set", "super set", "warm up set", "failure set")
