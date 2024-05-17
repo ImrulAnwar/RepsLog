@@ -1,5 +1,8 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -21,17 +28,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
 import com.imrul.replog.core.presentation.components.RegularTextField
+import com.imrul.replog.feature_workout.presentation.components.ExerciseItem
+import com.imrul.replog.feature_workout.presentation.components.SetItem
 
 @Composable
 fun WorkoutScreen(
     workoutViewModel: WorkoutViewModel = hiltViewModel()
 ) {
     val workoutTitle = workoutViewModel.workoutTitle
+    val listState = rememberScrollState()
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // This is the top part
         Row(
@@ -62,9 +72,17 @@ fun WorkoutScreen(
         RegularTextField(
             text = workoutTitle,
             onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
-            modifier = Modifier.height(60.dp)
         )
+        Column(
+            modifier = Modifier.verticalScroll(listState)
+        ) {
+            for (i in 1..5) {
+                ExerciseItem()
+            }
+        }
+
     }
 
-
 }
+
+
