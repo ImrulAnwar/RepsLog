@@ -17,11 +17,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,50 +43,66 @@ fun WorkoutScreen(
     val workoutTitle = workoutViewModel.workoutTitle
     val listState = rememberScrollState()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        // This is the top part
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(10.dp)
-        ) {
-            CustomIcon(
-                painter = rememberVectorPainter(image = Icons.AutoMirrored.Filled.ArrowBack),
-                contentDescription = Strings.BACK_BUTTON,
-                onClick = { }
-            )
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
 
-            Spacer(modifier = Modifier.weight(1f))
-            CustomIcon(
-                painter = rememberVectorPainter(image = Icons.Filled.Close),
-                contentDescription = Strings.CANCELLED_WORKOUT_BUTTON,
-                onClick = {}
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            CustomIcon(
-                painter = rememberVectorPainter(image = Icons.Filled.Done),
-                contentDescription = Strings.FINISHED_WORKOUT_BUTTON,
-                onClick = {}
-            )
-        }
-        // This is the body
+            }) {
+                Icon(
+                    painter = rememberVectorPainter(image = Icons.Filled.Add),
+                    contentDescription = Strings.ADD_BUTTON
+                )
+            }
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // This is the top part
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(10.dp)
+                ) {
+                    CustomIcon(
+                        painter = rememberVectorPainter(image = Icons.AutoMirrored.Filled.ArrowBack),
+                        contentDescription = Strings.BACK_BUTTON,
+                        onClick = { }
+                    )
 
-        RegularTextField(
-            text = workoutTitle,
-            onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
-        )
-        Column(
-            modifier = Modifier.verticalScroll(listState)
-        ) {
-            for (i in 1..5) {
-                ExerciseItem()
+                    Spacer(modifier = Modifier.weight(1f))
+                    CustomIcon(
+                        painter = rememberVectorPainter(image = Icons.Filled.Close),
+                        contentDescription = Strings.CANCELLED_WORKOUT_BUTTON,
+                        onClick = {}
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    CustomIcon(
+                        painter = rememberVectorPainter(image = Icons.Filled.Done),
+                        contentDescription = Strings.FINISHED_WORKOUT_BUTTON,
+                        onClick = {}
+                    )
+                }
+                // This is the body
+
+                RegularTextField(
+                    text = workoutTitle,
+                    onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
+                )
+                Column(
+                    modifier = Modifier.verticalScroll(listState)
+                ) {
+                    for (i in 1..5) {
+                        ExerciseItem()
+                    }
+                }
+
             }
         }
-
-    }
+    )
 
 }
 
