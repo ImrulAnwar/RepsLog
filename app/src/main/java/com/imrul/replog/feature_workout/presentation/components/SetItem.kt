@@ -25,7 +25,8 @@ import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
 fun SetItem(
-    index: Int? = null,
+    setIndex: Int? = null,
+    exerciseIndex: Int? = null,
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
 ) {
     Row(
@@ -45,13 +46,23 @@ fun SetItem(
         }
         Text("50 kg x 12", color = Maroon20)
         RegularTextField(
-            text = workoutViewModel.listOfWeightRepsPair[index!!].first.toString(),
-            onValueChange = { workoutViewModel.updateWeightRepsPair(index, first = it) },
+            text = workoutViewModel.listOfWeights[setIndex!!].second,
+            onValueChange = {
+                workoutViewModel.updateWeight(
+                    setIndex = setIndex,
+                    content = it
+                )
+            },
             modifier = Modifier.width(60.dp)
         )
         RegularTextField(
-            text = workoutViewModel.listOfWeightRepsPair[index!!].second.toString(),
-            onValueChange = { workoutViewModel.updateWeightRepsPair(index, second = it) },
+            text = workoutViewModel.listOfReps[setIndex!!].second,
+            onValueChange = {
+                workoutViewModel.updateRep(
+                    setIndex = setIndex,
+                    content = it
+                )
+            },
             modifier = Modifier.width(60.dp)
         )
         CustomIcon(
