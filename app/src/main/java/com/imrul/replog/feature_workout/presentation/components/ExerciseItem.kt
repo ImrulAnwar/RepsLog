@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,8 +23,8 @@ import com.imrul.replog.ui.theme.Maroon70
 fun ExerciseItem(
     workoutViewModel: WorkoutViewModel = hiltViewModel()
 ) {
-    val exerciseList by workoutViewModel.exerciseList.collectAsState()
-    val setsList by workoutViewModel.listOfSetState.collectAsState()
+    val listOfWeightRepsPair: SnapshotStateList<Pair<String?, String?>> =
+        workoutViewModel.listOfWeightRepsPair
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -48,12 +49,11 @@ fun ExerciseItem(
             fontSize = 14.sp,
             modifier = Modifier
                 .padding(10.dp)
-                .clickable { workoutViewModel.addSet() },
+                .clickable { workoutViewModel.addWeightRepsPair("", "") },
             color = Maroon70
         )
 
-        val listOfExercise: List<Exercise>
-        setsList.forEachIndexed { index, _ ->
+        listOfWeightRepsPair.forEachIndexed { index, _ ->
             SetItem(index)
         }
     }

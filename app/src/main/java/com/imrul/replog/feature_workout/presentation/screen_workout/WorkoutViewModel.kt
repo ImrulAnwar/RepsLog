@@ -56,18 +56,5 @@ class WorkoutViewModel @Inject constructor(
 
     private val _listOfSetState = MutableStateFlow<List<SetState>>(emptyList())
 
-    // Expose the state as a StateFlow
-    val listOfSetState: StateFlow<List<SetState>> = _listOfSetState.asStateFlow()
-
-    // Method to add an exercise to the list
-    fun addExercise(exercise: String) {
-        _exerciseList.value += exercise
-    }
-
-    fun addSet() {
-        val setState = SetState()
-        _listOfSetState.value += setState
-        addWeightRepsPair("", "")
-    }
 
 }
