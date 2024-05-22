@@ -13,17 +13,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.imrul.replog.core.presentation.components.RegularTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
 fun ExerciseItem(
-    exerciseIndex: Int? = null,
+    exerciseIndex: Int,
     workoutViewModel: WorkoutViewModel = hiltViewModel()
 ) {
     val listOfExercises = workoutViewModel.listOfExercises
     val listOfWeights = workoutViewModel.listOfWeights
     val listOfReps = workoutViewModel.listOfReps
+    val listOfNotes = workoutViewModel.listOfNotes
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -34,9 +36,23 @@ fun ExerciseItem(
             modifier = Modifier.padding(10.dp),
             color = Maroon70
         )
+        RegularTextField(
+            text = listOfExercises[exerciseIndex],
+            onValueChange = {
+                workoutViewModel.onExerciseNameValueChanged(
+                    exerciseIndex = exerciseIndex,
+                    content = it
+                )
+            },
+        )
         NoteTextField(
-            text = "note",
-            onValueChange = {},
+            text = listOfNotes[exerciseIndex],
+            onValueChange = {
+                workoutViewModel.onNoteValueChanged(
+                    exerciseIndex = exerciseIndex,
+                    content = it
+                )
+            },
             label = "",
             modifier = Modifier
                 .fillMaxWidth()

@@ -1,6 +1,5 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
-import androidx.compose.runtime.MovableContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +28,8 @@ class WorkoutViewModel @Inject constructor(
     //    var listOfWeight = mutableStateListOf<Pair<String, String>>()
     var listOfExercises = mutableStateListOf<String>()
         private set
+    var listOfNotes = mutableStateListOf<String>()
+        private set
 
     fun addSet(first: String, second: String, exerciseIndex: Int? = null) {
         exerciseIndex?.let {
@@ -37,7 +38,7 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-    fun updateWeight(
+    fun onWeightValueChanged(
         setIndex: Int,
         content: String,
     ) {
@@ -47,7 +48,7 @@ class WorkoutViewModel @Inject constructor(
         )
     }
 
-    fun updateRep(
+    fun onRepValueChanged(
         setIndex: Int,
         content: String,
     ) {
@@ -59,7 +60,20 @@ class WorkoutViewModel @Inject constructor(
 
     fun addExercise() {
         listOfExercises.add("Exercise Name")
+        listOfNotes.add("")
     }
 
+    fun onNoteValueChanged(
+        exerciseIndex: Int,
+        content: String
+    ) {
+        listOfNotes[exerciseIndex] = content
+    }
 
+    fun onExerciseNameValueChanged(
+        exerciseIndex: Int,
+        content: String
+    ) {
+        listOfExercises[exerciseIndex] = content
+    }
 }
