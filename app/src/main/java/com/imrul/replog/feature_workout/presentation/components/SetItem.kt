@@ -19,15 +19,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
 import com.imrul.replog.core.presentation.components.RegularTextField
-import com.imrul.replog.feature_workout.presentation.screen_workout.SetViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
 fun SetItem(
+    index: Int? = null,
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
-    setViewModel: SetViewModel = hiltViewModel()
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -46,13 +45,13 @@ fun SetItem(
         }
         Text("50 kg x 12", color = Maroon20)
         RegularTextField(
-            text = setViewModel.weightValue,
-            onValueChange = { workoutViewModel.onWeightValueChanged(it) },
+            text = workoutViewModel.listOfWeightRepsPair[index!!].first.toString(),
+            onValueChange = { workoutViewModel.updateWeightRepsPair(index, first = it) },
             modifier = Modifier.width(60.dp)
         )
         RegularTextField(
-            text = setViewModel.repsValue,
-            onValueChange = { setViewModel.onRepsValueChanged(it) },
+            text = workoutViewModel.listOfWeightRepsPair[index!!].second.toString(),
+            onValueChange = { workoutViewModel.updateWeightRepsPair(index, second = it) },
             modifier = Modifier.width(60.dp)
         )
         CustomIcon(

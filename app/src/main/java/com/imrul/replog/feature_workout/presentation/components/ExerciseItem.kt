@@ -53,8 +53,8 @@ fun ExerciseItem(
         )
 
         val listOfExercise: List<Exercise>
-        for (i in setsList) {
-            SetItem()
+        setsList.forEachIndexed { index, _ ->
+            SetItem(index)
         }
     }
 }

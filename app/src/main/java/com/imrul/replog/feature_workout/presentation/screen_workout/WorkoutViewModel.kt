@@ -2,6 +2,7 @@ package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,28 @@ class WorkoutViewModel @Inject constructor(
         workoutTitle = value
     }
 
+    var listOfWeightRepsPair = mutableStateListOf<Pair<String?, String?>>()
+        private set
+
+    fun addWeightRepsPair(first: String, second: String) {
+        listOfWeightRepsPair.add(Pair(first, second))
+    }
+
+    fun updateWeightRepsPair(index: Int, first: String? = null, second: String? = null) {
+        if (index in listOfWeightRepsPair.indices) {
+            listOfWeightRepsPair[index] = Pair(
+                first ?: listOfWeightRepsPair[index].first,
+                second ?: listOfWeightRepsPair[index].second
+            )
+        }
+    }
+
+    fun removeWeightRepsPair(index: Int) {
+        if (index in listOfWeightRepsPair.indices) {
+            listOfWeightRepsPair.removeAt(index)
+        }
+    }
+
     private val _exerciseList = MutableStateFlow<List<String>>(emptyList())
 
     // Expose the state as a StateFlow
@@ -44,12 +67,7 @@ class WorkoutViewModel @Inject constructor(
     fun addSet() {
         val setState = SetState()
         _listOfSetState.value += setState
-    }
-
-    fun onWeightValueChanged(value: String, index: Int = 0) {
-
-        _listOfSetState.value[index].weightValue = value.toFloat()
-
+        addWeightRepsPair("", "")
     }
 
 }
