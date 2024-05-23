@@ -13,13 +13,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WorkoutDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWorkout(workout: Workout)
+    suspend fun insertWorkout(workout: Workout): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExercise(exercise: Exercise)
+    suspend fun insertExercise(exercise: Exercise): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSet(set: Set)
+    suspend fun insertSet(set: Set): Long
 
     @Delete
     suspend fun deleteWorkout(workout: Workout)

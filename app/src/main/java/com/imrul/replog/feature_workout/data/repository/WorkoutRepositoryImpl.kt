@@ -10,17 +10,11 @@ import kotlinx.coroutines.flow.Flow
 class WorkoutRepositoryImp(
     private val dao: WorkoutDao
 ) : WorkoutRepository {
-    override suspend fun insertWorkout(workout: Workout) {
-        dao.insertWorkout(workout)
-    }
+    override suspend fun insertWorkout(workout: Workout): Long = dao.insertWorkout(workout)
 
-    override suspend fun insertExercise(exercise: Exercise) {
-        dao.insertExercise(exercise)
-    }
+    override suspend fun insertExercise(exercise: Exercise): Long = dao.insertExercise(exercise)
 
-    override suspend fun insertSet(set: Set) {
-        dao.insertSet(set)
-    }
+    override suspend fun insertSet(set: Set): Long = dao.insertSet(set)
 
     override suspend fun deleteWorkout(workout: Workout) {
         dao.deleteWorkout(workout)

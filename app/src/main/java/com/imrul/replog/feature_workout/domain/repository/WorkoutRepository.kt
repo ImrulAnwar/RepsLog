@@ -6,11 +6,11 @@ import com.imrul.replog.feature_workout.domain.model.Workout
 import kotlinx.coroutines.flow.Flow
 
 interface WorkoutRepository {
-    suspend fun insertWorkout(workout: Workout)
+    suspend fun insertWorkout(workout: Workout): Long
 
-    suspend fun insertExercise(exercise: Exercise)
+    suspend fun insertExercise(exercise: Exercise): Long
 
-    suspend fun insertSet(set: Set)
+    suspend fun insertSet(set: Set): Long
 
     suspend fun deleteWorkout(workout: Workout)
 
