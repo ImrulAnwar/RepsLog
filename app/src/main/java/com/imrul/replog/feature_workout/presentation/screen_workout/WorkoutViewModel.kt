@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -75,5 +76,31 @@ class WorkoutViewModel @Inject constructor(
         content: String
     ) {
         listOfExercises[exerciseIndex] = content
+    }
+
+    fun insertExercise(exerciseIndex: Int, workoutId: Long) {
+        // exercise id ta exercise insert korar por pabo. workout id ta use kore
+        val exerciseId = 0L
+        listOfWeights.forEachIndexed { i, item ->
+            if (item.first == exerciseIndex) {
+                //this set belongs to the exercise
+                var set = Set(
+                    weightValue = listOfWeights[i].second.toFloat(),
+                    reps = listOfReps[i].second.toFloat(),
+                    exerciseIdForeign = exerciseId
+                )
+
+//              then insert set
+            }
+        }
+    }
+
+    fun insertWorkout() {
+        // workout insert korle workout id peye jabo
+        val workoutId = 0L
+        listOfExercises.forEachIndexed { i, item ->
+            insertExercise(i, workoutId)
+        }
+
     }
 }
