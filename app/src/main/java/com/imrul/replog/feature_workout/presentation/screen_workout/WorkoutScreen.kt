@@ -86,7 +86,7 @@ fun WorkoutScreen(
                         painter = rememberVectorPainter(image = Icons.Filled.Done),
                         contentDescription = Strings.FINISHED_WORKOUT_BUTTON,
                         onClick = {
-                            // save workout
+                            workoutViewModel.insertWorkout()
                             navController.popBackStack()
                         }
                     )

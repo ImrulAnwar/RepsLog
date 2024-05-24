@@ -5,9 +5,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.imrul.replog.feature_workout.domain.model.Set
+import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -96,11 +99,17 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun insertWorkout() {
-        // workout insert korle workout id peye jabo
-        val workoutId = 0L
-        listOfExercises.forEachIndexed { i, item ->
-            insertExercise(i, workoutId)
+        viewModelScope.launch {
+            val workout = Workout(
+                name = workoutTitle
+            )
+            val workoutId: Long = workoutUseCases.insertWorkout(workout)
+//            listOfExercises.forEachIndexed { i, item ->
+//                insertExercise(i, workoutId)
+//            }
         }
+        // workout insert korle workout id peye jabo
+
 
     }
 }
