@@ -1,6 +1,5 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +12,8 @@ import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.imrul.replog.feature_workout.domain.model.Set
+
 
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
@@ -84,7 +85,6 @@ class WorkoutViewModel @Inject constructor(
 
     private suspend fun insertExercises(exerciseIndex: Int, workoutId: Long) {
         // exercise id ta exercise insert korar por pabo. workout id ta use kore
-        Log.d("checking index", "insertWorkout:${listOfExercises[exerciseIndex]} ")
 
         val exercise = Exercise(
             name = listOfExercises[exerciseIndex],
@@ -92,18 +92,17 @@ class WorkoutViewModel @Inject constructor(
             workoutIdForeign = workoutId
         )
         val exerciseId = workoutUseCases.insertExercise(exercise)
-//        listOfWeights.forEachIndexed { i, item ->
-//            if (item.first == exerciseIndex) {
-//                //this set belongs to the exercise
-//                var set = Set(
-//                    weightValue = listOfWeights[i].second.toFloat(),
-//                    reps = listOfReps[i].second.toFloat(),
-//                    exerciseIdForeign = exerciseId
-//                )
-//
-////              then insert set
-//            }
-//        }
+        listOfWeights.forEachIndexed { i, item ->
+            if (item.first == exerciseIndex) {
+                //this set belongs to the exercise
+                val set = Set(
+                    weightValue = listOfWeights[i].second.toFloat(),
+                    reps = listOfReps[i].second.toFloat(),
+                    exerciseIdForeign = exerciseId
+                )
+                workoutUseCases.insertSet(set)
+            }
+        }
     }
 
     fun insertWorkout() {

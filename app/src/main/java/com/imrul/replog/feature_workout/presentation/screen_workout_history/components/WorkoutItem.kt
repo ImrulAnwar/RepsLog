@@ -46,8 +46,12 @@ fun WorkoutItem(
         ) {
             exerciseListState.forEach { exercise ->
                 if (exercise.workoutIdForeign == workout.workoutId) {
+                    var setCount = 0
+                    setsListState.forEach { set ->
+                        if (set.exerciseIdForeign == exercise.exerciseId) setCount++
+                    }
                     Log.d("Problem check", "WorkoutItem: ${exercise.name}")
-                    Text(text = exercise.name)
+                    Text(text = "$setCount x ${exercise.name}")
                 }
             }
         }
