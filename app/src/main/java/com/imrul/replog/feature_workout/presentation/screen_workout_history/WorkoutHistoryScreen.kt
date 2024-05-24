@@ -27,10 +27,10 @@ fun WorkoutHistoryScreen(
     navController: NavHostController,
     workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel()
 ) {
-    val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
     LaunchedEffect(Unit) {
         workoutHistoryViewModel.getAllWorkouts()
     }
+    val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize(),

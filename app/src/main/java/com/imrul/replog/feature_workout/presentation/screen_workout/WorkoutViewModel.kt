@@ -1,12 +1,13 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.imrul.replog.feature_workout.domain.model.Set
+import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -81,21 +82,28 @@ class WorkoutViewModel @Inject constructor(
         listOfExercises[exerciseIndex] = content
     }
 
-    fun insertExercise(exerciseIndex: Int, workoutId: Long) {
+    private suspend fun insertExercises(exerciseIndex: Int, workoutId: Long) {
         // exercise id ta exercise insert korar por pabo. workout id ta use kore
-        val exerciseId = 0L
-        listOfWeights.forEachIndexed { i, item ->
-            if (item.first == exerciseIndex) {
-                //this set belongs to the exercise
-                var set = Set(
-                    weightValue = listOfWeights[i].second.toFloat(),
-                    reps = listOfReps[i].second.toFloat(),
-                    exerciseIdForeign = exerciseId
-                )
+        Log.d("checking index", "insertWorkout:${listOfExercises[exerciseIndex]} ")
 
-//              then insert set
-            }
-        }
+        val exercise = Exercise(
+            name = listOfExercises[exerciseIndex],
+            note = listOfNotes[exerciseIndex],
+            workoutIdForeign = workoutId
+        )
+        val exerciseId = workoutUseCases.insertExercise(exercise)
+//        listOfWeights.forEachIndexed { i, item ->
+//            if (item.first == exerciseIndex) {
+//                //this set belongs to the exercise
+//                var set = Set(
+//                    weightValue = listOfWeights[i].second.toFloat(),
+//                    reps = listOfReps[i].second.toFloat(),
+//                    exerciseIdForeign = exerciseId
+//                )
+//
+////              then insert set
+//            }
+//        }
     }
 
     fun insertWorkout() {
@@ -104,9 +112,10 @@ class WorkoutViewModel @Inject constructor(
                 name = workoutTitle
             )
             val workoutId: Long = workoutUseCases.insertWorkout(workout)
-//            listOfExercises.forEachIndexed { i, item ->
-//                insertExercise(i, workoutId)
-//            }
+
+            listOfExercises.forEachIndexed { index, item ->
+                insertExercises(index, workoutId)
+            }
         }
         // workout insert korle workout id peye jabo
 
