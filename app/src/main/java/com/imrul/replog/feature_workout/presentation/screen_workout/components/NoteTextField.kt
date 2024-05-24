@@ -1,4 +1,4 @@
-package com.imrul.replog.feature_workout.presentation.components
+package com.imrul.replog.feature_workout.presentation.screen_workout.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField

@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.imrul.replog.core.presentation.navigation.NavGraph
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutScreen
 import com.imrul.replog.ui.theme.RepLogTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +23,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RepLogTheme {
-                WorkoutScreen()
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
             }
         }
     }

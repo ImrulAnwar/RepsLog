@@ -1,0 +1,38 @@
+package com.imrul.replog.feature_workout.presentation.screen_workout_history
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.imrul.replog.core.Routes
+
+@Composable
+fun WorkoutHistoryScreen(
+    navController: NavHostController,
+    workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel()
+) {
+    val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
+    Column {
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+        ) {
+            items(workoutListState) { workout ->
+                Text(text = workout.name)
+            }
+        }
+        Button(onClick = { navController.navigate(Routes.ScreenWorkout) }) {
+            Text(text = "Start an empty workout")
+        }
+    }
+}

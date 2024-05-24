@@ -24,13 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
 import com.imrul.replog.core.presentation.components.RegularTextField
-import com.imrul.replog.feature_workout.presentation.components.ExerciseItem
+import com.imrul.replog.feature_workout.presentation.screen_workout.components.ExerciseItem
 
 @Composable
 fun WorkoutScreen(
+    navController: NavHostController,
     workoutViewModel: WorkoutViewModel = hiltViewModel()
 ) {
     val workoutTitle = workoutViewModel.workoutTitle
@@ -65,20 +68,27 @@ fun WorkoutScreen(
                     CustomIcon(
                         painter = rememberVectorPainter(image = Icons.AutoMirrored.Filled.ArrowBack),
                         contentDescription = Strings.BACK_BUTTON,
-                        onClick = { }
+                        onClick = {
+                            navController.popBackStack()
+                        }
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
                     CustomIcon(
                         painter = rememberVectorPainter(image = Icons.Filled.Close),
                         contentDescription = Strings.CANCELLED_WORKOUT_BUTTON,
-                        onClick = {}
+                        onClick = {
+                            navController.popBackStack()
+                        }
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     CustomIcon(
                         painter = rememberVectorPainter(image = Icons.Filled.Done),
                         contentDescription = Strings.FINISHED_WORKOUT_BUTTON,
-                        onClick = {}
+                        onClick = {
+                            // save workout
+                            navController.popBackStack()
+                        }
                     )
                 }
                 // This is the body

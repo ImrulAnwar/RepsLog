@@ -18,7 +18,7 @@ data class Set(
     val previousReps: Float = 0f
 ) {
     companion object {
-        val setTypes = listOf("regular set", "drop set", "super set", "warm up set", "failure set")
+        val setTypes = listOf("regular set", "warm up set", "failure set")
         val weightUnits = listOf("kg", "lb")
     }
 }
