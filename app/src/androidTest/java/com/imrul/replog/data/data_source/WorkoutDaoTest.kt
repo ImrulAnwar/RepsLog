@@ -1,7 +1,6 @@
 package com.imrul.replog.data.data_source
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.ui.platform.isDebugInspectorInfoEnabled
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth
 import com.imrul.replog.core.Constants.TEST_DATABASE_NAME
@@ -73,7 +72,7 @@ class WorkoutDaoTest {
         var allExercises: List<Exercise>? = null
 
         val job = launch {
-            dao.getAllExerciseByWorkoutId(workoutId).collect {
+            dao.getAllExercisesByWorkoutId(workoutId).collect {
                 allExercises = it
             }
         }
@@ -128,7 +127,7 @@ class WorkoutDaoTest {
         var allExercises: List<Exercise>? = null
 
         val job = launch {
-            dao.getAllExerciseByWorkoutId(workoutId).collect {
+            dao.getAllExercisesByWorkoutId(workoutId).collect {
                 allExercises = it
             }
         }

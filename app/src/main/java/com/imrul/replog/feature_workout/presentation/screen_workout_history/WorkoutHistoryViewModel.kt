@@ -23,4 +23,8 @@ class WorkoutHistoryViewModel @Inject constructor(
             }
         }
     }
+
+    fun getAllExercisesByWorkoutId(workoutId: Long) {
+
+    }
 }

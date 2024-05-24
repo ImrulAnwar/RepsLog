@@ -32,12 +32,18 @@ class WorkoutRepositoryImp(
         return dao.getAllWorkouts()
     }
 
-    override fun getAllExerciseByWorkoutId(workoutId: Long?): Flow<List<Exercise>> {
-        return dao.getAllExerciseByWorkoutId(workoutId)
+    override fun getAllExercisesByWorkoutId(workoutId: Long?): Flow<List<Exercise>> {
+        return dao.getAllExercisesByWorkoutId(workoutId)
+    }
+    override fun getAllExercises(): Flow<List<Exercise>> {
+        return dao.getAllExercises()
     }
 
     override fun getAllSetsByExerciseId(exerciseId: Long?): Flow<List<Set>> {
         return dao.getAllSetsByExerciseId(exerciseId)
+    }
+    override fun getAllSets(): Flow<List<Set>> {
+        return dao.getAllSets()
     }
 
     override fun getWorkoutById(workoutId: Long?): Workout {

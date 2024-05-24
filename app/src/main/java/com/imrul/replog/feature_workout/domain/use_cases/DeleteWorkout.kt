@@ -8,7 +8,7 @@ class DeleteWorkout(
     private val repository: WorkoutRepository
 ) {
     suspend operator fun invoke(workout: Workout) {
-        val exercisesInThatWorkout = repository.getAllExerciseByWorkoutId(workout.workoutId)
+        val exercisesInThatWorkout = repository.getAllExercisesByWorkoutId(workout.workoutId)
         exercisesInThatWorkout.collect { listOfExercise ->
             for (exercise in listOfExercise) {
                 deleteSetsAndExercise(repository, exercise)

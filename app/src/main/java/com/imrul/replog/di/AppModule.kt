@@ -10,7 +10,9 @@ import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
 import com.imrul.replog.feature_workout.domain.use_cases.DeleteExercise
 import com.imrul.replog.feature_workout.domain.use_cases.DeleteSet
 import com.imrul.replog.feature_workout.domain.use_cases.DeleteWorkout
+import com.imrul.replog.feature_workout.domain.use_cases.GetAllExercises
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllExercisesByWorkoutId
+import com.imrul.replog.feature_workout.domain.use_cases.GetAllSets
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllSetsByExerciseId
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllWorkouts
 import com.imrul.replog.feature_workout.domain.use_cases.GetWorkoutById
@@ -56,6 +58,8 @@ object AppModule {
         getWorkoutById = GetWorkoutById(repository),
         insertExercise = InsertExercise(repository),
         insertSet = InsertSet(repository),
-        insertWorkout = InsertWorkout(repository)
+        insertWorkout = InsertWorkout(repository),
+        getAllExercises = GetAllExercises(repository),
+        getAllSets = GetAllSets(repository)
     )
 }

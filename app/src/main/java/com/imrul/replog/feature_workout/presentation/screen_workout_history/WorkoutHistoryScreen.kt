@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
+import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
 import java.util.Date
 
 @Composable
@@ -42,7 +43,7 @@ fun WorkoutHistoryScreen(
                 .fillMaxWidth(),
         ) {
             items(workoutListState) { workout ->
-                Text(text = Date(workout.date).toString())
+                WorkoutItem(workout)
             }
         }
         Button(onClick = { navController.navigate(Routes.ScreenWorkout) }) {
