@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
@@ -28,10 +29,12 @@ class WorkoutViewModel @Inject constructor(
 
     var listOfWeights = mutableStateListOf<Pair<Int, String>>()
         private set
-    var listOfReps = mutableStateListOf<Pair<Int, String>>()
+    var listOfReps = mutableStateListOf<String>()
         private set
 
-    //    var listOfWeight = mutableStateListOf<Pair<String, String>>()
+    var listOfIsDone = mutableStateListOf<Boolean>()
+        private set
+
     var listOfExercises = mutableStateListOf<String>()
         private set
     var listOfNotes = mutableStateListOf<String>()
@@ -40,7 +43,8 @@ class WorkoutViewModel @Inject constructor(
     fun addSet(first: String, second: String, exerciseIndex: Int? = null) {
         exerciseIndex?.let {
             listOfWeights.add(Pair(it, ""))
-            listOfReps.add(Pair(it, ""))
+            listOfReps.add("")
+            listOfIsDone.add(false)
         }
     }
 
@@ -58,10 +62,7 @@ class WorkoutViewModel @Inject constructor(
         setIndex: Int,
         content: String,
     ) {
-        listOfReps[setIndex] = Pair(
-            first = listOfReps[setIndex].first,
-            second = content
-        )
+        listOfReps[setIndex] = content
     }
 
     fun addExercise() {
@@ -96,8 +97,8 @@ class WorkoutViewModel @Inject constructor(
             if (item.first == exerciseIndex) {
                 //this set belongs to the exercise
                 val set = Set(
-                    weightValue = listOfWeights[i].second.toFloat(),
-                    reps = listOfReps[i].second.toFloat(),
+                    weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
+                    reps = listOfReps[i].toFloatOrNull() ?: 0f,
                     exerciseIdForeign = exerciseId
                 )
                 workoutUseCases.insertSet(set)
@@ -119,5 +120,18 @@ class WorkoutViewModel @Inject constructor(
         // workout insert korle workout id peye jabo
 
 
+    }
+
+    fun toggleIsDone(setIndex: Int) {
+        listOfIsDone[setIndex] = !listOfIsDone[setIndex]
+    }
+
+    fun shouldInsertWorkout(): Boolean {
+        for (item in listOfIsDone) {
+            if (item) {
+                return true
+            }
+        }
+        return false
     }
 }

@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -29,6 +32,7 @@ fun SetItem(
     exerciseIndex: Int? = null,
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
 ) {
+    val listOfIsDone = workoutViewModel.listOfIsDone
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -56,7 +60,7 @@ fun SetItem(
             modifier = Modifier.width(60.dp)
         )
         RegularTextField(
-            text = workoutViewModel.listOfReps[setIndex].second,
+            text = workoutViewModel.listOfReps[setIndex],
             onValueChange = {
                 workoutViewModel.onRepValueChanged(
                     setIndex = setIndex,
@@ -65,10 +69,11 @@ fun SetItem(
             },
             modifier = Modifier.width(60.dp)
         )
-        CustomIcon(
-            painter = rememberVectorPainter(image = Icons.Filled.Done),
+        SetIsDoneIcon(
+            painter = rememberVectorPainter(image = Icons.Outlined.Done),
             contentDescription = Strings.FINISHED_SET_BUTTON,
-            onClick = {}
+            onClick = { workoutViewModel.toggleIsDone(setIndex) },
+            isDone = listOfIsDone[setIndex]
         )
     }
 }
