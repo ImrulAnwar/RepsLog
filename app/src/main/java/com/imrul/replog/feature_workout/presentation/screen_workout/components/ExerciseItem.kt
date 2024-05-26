@@ -30,13 +30,6 @@ fun ExerciseItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = "Exercise Name",
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            modifier = Modifier.padding(10.dp),
-            color = Maroon70
-        )
         RegularTextField(
             text = listOfExercises[exerciseIndex],
             onValueChange = {

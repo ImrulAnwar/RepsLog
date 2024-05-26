@@ -2,6 +2,7 @@ package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,9 +21,11 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -31,6 +35,9 @@ import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
 import com.imrul.replog.core.presentation.components.RegularTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.ExerciseItem
+import com.imrul.replog.ui.theme.Maroon10
+import com.imrul.replog.ui.theme.Maroon20
+import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
 fun WorkoutScreen(
@@ -45,12 +52,15 @@ fun WorkoutScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                workoutViewModel.addExercise()
-            }) {
+            FloatingActionButton(
+                onClick = { workoutViewModel.addExercise() },
+                shape = RoundedCornerShape(percent = 50),
+                contentColor = Maroon70,
+                containerColor = Maroon20
+            ) {
                 Icon(
                     painter = rememberVectorPainter(image = Icons.Filled.Add),
-                    contentDescription = Strings.ADD_BUTTON
+                    contentDescription = Strings.ADD_BUTTON,
                 )
             }
         },
@@ -58,7 +68,10 @@ fun WorkoutScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
+                    .padding(paddingValues)
+                    .background(
+                        color = Maroon10
+                    ),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -91,7 +104,7 @@ fun WorkoutScreen(
                             if (!workoutViewModel.shouldInsertWorkout()) {
                                 Toast.makeText(
                                     context,
-                                    "Please complete at least 1 set of exercise.",
+                                    Strings.COMPLETE_EXERCISE,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {

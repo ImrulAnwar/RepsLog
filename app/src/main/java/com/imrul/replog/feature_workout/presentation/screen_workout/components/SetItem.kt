@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Done
@@ -33,17 +34,20 @@ fun SetItem(
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
 ) {
     val listOfIsDone = workoutViewModel.listOfIsDone
+    val listOfTillFailure = workoutViewModel.listOfTillFailure
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(
-            onClick = { /*TODO*/ }, colors = ButtonColors(
-                containerColor = Maroon70,
-                contentColor = Maroon20,
-                disabledContainerColor = Maroon70,
-                disabledContentColor = Maroon20
+            onClick = {
+                workoutViewModel.toggleTillFailure(setIndex)
+            }, colors = ButtonColors(
+                containerColor = if (listOfTillFailure[setIndex]) Maroon70 else Maroon20,
+                contentColor = if (!listOfTillFailure[setIndex]) Maroon70 else Maroon20,
+                disabledContainerColor = Maroon20,
+                disabledContentColor = Maroon70
             )
         ) {
             Text("F", modifier = Modifier.padding(0.dp))

@@ -34,6 +34,8 @@ class WorkoutViewModel @Inject constructor(
 
     var listOfIsDone = mutableStateListOf<Boolean>()
         private set
+    var listOfTillFailure = mutableStateListOf<Boolean>()
+        private set
 
     var listOfExercises = mutableStateListOf<String>()
         private set
@@ -45,6 +47,7 @@ class WorkoutViewModel @Inject constructor(
             listOfWeights.add(Pair(it, ""))
             listOfReps.add("")
             listOfIsDone.add(false)
+            listOfTillFailure.add(false)
         }
     }
 
@@ -122,6 +125,10 @@ class WorkoutViewModel @Inject constructor(
 
     fun toggleIsDone(setIndex: Int) {
         listOfIsDone[setIndex] = !listOfIsDone[setIndex]
+    }
+
+    fun toggleTillFailure(setIndex: Int) {
+        listOfTillFailure[setIndex] = !listOfTillFailure[setIndex]
     }
 
     fun shouldInsertWorkout(): Boolean = workoutUseCases.shouldInsertWorkout(listOfIsDone)
