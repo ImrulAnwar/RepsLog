@@ -1,6 +1,5 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout.components
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,8 +12,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.imrul.replog.core.presentation.components.RegularTextField
-import com.imrul.replog.feature_workout.domain.model.Set
+import com.imrul.replog.core.presentation.components.NoteTextField
+import com.imrul.replog.core.presentation.components.TitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 
@@ -30,7 +29,7 @@ fun ExerciseItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        RegularTextField(
+        TitleTextField(
             text = listOfExercises[exerciseIndex],
             onValueChange = {
                 workoutViewModel.onExerciseNameValueChanged(
@@ -47,11 +46,15 @@ fun ExerciseItem(
                     content = it
                 )
             },
-            label = "",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp, 0.dp)
         )
+        listOfWeights.forEachIndexed { setIndex, item ->
+            if (item.first == exerciseIndex) {
+                SetItem(exerciseIndex = exerciseIndex, setIndex = setIndex)
+            }
+        }
         Text(
             text = "Add Set",
             fontWeight = FontWeight.Bold,
@@ -60,20 +63,9 @@ fun ExerciseItem(
                 .padding(10.dp)
                 .clickable {
                     workoutViewModel.addSet("", "", exerciseIndex = exerciseIndex)
-                    if (listOfExercises.isEmpty()) {
-                        Log.d("TAG", "ExerciseItem: list is empty")
-                    }
                 },
             color = Maroon70
         )
-
-
-
-        listOfWeights.forEachIndexed { setIndex, item ->
-            if (item.first == exerciseIndex) {
-                SetItem(exerciseIndex = exerciseIndex, setIndex = setIndex)
-            }
-        }
     }
 }
 

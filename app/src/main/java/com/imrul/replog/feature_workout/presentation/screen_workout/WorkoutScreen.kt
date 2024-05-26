@@ -3,37 +3,37 @@ package com.imrul.replog.feature_workout.presentation.screen_workout
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
-import com.imrul.replog.core.presentation.components.RegularTextField
+import com.imrul.replog.core.presentation.components.TitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.ExerciseItem
 import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon20
@@ -90,14 +90,6 @@ fun WorkoutScreen(
 
                     Spacer(modifier = Modifier.weight(1f))
                     CustomIcon(
-                        painter = rememberVectorPainter(image = Icons.Filled.Close),
-                        contentDescription = Strings.CANCELLED_WORKOUT_BUTTON,
-                        onClick = {
-                            navController.popBackStack()
-                        }
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    CustomIcon(
                         painter = rememberVectorPainter(image = Icons.Filled.Done),
                         contentDescription = Strings.FINISHED_WORKOUT_BUTTON,
                         onClick = {
@@ -116,16 +108,29 @@ fun WorkoutScreen(
                 }
                 // This is the body
 
-                RegularTextField(
+                TitleTextField(
                     text = workoutTitle,
                     onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
                 )
                 Column(
-                    modifier = Modifier.verticalScroll(listState)
+                    modifier = Modifier.verticalScroll(listState),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     listOfExercises.forEachIndexed { exerciseIndex, _ ->
                         ExerciseItem(exerciseIndex = exerciseIndex)
                     }
+                    Text(
+                        text = "Cancel Workout",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .clickable {
+                                navController.popBackStack()
+                            },
+                        color = Maroon70
+                    )
                 }
 
             }

@@ -30,16 +30,18 @@ interface WorkoutDao {
     @Delete
     suspend fun deleteSet(set: Set)
 
-    @Query("SELECT * FROM Workout")
+    @Query("SELECT * FROM Workout ORDER BY date DESC")
     fun getAllWorkouts(): Flow<List<Workout>>
 
     @Query("SELECT * FROM Exercise WHERE workoutIdForeign = :workoutId")
     fun getAllExercisesByWorkoutId(workoutId: Long?): Flow<List<Exercise>>
+
     @Query("SELECT * FROM Exercise")
     fun getAllExercises(): Flow<List<Exercise>>
 
     @Query("SELECT * FROM `Set` WHERE exerciseIdForeign = :exerciseId")
     fun getAllSetsByExerciseId(exerciseId: Long?): Flow<List<Set>>
+
     @Query("SELECT * FROM `Set`")
     fun getAllSets(): Flow<List<Set>>
 
