@@ -19,6 +19,7 @@ import com.imrul.replog.feature_workout.domain.use_cases.GetWorkoutById
 import com.imrul.replog.feature_workout.domain.use_cases.InsertExercise
 import com.imrul.replog.feature_workout.domain.use_cases.InsertSet
 import com.imrul.replog.feature_workout.domain.use_cases.InsertWorkout
+import com.imrul.replog.feature_workout.domain.use_cases.ShouldInsertWorkout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.Module
 import dagger.Provides
@@ -60,6 +61,7 @@ object AppModule {
         insertSet = InsertSet(repository),
         insertWorkout = InsertWorkout(repository),
         getAllExercises = GetAllExercises(repository),
-        getAllSets = GetAllSets(repository)
+        getAllSets = GetAllSets(repository),
+        shouldInsertWorkout = ShouldInsertWorkout()
     )
 }

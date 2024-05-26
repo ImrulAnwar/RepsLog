@@ -101,7 +101,8 @@ class WorkoutViewModel @Inject constructor(
                     reps = listOfReps[i].toFloatOrNull() ?: 0f,
                     exerciseIdForeign = exerciseId
                 )
-                workoutUseCases.insertSet(set)
+                if (listOfIsDone[i])
+                    workoutUseCases.insertSet(set)
             }
         }
     }
@@ -117,21 +118,11 @@ class WorkoutViewModel @Inject constructor(
                 insertExercises(index, workoutId)
             }
         }
-        // workout insert korle workout id peye jabo
-
-
     }
 
     fun toggleIsDone(setIndex: Int) {
         listOfIsDone[setIndex] = !listOfIsDone[setIndex]
     }
 
-    fun shouldInsertWorkout(): Boolean {
-        for (item in listOfIsDone) {
-            if (item) {
-                return true
-            }
-        }
-        return false
-    }
+    fun shouldInsertWorkout(): Boolean = workoutUseCases.shouldInsertWorkout(listOfIsDone)
 }

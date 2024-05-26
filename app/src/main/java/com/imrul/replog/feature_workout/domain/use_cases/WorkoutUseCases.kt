@@ -12,5 +12,6 @@ data class WorkoutUseCases(
     val insertSet: InsertSet,
     val insertWorkout: InsertWorkout,
     val getAllExercises: GetAllExercises,
-    val getAllSets: GetAllSets
+    val getAllSets: GetAllSets,
+    val shouldInsertWorkout: ShouldInsertWorkout
 )
