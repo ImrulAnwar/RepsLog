@@ -2,10 +2,10 @@ package com.imrul.replog.core
 
 import kotlinx.serialization.Serializable
 
-class Routes {
+open class Routes {
     @Serializable
-    object ScreenWorkoutHistory
+    object ScreenWorkoutHistory:Routes()
 
     @Serializable
-    object ScreenWorkout
+    object ScreenWorkout:Routes()
 }

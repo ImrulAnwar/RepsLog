@@ -15,4 +15,11 @@ object Strings {
                 "You can go to the app settings to grant it."
     const val EXPLAIN_PERMISSION = "This app needs notification access to show running workout."
     const val COMPLETE_EXERCISE = "Please complete at least 1 set of exercise."
+    const val NOTIFICATION_TITLE = "Running Workout"
+    const val ELAPSED_TIME = "Elapsed Time:"
+    const val CANCEL_WORKOUT = "Cancel Workout"
+    const val START_EMPTY_WORKOUT = "Start an empty workout"
+    const val WORKOUT_NOTIFICATION_CHANNEL_TITLE = "Running Workout"
+
+
 }

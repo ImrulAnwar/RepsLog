@@ -1,7 +1,11 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +43,7 @@ import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WorkoutScreen(
     navController: NavHostController,
@@ -49,6 +54,7 @@ fun WorkoutScreen(
     val listState = rememberScrollState()
 
     val listOfExercises = workoutViewModel.listOfExercises
+    Log.d("ViewModelSize", "WorkoutScreen: ${workoutViewModel.listOfExercises.size}")
 
     Scaffold(
         floatingActionButton = {
@@ -102,6 +108,11 @@ fun WorkoutScreen(
                             } else {
                                 workoutViewModel.insertWorkout()
                                 navController.popBackStack()
+                                // Stop Service
+                                Intent(context, WorkoutService::class.java).also {
+                                    it.action = WorkoutService.Actions.STOP.toString()
+                                    context.startForegroundService(it)
+                                }
                             }
                         }
                     )
@@ -121,13 +132,18 @@ fun WorkoutScreen(
                         ExerciseItem(exerciseIndex = exerciseIndex)
                     }
                     Text(
-                        text = "Cancel Workout",
+                        text = Strings.CANCEL_WORKOUT,
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp,
                         modifier = Modifier
                             .padding(10.dp)
                             .clickable {
                                 navController.popBackStack()
+                                // stop service
+                                Intent(context, WorkoutService::class.java).also {
+                                    it.action = WorkoutService.Actions.STOP.toString()
+                                    context.startForegroundService(it)
+                                }
                             },
                         color = Maroon70
                     )
