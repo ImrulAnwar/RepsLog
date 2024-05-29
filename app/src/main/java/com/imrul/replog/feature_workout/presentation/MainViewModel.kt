@@ -9,15 +9,15 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor() : ViewModel() {
     val visiblePermissionsDialogueQueue = mutableStateListOf<String>()
     fun dismissDialog() {
-        visiblePermissionsDialogueQueue.removeLast()
+        visiblePermissionsDialogueQueue.removeFirst()
     }
 
     fun onPermissionResult(
         permission: String,
         isGranted: Boolean
     ) {
-        if (!isGranted) {
-            visiblePermissionsDialogueQueue.add(0, permission)
+        if (!isGranted && !visiblePermissionsDialogueQueue.contains(permission)) {
+            visiblePermissionsDialogueQueue.add(permission)
         }
     }
 }

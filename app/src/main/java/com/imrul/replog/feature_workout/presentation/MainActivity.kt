@@ -27,17 +27,23 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private val permissionsToRequest = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RepLogTheme {
                 val navController = rememberNavController()
                 NavGraph(navController = navController)
+
                 val dialogQueue = viewModel.visiblePermissionsDialogueQueue
                 val multiplePermissionsLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions(),
                     onResult = { perms ->
-                        perms.keys.forEach { permission ->
+                        permissionsToRequest.forEach { permission ->
                             viewModel.onPermissionResult(
                                 permission = permission,
                                 isGranted = perms[permission] == true
@@ -46,11 +52,7 @@ class MainActivity : ComponentActivity() {
                     }
                 )
                 LaunchedEffect(Unit) {
-                    multiplePermissionsLauncher.launch(
-                        arrayOf(
-                            Manifest.permission.POST_NOTIFICATIONS
-                        )
-                    )
+                    multiplePermissionsLauncher.launch(permissionsToRequest)
                 }
 
                 dialogQueue.reversed().forEach { permission ->

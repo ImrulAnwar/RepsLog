@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.imrul.replog.core.Strings
 
 @Composable
 fun PermissionDialog(
@@ -29,8 +30,8 @@ fun PermissionDialog(
                 HorizontalDivider()
                 Text(
                     text = if (isPermanentlyDeclined) {
-                        "Grant Permission"
-                    } else "Okay",
+                        Strings.GRANT_PERMISSION
+                    } else Strings.OKAY,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -47,7 +48,7 @@ fun PermissionDialog(
             }
         },
         title = {
-            Text("Permission Required")
+            Text(Strings.PERMISSION_REQUIRED)
         }, text = {
             Text(
                 text = permissionTextProvider.getDescription(isPermanentlyDeclined)
@@ -64,8 +65,7 @@ interface PermissionTextProvider {
 class PostNotificationTextProvider : PermissionTextProvider {
     override fun getDescription(isPermanentlyDeclined: Boolean): String {
         return if (isPermanentlyDeclined) {
-            "It seems like you permanently declined notification permission." +
-                    "You can go to the app settings to grant it."
-        } else "This app needs notification access to show running workout."
+            Strings.PERMANENTLY_DECLINED
+        } else Strings.EXPLAIN_PERMISSION
     }
 }
