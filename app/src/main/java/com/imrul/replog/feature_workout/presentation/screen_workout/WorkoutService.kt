@@ -10,19 +10,25 @@ import androidx.core.app.NotificationCompat
 import com.imrul.replog.R
 import com.imrul.replog.core.Constants
 import com.imrul.replog.core.Strings
+import com.imrul.replog.feature_workout.domain.use_cases.DurationUseCase
+import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import com.imrul.replog.feature_workout.presentation.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class WorkoutService : Service() {
+
+    @Inject
+    lateinit var workoutUseCases: WorkoutUseCases
+
     private var startTime: Long = 0L
     private val updateInterval = 1000L // Update every second
     private val notificationId = 1
-    @Inject
-    lateinit var viewModel: WorkoutViewModel
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
