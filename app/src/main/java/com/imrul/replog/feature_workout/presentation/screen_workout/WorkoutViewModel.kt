@@ -15,8 +15,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,11 +31,15 @@ class WorkoutViewModel @Inject constructor(
     private val updateInterval = 1000L // Update every second
     private var coroutineScope: CoroutineScope? = null
 
-    private val _elapsedTime = MutableStateFlow("00:00")
-    val elapsedTime: StateFlow<String> get() = _elapsedTime
+    var elapsedTime = mutableStateOf("00:00")
+        private set
+
+    init {
+        startTimer()
+    }
 
     fun startTimer() {
-//        startTime = System.currentTimeMillis()
+        startTime = System.currentTimeMillis()
         coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope?.launch {
             updateTimer()
@@ -52,7 +54,7 @@ class WorkoutViewModel @Inject constructor(
 
             val duration = String.format("%02d:%02d", minutes, seconds)
 
-            _elapsedTime.value = duration
+            this.elapsedTime.value = duration
 
             delay(updateInterval)
         }

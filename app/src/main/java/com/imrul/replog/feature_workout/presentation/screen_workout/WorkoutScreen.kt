@@ -3,7 +3,6 @@ package com.imrul.replog.feature_workout.presentation.screen_workout
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -51,10 +50,10 @@ fun WorkoutScreen(
     context: Context = LocalContext.current
 ) {
     val workoutTitle = workoutViewModel.workoutTitle
+    val elapsedTime = workoutViewModel.elapsedTime
     val listState = rememberScrollState()
 
     val listOfExercises = workoutViewModel.listOfExercises
-    Log.d("ViewModelSize", "WorkoutScreen: ${workoutViewModel.listOfExercises.size}")
 
     Scaffold(
         floatingActionButton = {
@@ -122,6 +121,10 @@ fun WorkoutScreen(
                 TitleTextField(
                     text = workoutTitle,
                     onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
+                )
+                Text(
+                    elapsedTime.value,
+                    color = Maroon70
                 )
                 Column(
                     modifier = Modifier.verticalScroll(listState),
