@@ -4,33 +4,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import com.imrul.replog.feature_workout.domain.model.Exercise
+import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-import com.imrul.replog.feature_workout.domain.model.Set
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
     private val workoutUseCases: WorkoutUseCases,
-    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var workoutTitle by mutableStateOf(
-        savedStateHandle.get<String>("workoutTitle") ?: "Workout Title"
-    )
+    var workoutTitle by mutableStateOf("Workout Title")
         private set
 
     // duration
@@ -42,7 +37,7 @@ class WorkoutViewModel @Inject constructor(
     val elapsedTime: StateFlow<String> get() = _elapsedTime
 
     fun startTimer() {
-        startTime = System.currentTimeMillis()
+//        startTime = System.currentTimeMillis()
         coroutineScope = CoroutineScope(Dispatchers.Main)
         coroutineScope?.launch {
             updateTimer()
@@ -74,7 +69,6 @@ class WorkoutViewModel @Inject constructor(
 
     fun onWorkoutTitleChanged(value: String) {
         workoutTitle = value
-        savedStateHandle["workoutTitle"] = value
     }
 
     var listOfWeights = mutableStateListOf<Pair<Int, String>>()

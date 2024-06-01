@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.imrul.replog.core.presentation.navigation.NavGraph
 import com.imrul.replog.feature_workout.presentation.components.PermissionDialog
 import com.imrul.replog.feature_workout.presentation.components.PostNotificationTextProvider
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.ui.theme.RepLogTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,6 +76,14 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Intent(applicationContext, WorkoutService::class.java).also {
+            it.action = WorkoutService.Actions.STOP.toString()
+            applicationContext.startForegroundService(it)
         }
     }
 }
