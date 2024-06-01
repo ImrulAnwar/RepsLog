@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,7 +36,7 @@ fun NavGraph(
     }
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = Routes.ScreenWorkoutHistory
     ) {
         composable<Routes.ScreenWorkoutHistory> {
             WorkoutHistoryScreen(navController = navController)

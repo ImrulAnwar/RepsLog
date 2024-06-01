@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
@@ -14,17 +15,66 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.imrul.replog.feature_workout.domain.model.Set
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
-    private val workoutUseCases: WorkoutUseCases
+    private val workoutUseCases: WorkoutUseCases,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var workoutTitle by mutableStateOf("Workout Title")
+    var workoutTitle by mutableStateOf(
+        savedStateHandle.get<String>("workoutTitle") ?: "Workout Title"
+    )
         private set
+
+    // duration
+    private var startTime: Long = 0L
+    private val updateInterval = 1000L // Update every second
+    private var coroutineScope: CoroutineScope? = null
+
+    private val _elapsedTime = MutableStateFlow("00:00")
+    val elapsedTime: StateFlow<String> get() = _elapsedTime
+
+    fun startTimer() {
+        startTime = System.currentTimeMillis()
+        coroutineScope = CoroutineScope(Dispatchers.Main)
+        coroutineScope?.launch {
+            updateTimer()
+        }
+    }
+
+    private suspend fun updateTimer() {
+        while (true) {
+            val elapsedTime = System.currentTimeMillis() - startTime
+            val seconds = (elapsedTime / 1000) % 60
+            val minutes = (elapsedTime / (1000 * 60)) % 60
+
+            val duration = String.format("%02d:%02d", minutes, seconds)
+
+            _elapsedTime.value = duration
+
+            delay(updateInterval)
+        }
+    }
+
+    fun stopTimer() {
+        coroutineScope?.cancel()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopTimer()
+    }
 
     fun onWorkoutTitleChanged(value: String) {
         workoutTitle = value
+        savedStateHandle["workoutTitle"] = value
     }
 
     var listOfWeights = mutableStateListOf<Pair<Int, String>>()

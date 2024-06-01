@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,19 +19,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
 import com.imrul.replog.ui.theme.Maroon10
-import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
-import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
