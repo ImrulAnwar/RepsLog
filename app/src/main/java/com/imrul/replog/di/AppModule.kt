@@ -7,6 +7,7 @@ import com.imrul.replog.feature_workout.data.data_source.WorkoutDao
 import com.imrul.replog.feature_workout.data.data_source.WorkoutDatabase
 import com.imrul.replog.feature_workout.data.repository.WorkoutRepositoryImp
 import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
+import com.imrul.replog.feature_workout.domain.use_cases.CreateRunningWorkoutNotificationUseCase
 import com.imrul.replog.feature_workout.domain.use_cases.DeleteExercise
 import com.imrul.replog.feature_workout.domain.use_cases.DeleteSet
 import com.imrul.replog.feature_workout.domain.use_cases.DeleteWorkout
@@ -64,6 +65,7 @@ object AppModule {
         getAllExercises = GetAllExercises(repository),
         getAllSets = GetAllSets(repository),
         shouldInsertWorkout = ShouldInsertWorkout(),
-        durationUseCase = DurationUseCase()
+        durationUseCase = DurationUseCase(),
+        createRunningWorkoutNotificationUseCase = CreateRunningWorkoutNotificationUseCase()
     )
 }

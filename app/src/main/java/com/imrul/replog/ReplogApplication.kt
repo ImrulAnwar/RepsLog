@@ -17,7 +17,7 @@ class ReplogApplication : Application() {
             val channel = NotificationChannel(
                 Constants.WORKOUT_NOTIFICATION_CHANNEL_ID,
                 Strings.WORKOUT_NOTIFICATION_CHANNEL_TITLE,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_HIGH
             )
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -13,10 +13,6 @@ class DurationUseCase {
     val elapsedTime: StateFlow<String> =
         _elapsedTime.asStateFlow() // Provide an immutable StateFlow for consumers
 
-    operator fun invoke(newDuration: String) {
-        _elapsedTime.value = newDuration
-    }
-
     private var startTime: Long = 0L
     private val updateInterval = 1000L
     fun start() {

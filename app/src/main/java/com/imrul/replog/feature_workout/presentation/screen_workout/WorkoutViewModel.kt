@@ -12,9 +12,6 @@ import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,47 +23,18 @@ class WorkoutViewModel @Inject constructor(
     var workoutTitle by mutableStateOf("Workout Title")
         private set
 
-    // duration
-    private var startTime: Long = 0L
-    private val updateInterval = 1000L // Update every second
-    private var coroutineScope: CoroutineScope? = null
-
     var elapsedTime = mutableStateOf("00:00")
         private set
 
     init {
-        startTimer()
+        workoutUseCases.durationUseCase.start()
+        viewModelScope.launch { observeDuration() }
     }
 
-    fun startTimer() {
-        startTime = System.currentTimeMillis()
-        coroutineScope = CoroutineScope(Dispatchers.Main)
-        coroutineScope?.launch {
-            updateTimer()
+    private suspend fun observeDuration() {
+        workoutUseCases.durationUseCase.elapsedTime.collect {
+            elapsedTime.value = it
         }
-    }
-
-    private suspend fun updateTimer() {
-        while (true) {
-            val elapsedTime = System.currentTimeMillis() - startTime
-            val seconds = (elapsedTime / 1000) % 60
-            val minutes = (elapsedTime / (1000 * 60)) % 60
-
-            val duration = String.format("%02d:%02d", minutes, seconds)
-
-            this.elapsedTime.value = duration
-
-            delay(updateInterval)
-        }
-    }
-
-    fun stopTimer() {
-        coroutineScope?.cancel()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        stopTimer()
     }
 
     fun onWorkoutTitleChanged(value: String) {
