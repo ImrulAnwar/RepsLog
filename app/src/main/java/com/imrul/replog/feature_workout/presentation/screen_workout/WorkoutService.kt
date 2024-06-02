@@ -16,6 +16,7 @@ import com.imrul.replog.feature_workout.presentation.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,9 +26,6 @@ class WorkoutService : Service() {
 
     @Inject
     lateinit var workoutUseCases: WorkoutUseCases
-
-    private var startTime: Long = 0L
-    private val updateInterval = 1000L // Update every second
     private val notificationId = 1
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -36,22 +34,19 @@ class WorkoutService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            Actions.START.toString() -> start()
+            Actions.START.toString() -> CoroutineScope(Dispatchers.Default).launch { start() }
             Actions.STOP.toString() -> stopSelf()
         }
         return START_STICKY
     }
 
-    private fun start() {
-        startTime = System.currentTimeMillis()
+    private suspend fun start() {
         startForeground(notificationId, createNotification())
 
-        // Start the coroutine to update the timer
-        CoroutineScope(Dispatchers.Default).launch {
-            while (true) {
-                updateTimer()
-                delay(updateInterval)
-            }
+        workoutUseCases.durationUseCase.start()
+        workoutUseCases.durationUseCase.elapsedTime.collect {
+            val notification = createNotification(it)
+            startForeground(notificationId, notification)
         }
     }
 
@@ -80,20 +75,6 @@ class WorkoutService : Service() {
                 flags = flags or Notification.FLAG_NO_CLEAR
             }
     }
-
-    private fun updateTimer() {
-        val elapsedTime = System.currentTimeMillis() - startTime
-        val seconds = (elapsedTime / 1000) % 60
-        val minutes = (elapsedTime / (1000 * 60)) % 60
-
-        val duration = String.format("%02d:%02d", minutes, seconds)
-
-        // Update the notification with the new elapsed time
-        val notification = createNotification(duration)
-
-        startForeground(notificationId, notification)
-    }
-
     enum class Actions {
         START, STOP
     }
