@@ -81,10 +81,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Intent(applicationContext, WorkoutService::class.java).also {
-            it.action = WorkoutService.Actions.STOP.toString()
-            applicationContext.startForegroundService(it)
-        }
+//        Intent(applicationContext, WorkoutService::class.java).also {
+//            it.action = WorkoutService.Actions.STOP.toString()
+//            applicationContext.startForegroundService(it)
+//        }
     }
 }
 

@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
 import com.imrul.replog.core.presentation.components.TitleTextField
@@ -49,8 +51,8 @@ fun WorkoutScreen(
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
     context: Context = LocalContext.current
 ) {
-    val workoutTitle = workoutViewModel.workoutTitle
     val elapsedTime = workoutViewModel.elapsedTime
+    val workoutTitle = workoutViewModel.workoutTitle
     val listState = rememberScrollState()
 
     val listOfExercises = workoutViewModel.listOfExercises
@@ -89,7 +91,9 @@ fun WorkoutScreen(
                         painter = rememberVectorPainter(image = Icons.AutoMirrored.Filled.ArrowBack),
                         contentDescription = Strings.BACK_BUTTON,
                         onClick = {
-                            navController.popBackStack()
+                            navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
+                                navController.popBackStack()
+                            }
                         }
                     )
 
@@ -106,11 +110,13 @@ fun WorkoutScreen(
                                 ).show()
                             } else {
                                 workoutViewModel.insertWorkout()
-                                navController.popBackStack()
-                                // Stop Service
-                                Intent(context, WorkoutService::class.java).also {
-                                    it.action = WorkoutService.Actions.STOP.toString()
-                                    context.startForegroundService(it)
+                                navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
+                                    // When navigation is complete, stop the service and pop the back stack
+                                    Intent(context, WorkoutService::class.java).also {
+                                        it.action = WorkoutService.Actions.STOP.toString()
+                                        context.startForegroundService(it)
+                                    }
+                                    navController.popBackStack()
                                 }
                             }
                         }
@@ -123,7 +129,7 @@ fun WorkoutScreen(
                     onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
                 )
                 Text(
-                    elapsedTime.value,
+                    elapsedTime,
                     color = Maroon70
                 )
                 Column(
@@ -141,11 +147,13 @@ fun WorkoutScreen(
                         modifier = Modifier
                             .padding(10.dp)
                             .clickable {
-                                navController.popBackStack()
-                                // stop service
-                                Intent(context, WorkoutService::class.java).also {
-                                    it.action = WorkoutService.Actions.STOP.toString()
-                                    context.startForegroundService(it)
+                                navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
+                                    // When navigation is complete, stop the service and pop the back stack
+                                    Intent(context, WorkoutService::class.java).also {
+                                        it.action = WorkoutService.Actions.STOP.toString()
+                                        context.startForegroundService(it)
+                                    }
+                                    navController.popBackStack()
                                 }
                             },
                         color = Maroon70

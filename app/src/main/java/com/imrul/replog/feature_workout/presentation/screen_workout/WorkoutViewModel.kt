@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imrul.replog.feature_workout.domain.model.Exercise
@@ -11,7 +12,6 @@ import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,17 +23,20 @@ class WorkoutViewModel @Inject constructor(
     var workoutTitle by mutableStateOf("Workout Title")
         private set
 
-    var elapsedTime = mutableStateOf("00:00")
+    var elapsedTime by mutableStateOf("00:00")
         private set
 
     init {
-        workoutUseCases.durationUseCase.start()
         viewModelScope.launch { observeDuration() }
+    }
+
+    fun start() {
+        workoutUseCases.durationUseCase.start()
     }
 
     private suspend fun observeDuration() {
         workoutUseCases.durationUseCase.elapsedTime.collect {
-            elapsedTime.value = it
+            elapsedTime = it
         }
     }
 

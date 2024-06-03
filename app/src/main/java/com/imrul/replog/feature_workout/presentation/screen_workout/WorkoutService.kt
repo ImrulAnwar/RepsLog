@@ -29,6 +29,7 @@ class WorkoutService : Service() {
                     CoroutineScope(Dispatchers.Default).launch { start() }
                 }
             }
+
             Actions.STOP.toString() -> {
                 if (isRunning) stopSelf()
             }
@@ -38,6 +39,7 @@ class WorkoutService : Service() {
 
     private suspend fun start() {
         isRunning = true
+        workoutUseCases.durationUseCase.start()
         startForeground(
             notificationId,
             workoutUseCases.createRunningWorkoutNotificationUseCase(context = applicationContext)

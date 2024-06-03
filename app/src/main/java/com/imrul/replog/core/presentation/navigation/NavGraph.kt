@@ -36,7 +36,7 @@ fun NavGraph(
     }
     NavHost(
         navController = navController,
-        startDestination = Routes.ScreenWorkoutHistory
+        startDestination = startDestination
     ) {
         composable<Routes.ScreenWorkoutHistory> {
             WorkoutHistoryScreen(navController = navController)
