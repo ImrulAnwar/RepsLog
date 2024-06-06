@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -66,11 +67,6 @@ fun WorkoutHistoryScreen(
                 WorkoutItem(workout)
             }
         }
-//        Column {
-//            Text(text = workoutTitle)
-//            Spacer(modifier = Modifier.height(10.dp))
-//            Text(text = elapsedTime)
-//        }
         Button(
             onClick = {
                 navController.navigate(Routes.ScreenWorkout)
@@ -85,7 +81,8 @@ fun WorkoutHistoryScreen(
                 contentColor = Maroon10,
                 disabledContentColor = Maroon70,
                 disabledContainerColor = Maroon10
-            )
+            ),
+            modifier = Modifier.padding(10.dp)
         ) {
             Text(
                 text = Strings.START_EMPTY_WORKOUT

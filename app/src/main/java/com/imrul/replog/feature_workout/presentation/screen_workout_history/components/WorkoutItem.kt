@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.model.Set
@@ -39,18 +40,19 @@ fun WorkoutItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(12.dp)
             .border(
                 width = 1.dp,
                 // Add border with rounded corners here
                 shape = MaterialTheme.shapes.medium,
                 color = Maroon70,
             )
-            .padding(10.dp)
+            .padding(12.dp)
     ) {
         Text(
             text = workout.name,
             fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
             color = Maroon70
         )
 
@@ -64,14 +66,13 @@ fun WorkoutItem(
                     setsListState.forEach { set ->
                         if (set.exerciseIdForeign == exercise.exerciseId) setCount++
                     }
-                    Log.d("Problem check", "WorkoutItem: ${exercise.name}")
                     Text(
                         text = "$setCount x ${exercise.name}",
+                        fontSize = 16.sp,
                         color = Maroon70
                     )
                 }
             }
         }
-
     }
 }
