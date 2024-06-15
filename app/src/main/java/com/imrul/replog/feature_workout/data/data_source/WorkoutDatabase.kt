@@ -12,7 +12,7 @@ import com.imrul.replog.feature_workout.domain.model.Workout
         Exercise::class,
         Set::class
     ],
-    version = 1
+    version = 2
 )
 abstract class WorkoutDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao

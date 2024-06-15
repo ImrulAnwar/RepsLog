@@ -2,7 +2,9 @@ package com.imrul.replog.feature_workout.presentation.screen_workout_history.com
 
 import android.util.Log
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,11 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
@@ -56,18 +60,60 @@ fun WorkoutItem(
             color = Maroon70
         )
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = workout.weekdayString,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = Maroon70
+            )
+            Text(
+                text = workout.dateString,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = Maroon70
+            )
+        }
+        Text(
+            text = workout.durationString,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            color = Maroon70
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = Strings.EXERCISE,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = Maroon70
+            )
+            Text(
+                text = Strings.BEST_SET,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = Maroon70
+            )
+        }
+
         // using column instead of lazy column is because i don't want nested scrolling
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
             exerciseListState.forEach { exercise ->
                 if (exercise.workoutIdForeign == workout.workoutId) {
-                    var setCount = 0
-                    setsListState.forEach { set ->
-                        if (set.exerciseIdForeign == exercise.exerciseId) setCount++
-                    }
                     Text(
-                        text = "$setCount x ${exercise.name}",
+                        text = "${exercise.setCount} x ${exercise.name}",
                         fontSize = 16.sp,
                         color = Maroon70
                     )
