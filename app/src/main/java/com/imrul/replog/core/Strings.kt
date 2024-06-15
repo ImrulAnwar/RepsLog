@@ -22,7 +22,8 @@ object Strings {
     const val WORKOUT_NOTIFICATION_CHANNEL_TITLE = "Running Workout"
     const val EXERCISE = "Exercise"
     const val BEST_SET = "Best Set"
-    const val SET = "Set"
-    const val PREVIOUS = "Previous"
-    const val REPS = "Reps"
+    const val SET = "SET"
+    const val PREVIOUS = "PREVIOUS"
+    const val REPS = "REPS"
+    const val WORKOUT_TITLE = "Workout Title"
 }

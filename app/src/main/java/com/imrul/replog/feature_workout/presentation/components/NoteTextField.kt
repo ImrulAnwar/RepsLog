@@ -1,4 +1,4 @@
-package com.imrul.replog.core.presentation.components
+package com.imrul.replog.feature_workout.presentation.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.imrul.replog.core.Strings
+import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 
@@ -16,7 +17,7 @@ fun NoteTextField(
     text: String,
     onValueChange: (String) -> Unit,
     label: String = Strings.ADD_A_NOTE,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -30,9 +31,9 @@ fun NoteTextField(
             unfocusedTextColor = Maroon70,
             cursorColor = Maroon70,
             focusedBorderColor = Maroon70,
-            unfocusedBorderColor = Maroon20,
+            unfocusedBorderColor = Maroon10,
             focusedLabelColor = Maroon70,
-            unfocusedLabelColor = Maroon20,
+            unfocusedLabelColor = Maroon10,
         ),
     )
 }

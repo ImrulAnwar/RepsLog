@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 
@@ -28,7 +29,7 @@ fun SetIsDoneIcon(
     Box(
         modifier = Modifier
             .clip(CircleShape)
-            .background(if (isDone) Maroon70 else Maroon20) // Set the background color
+            .background(if (isDone) Maroon70 else Maroon10) // Set the background color
             .clickable { onClick() }
             .padding(padding)
     ) {

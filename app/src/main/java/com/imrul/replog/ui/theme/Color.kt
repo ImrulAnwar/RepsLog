@@ -10,9 +10,10 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val Maroon90 = Color(0xFF4d0000)
+val Maroon90 = Color(0xFF850000)
 val Maroon70 = Color(0xFF235d23)
-val Maroon80 = Color(0xFF800000)
+val Red = Color(0xFFff8080)
 val Maroon30 = Color(0xFFff8080)
 val Maroon20 = Color(0xFF7dce7d)
-val Maroon10 = Color.White
+val Maroon10 = Color(0xFFB0CFB0)
+val WhiteCustom = Color.White

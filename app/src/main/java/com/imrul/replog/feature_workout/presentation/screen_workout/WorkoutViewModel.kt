@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
@@ -23,7 +24,7 @@ import javax.inject.Inject
 class WorkoutViewModel @Inject constructor(
     private val workoutUseCases: WorkoutUseCases,
 ) : ViewModel() {
-    var workoutTitle by mutableStateOf("Workout Title")
+    var workoutTitle by mutableStateOf(Strings.WORKOUT_TITLE)
         private set
 
     var elapsedTime by mutableStateOf("00:00")

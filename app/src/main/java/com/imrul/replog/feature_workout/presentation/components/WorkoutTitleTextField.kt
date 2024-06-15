@@ -1,4 +1,4 @@
-package com.imrul.replog.core.presentation.components
+package com.imrul.replog.feature_workout.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,11 +9,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.imrul.replog.core.Strings
+import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
-fun TitleTextField(
+fun WorkoutTitleTextField(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .padding(10.dp),
@@ -27,14 +32,18 @@ fun TitleTextField(
         singleLine = true,
         value = text,
         onValueChange = { onValueChange(it) },
+        textStyle = TextStyle(
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp // Adjust the font size as needed
+        ),
         label = { Text(label) },
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = Maroon70,
             unfocusedTextColor = Maroon70,
             cursorColor = Maroon70,
-            focusedBorderColor = Maroon70,
+            focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
-            focusedLabelColor = Maroon70,
+            focusedLabelColor = Color.Transparent,
             unfocusedLabelColor = Color.Transparent,
         ),
     )

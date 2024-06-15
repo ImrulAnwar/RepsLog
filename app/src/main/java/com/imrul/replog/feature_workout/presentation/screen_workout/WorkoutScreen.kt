@@ -25,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -38,11 +37,14 @@ import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
-import com.imrul.replog.core.presentation.components.TitleTextField
+import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.ExerciseItem
 import com.imrul.replog.ui.theme.Maroon10
+import com.imrul.replog.ui.theme.WhiteCustom
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
+import com.imrul.replog.ui.theme.Maroon90
+import com.imrul.replog.ui.theme.Red
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -63,7 +65,7 @@ fun WorkoutScreen(
                 onClick = { workoutViewModel.addExercise() },
                 shape = RoundedCornerShape(percent = 50),
                 contentColor = Maroon70,
-                containerColor = Maroon20
+                containerColor = Maroon10
             ) {
                 Icon(
                     painter = rememberVectorPainter(image = Icons.Filled.Add),
@@ -77,7 +79,7 @@ fun WorkoutScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .background(
-                        color = Maroon10
+                        color = WhiteCustom
                     ),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -124,7 +126,7 @@ fun WorkoutScreen(
                 }
                 // This is the body
 
-                TitleTextField(
+                WorkoutTitleTextField(
                     text = workoutTitle,
                     onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
                 )
@@ -156,7 +158,7 @@ fun WorkoutScreen(
                                     navController.popBackStack()
                                 }
                             },
-                        color = Maroon70
+                        color = Maroon90
                     )
                 }
 

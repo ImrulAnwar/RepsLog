@@ -11,13 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.imrul.replog.core.Strings
-import com.imrul.replog.core.presentation.components.NoteTextField
-import com.imrul.replog.core.presentation.components.TitleTextField
+import com.imrul.replog.feature_workout.presentation.components.NoteTextField
+import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 
@@ -34,7 +33,7 @@ fun ExerciseItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TitleTextField(
+        WorkoutTitleTextField(
             text = listOfExercises[exerciseIndex],
             onValueChange = {
                 workoutViewModel.onExerciseNameValueChanged(
@@ -64,27 +63,33 @@ fun ExerciseItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = Strings.SET.uppercase(),
+                text = Strings.SET,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 color = Maroon70
             )
             Text(
-                text = Strings.PREVIOUS.uppercase(),
+                text = Strings.PREVIOUS,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 color = Maroon70
             )
             Text(
                 text = "KG",
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 color = Maroon70
             )
             Text(
-                text = Strings.REPS.uppercase(),
+                text = Strings.REPS,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
+                fontSize = 14.sp,
+                color = Maroon70
+            )
+            Text(
+                text = "\t\t\t",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 14.sp,
                 color = Maroon70
             )
         }

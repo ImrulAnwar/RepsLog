@@ -6,10 +6,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,9 +27,8 @@ import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
-import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
-import com.imrul.replog.ui.theme.Maroon10
+import com.imrul.replog.ui.theme.WhiteCustom
 import com.imrul.replog.ui.theme.Maroon70
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -53,7 +50,7 @@ fun WorkoutHistoryScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                color = Maroon10
+                color = WhiteCustom
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -78,9 +75,9 @@ fun WorkoutHistoryScreen(
             },
             colors = ButtonColors(
                 containerColor = Maroon70,
-                contentColor = Maroon10,
+                contentColor = WhiteCustom,
                 disabledContentColor = Maroon70,
-                disabledContainerColor = Maroon10
+                disabledContainerColor = WhiteCustom
             ),
             modifier = Modifier.padding(10.dp)
         ) {
