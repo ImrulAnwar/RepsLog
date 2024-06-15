@@ -9,5 +9,8 @@ data class Workout(
     val workoutId: Long? = null,
     val name: String = "",
     val duration: Int = 0,
-    val date: Long = System.currentTimeMillis()
+    val date: Long = System.currentTimeMillis(),
+    val dateString: String = "",
+    val weekdayString: String = "",
+    val durationString: String = ""
 )

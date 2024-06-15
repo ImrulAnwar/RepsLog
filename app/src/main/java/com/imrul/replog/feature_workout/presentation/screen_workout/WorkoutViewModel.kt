@@ -13,6 +13,9 @@ import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -107,12 +110,13 @@ class WorkoutViewModel @Inject constructor(
     private suspend fun insertExercises(exerciseIndex: Int, workoutId: Long) {
         // exercise id ta exercise insert korar por pabo. workout id ta use kore
 
-        val exercise = Exercise(
+        var exercise = Exercise(
             name = listOfExercises[exerciseIndex],
             note = listOfNotes[exerciseIndex],
             workoutIdForeign = workoutId
         )
         val exerciseId = workoutUseCases.insertExercise(exercise)
+        var setCount = 0
         listOfWeights.forEachIndexed { i, item ->
             if (item.first == exerciseIndex) {
                 //this set belongs to the exercise
@@ -121,16 +125,36 @@ class WorkoutViewModel @Inject constructor(
                     reps = listOfReps[i].toFloatOrNull() ?: 0f,
                     exerciseIdForeign = exerciseId
                 )
-                if (listOfIsDone[i])
+                if (listOfIsDone[i]) {
+                    setCount++
                     workoutUseCases.insertSet(set)
+                }
             }
         }
+        exercise = Exercise(
+            exerciseId = exerciseId,
+            name = listOfExercises[exerciseIndex],
+            note = listOfNotes[exerciseIndex],
+            workoutIdForeign = workoutId,
+            setCount = setCount.toLong()
+        )
+        workoutUseCases.insertExercise(exercise)
     }
 
     fun insertWorkout() {
         viewModelScope.launch {
+            val date = System.currentTimeMillis()
+            var dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
+            val dateString = dateFormat.format(Date(date))
+            dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+            val weekDayString = dateFormat.format(Date(date))
+
             val workout = Workout(
-                name = workoutTitle
+                name = workoutTitle,
+                durationString = elapsedTime.split(":")[0].toInt().toString() + "m",
+                date = date,
+                dateString = dateString,
+                weekdayString = weekDayString
             )
             val workoutId: Long = workoutUseCases.insertWorkout(workout)
 

@@ -20,6 +20,9 @@ object Strings {
     const val CANCEL_WORKOUT = "Cancel Workout"
     const val START_EMPTY_WORKOUT = "Start an empty workout"
     const val WORKOUT_NOTIFICATION_CHANNEL_TITLE = "Running Workout"
-
-
+    const val EXERCISE = "Exercise"
+    const val BEST_SET = "Best Set"
+    const val SET = "Set"
+    const val PREVIOUS = "Previous"
+    const val REPS = "Reps"
 }

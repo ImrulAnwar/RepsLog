@@ -15,4 +15,4 @@ val Maroon70 = Color(0xFF235d23)
 val Maroon80 = Color(0xFF800000)
 val Maroon30 = Color(0xFFff8080)
 val Maroon20 = Color(0xFF7dce7d)
-val Maroon10 = Color(0xFFecf8ec)
+val Maroon10 = Color.White

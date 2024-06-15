@@ -11,5 +11,7 @@ data class Exercise(
     val note: String = "",
     val repsSlower: Boolean = false,
     val imageUrl: String? = null,
-    val workoutIdForeign: Long? = null
+    val workoutIdForeign: Long? = null,
+    val setCount: Long? = 0,
+    val bestSet: String = ""
 )
