@@ -32,7 +32,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object RoomModule {
     @Singleton
     @Provides
     fun provideWorkoutDatabase(
@@ -68,4 +68,6 @@ object AppModule {
         durationUseCase = DurationUseCase(),
         createRunningWorkoutNotificationUseCase = CreateRunningWorkoutNotificationUseCase()
     )
+
+
 }
