@@ -11,7 +11,7 @@ import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
-fun RegularTextField(
+fun EmailTextField(
     text: String,
     onValueChange: (String) -> Unit,
     label: String,

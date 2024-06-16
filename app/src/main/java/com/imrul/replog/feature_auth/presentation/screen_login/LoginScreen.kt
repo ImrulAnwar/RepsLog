@@ -34,7 +34,7 @@ import com.imrul.replog.core.Constants
 import com.imrul.replog.core.Routes
 import com.imrul.replog.feature_auth.presentation.components.OtherAuthButton
 import com.imrul.replog.feature_auth.presentation.components.PasswordTextField
-import com.imrul.replog.feature_auth.presentation.components.RegularTextField
+import com.imrul.replog.feature_auth.presentation.components.EmailTextField
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
 
@@ -71,7 +71,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            RegularTextField(
+            EmailTextField(
                 text = emailText,
                 onValueChange = { viewModel.onEmailChanged(it) },
                 label = Constants.EMAIL_PLACEHOLDER
