@@ -13,6 +13,7 @@ import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
 import com.imrul.replog.feature_auth.presentation.screen_login.model.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +29,9 @@ class LoginViewModel @Inject constructor(
 
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
+    private val _selectedItemIndex = MutableStateFlow(0)
+    val selectedItemIndex: StateFlow<Int> = _selectedItemIndex.asStateFlow()
+
 
     fun onEmailChanged(value: String) {
         emailText = value
@@ -39,6 +43,10 @@ class LoginViewModel @Inject constructor(
 
     init {
         currentUser()
+    }
+
+    fun setSelectedItem(index: Int) {
+        _selectedItemIndex.value = index
     }
 
     fun currentUser() = viewModelScope.launch {

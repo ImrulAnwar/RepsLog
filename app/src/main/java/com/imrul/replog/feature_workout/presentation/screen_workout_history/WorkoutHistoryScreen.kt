@@ -2,12 +2,17 @@ package com.imrul.replog.feature_workout.presentation.screen_workout_history
 
 import android.content.Intent
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,55 +41,50 @@ import com.imrul.replog.ui.theme.Maroon70
 fun WorkoutHistoryScreen(
     navController: NavHostController,
     workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel(),
-//    workoutViewModel: WorkoutViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) {
         workoutHistoryViewModel.getAllWorkouts()
     }
-//    val elapsedTime = workoutViewModel.elapsedTime
-//    val workoutTitle = workoutViewModel.workoutTitle
+
     val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
     val context = LocalContext.current
 
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .background(
-                color = WhiteCustom
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .fillMaxWidth()
+            .background(WhiteCustom)
+            .padding(bottom = 80.dp),
         verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-        ) {
-            items(workoutListState) { workout ->
-                WorkoutItem(workout)
+        item {
+
+            Button(
+                onClick = {
+                    navController.navigate(Routes.ScreenWorkout)
+                    // start service
+                    Intent(context, WorkoutService::class.java).also {
+                        it.action = WorkoutService.Actions.START.toString()
+                        context.startForegroundService(it)
+                    }
+                },
+                colors = ButtonColors(
+                    containerColor = Maroon70,
+                    contentColor = WhiteCustom,
+                    disabledContentColor = Maroon70,
+                    disabledContainerColor = WhiteCustom
+                ),
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+                Text(
+                    text = Strings.START_EMPTY_WORKOUT
+                )
+
             }
         }
-        Button(
-            onClick = {
-                navController.navigate(Routes.ScreenWorkout)
-                // start service
-                Intent(context, WorkoutService::class.java).also {
-                    it.action = WorkoutService.Actions.START.toString()
-                    context.startForegroundService(it)
-                }
-            },
-            colors = ButtonColors(
-                containerColor = Maroon70,
-                contentColor = WhiteCustom,
-                disabledContentColor = Maroon70,
-                disabledContainerColor = WhiteCustom
-            ),
-            modifier = Modifier.padding(10.dp)
-        ) {
-            Text(
-                text = Strings.START_EMPTY_WORKOUT
-            )
-
+        items(workoutListState) { workout ->
+            WorkoutItem(workout)
         }
+
     }
 }

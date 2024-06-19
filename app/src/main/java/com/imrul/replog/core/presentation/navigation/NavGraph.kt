@@ -17,7 +17,10 @@ import androidx.navigation.compose.composable
 import com.imrul.replog.core.Routes
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginScreen
 import com.imrul.replog.feature_auth.presentation.screen_login.model.LoginState
+import com.imrul.replog.feature_auth.presentation.screen_profile.ProfileScreen
 import com.imrul.replog.feature_auth.presentation.screen_register.RegisterScreen
+import com.imrul.replog.feature_measurements.presentation.screen_measurements.MeasurementsScreen
+import com.imrul.replog.feature_workout.presentation.screen_exercises.ExercisesScreen
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutScreen
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.WorkoutHistoryScreen
@@ -46,6 +49,16 @@ fun NavGraph(
         }
         composable<Routes.ScreenRegister> {
             RegisterScreen(navController = navController)
+        }
+
+        composable<Routes.ScreenProfile> {
+            ProfileScreen()
+        }
+        composable<Routes.ScreenMeasurements> {
+            MeasurementsScreen()
+        }
+        composable<Routes.ScreenExercises> {
+            ExercisesScreen()
         }
     }
 }

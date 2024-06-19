@@ -26,4 +26,8 @@ object Strings {
     const val PREVIOUS = "PREVIOUS"
     const val REPS = "REPS"
     const val WORKOUT_TITLE = "Workout Title"
+    const val HISTORY = "History"
+    const val PROFILE = "Profile"
+    const val MEASURE = "Measure"
+    const val EXERCISES = "Exercises"
 }

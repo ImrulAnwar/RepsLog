@@ -14,4 +14,13 @@ open class Routes {
 
     @Serializable
     object ScreenRegister : Routes()
+
+    @Serializable
+    object ScreenMeasurements : Routes()
+
+    @Serializable
+    object ScreenExercises : Routes()
+
+    @Serializable
+    object ScreenProfile : Routes()
 }
