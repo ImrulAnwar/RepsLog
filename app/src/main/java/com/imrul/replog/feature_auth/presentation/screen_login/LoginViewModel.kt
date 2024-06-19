@@ -1,11 +1,20 @@
 package com.imrul.replog.feature_auth.presentation.screen_login
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
+import com.imrul.replog.core.util.Resource
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
+import com.imrul.replog.feature_auth.presentation.screen_login.model.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +26,9 @@ class LoginViewModel @Inject constructor(
     var passwordText by mutableStateOf("")
         private set
 
+    private val _loginState = MutableStateFlow(LoginState())
+    val loginState = _loginState.asStateFlow()
+
     fun onEmailChanged(value: String) {
         emailText = value
     }
@@ -25,4 +37,63 @@ class LoginViewModel @Inject constructor(
         passwordText = value
     }
 
+    init {
+        currentUser()
+    }
+
+    fun currentUser() = viewModelScope.launch {
+        authUseCases.currentUserUseCase().collect { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _loginState.value = LoginState(isLoggedIn = true)
+                }
+
+                is Resource.Error -> {
+                    _loginState.value = LoginState(error = result.message.toString())
+                }
+
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
+
+    fun signInWithEmail(context: Context, navHostController: NavHostController) =
+        viewModelScope.launch {
+            authUseCases.signInWithEmailUseCase(emailText, passwordText).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _loginState.value = LoginState(isLoggedIn = true)
+                        Toast.makeText(context, "Successfully Logged In", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    is Resource.Error -> {
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
+                            .show()
+                        _loginState.value = LoginState(error = result.message.toString())
+                    }
+
+                    is Resource.Loading -> {
+                        _loginState.value = LoginState(isLoading = true)
+                    }
+                }
+            }
+        }
+
+    fun signOut() = viewModelScope.launch {
+        authUseCases.signOutUseCase().collect { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _loginState.value = LoginState(isLoggedIn = false)
+                }
+
+                is Resource.Error -> {
+                }
+
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
 }

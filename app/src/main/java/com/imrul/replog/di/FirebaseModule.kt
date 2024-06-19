@@ -11,6 +11,7 @@ import com.imrul.replog.feature_auth.domain.data_source.AuthDataSource
 import com.imrul.replog.feature_auth.domain.repository.AuthRepository
 import com.imrul.replog.feature_auth.domain.use_cases.AnonymousRegisterUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
+import com.imrul.replog.feature_auth.domain.use_cases.CurrentUserUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.LinkAccountUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.RegisterWithEmailUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.SignInWithEmailUseCase
@@ -51,6 +52,7 @@ object FirebaseModule {
         linkAccountUseCase = LinkAccountUseCase(repository),
         registerEmailUseCase = RegisterWithEmailUseCase(repository),
         signInWithEmailUseCase = SignInWithEmailUseCase(repository),
-        signOutUseCase = SignOutUseCase(repository)
+        signOutUseCase = SignOutUseCase(repository),
+        currentUserUseCase = CurrentUserUseCase(repository)
     )
 }

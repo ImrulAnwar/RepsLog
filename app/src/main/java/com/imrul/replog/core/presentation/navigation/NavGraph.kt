@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.imrul.replog.core.Routes
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginScreen
+import com.imrul.replog.feature_auth.presentation.screen_login.model.LoginState
 import com.imrul.replog.feature_auth.presentation.screen_register.RegisterScreen
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutScreen
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
@@ -25,20 +26,13 @@ import com.imrul.replog.feature_workout.presentation.screen_workout_history.Work
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    loginState: LoginState?
 ) {
 
-//    var startDestination by remember { mutableStateOf<Routes>(Routes.ScreenWorkoutHistory) }
-//    LaunchedEffect(Unit) {
-//        startDestination = if (isServiceRunning(context, WorkoutService::class.java)) {
-//            Routes.ScreenWorkout
-//        } else {
-//            Routes.ScreenWorkoutHistory
-//        }
-//    }
     NavHost(
         navController = navController,
-        startDestination = Routes.ScreenLogin
+        startDestination = if (loginState?.isLoggedIn == true) Routes.ScreenWorkoutHistory else Routes.ScreenLogin
     ) {
         composable<Routes.ScreenWorkoutHistory> {
             WorkoutHistoryScreen(navController = navController)
@@ -54,15 +48,4 @@ fun NavGraph(
             RegisterScreen(navController = navController)
         }
     }
-}
-
-
-fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
-    val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-        if (serviceClass.name == service.service.className) {
-            return true
-        }
-    }
-    return false
 }

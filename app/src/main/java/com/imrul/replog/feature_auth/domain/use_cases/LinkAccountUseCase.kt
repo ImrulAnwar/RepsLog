@@ -6,4 +6,5 @@ import javax.inject.Inject
 class LinkAccountUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
+    
 }

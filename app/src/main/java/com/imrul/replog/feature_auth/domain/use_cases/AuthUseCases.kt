@@ -5,5 +5,6 @@ data class AuthUseCases(
     val linkAccountUseCase: LinkAccountUseCase,
     val registerEmailUseCase: RegisterWithEmailUseCase,
     val signInWithEmailUseCase: SignInWithEmailUseCase,
-    val signOutUseCase: SignOutUseCase
+    val signOutUseCase: SignOutUseCase,
+    val currentUserUseCase: CurrentUserUseCase
 )

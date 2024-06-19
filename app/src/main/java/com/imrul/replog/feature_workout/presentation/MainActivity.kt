@@ -14,8 +14,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
 import com.imrul.replog.core.presentation.navigation.NavGraph
+import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
 import com.imrul.replog.feature_workout.presentation.components.PermissionDialog
 import com.imrul.replog.feature_workout.presentation.components.PostNotificationTextProvider
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
@@ -26,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val permissionsToRequest = arrayOf(
@@ -38,7 +42,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             RepLogTheme {
                 val navController = rememberNavController()
-                NavGraph(navController = navController)
+                val loginState by loginViewModel.loginState.collectAsState()
+                NavGraph(navController = navController, loginState = loginState)
 
                 val dialogQueue = viewModel.visiblePermissionsDialogueQueue
                 val multiplePermissionsLauncher = rememberLauncherForActivityResult(
@@ -77,14 +82,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        Intent(applicationContext, WorkoutService::class.java).also {
-//            it.action = WorkoutService.Actions.STOP.toString()
-//            applicationContext.startForegroundService(it)
-//        }
     }
 }
 

@@ -1,5 +1,6 @@
 package com.imrul.replog.feature_auth.presentation.screen_login
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -41,7 +43,8 @@ import com.imrul.replog.ui.theme.WhiteCustom
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
+    context: Context = LocalContext.current
 ) {
 
     val emailText = viewModel.emailText
@@ -87,7 +90,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = {
-//                    viewModel.signInWithEmail()
+                    viewModel.signInWithEmail(context, navController)
                 },
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(

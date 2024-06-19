@@ -1,11 +1,19 @@
 package com.imrul.replog.feature_auth.presentation.screen_register
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.imrul.replog.core.util.Resource
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
+import com.imrul.replog.feature_auth.presentation.screen_login.model.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,5 +48,33 @@ class RegisterViewModel @Inject constructor(
     fun onUsernameChanged(value: String) {
         usernameText = value
     }
+
+    fun registerWithEmail(context: Context, navController: NavHostController) =
+        viewModelScope.launch {
+            authUseCases.registerEmailUseCase(emailText, passwordText, confirmPasswordText)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            // show toast
+                            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_SHORT)
+                                .show()
+                            navController.navigateUp()
+                        }
+
+                        is Resource.Error -> {
+                            Toast.makeText(
+                                context,
+                                result.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            // show toast
+                        }
+
+                        is Resource.Loading -> {
+                            // show progressbar
+                        }
+                    }
+                }
+        }
 
 }
