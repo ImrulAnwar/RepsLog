@@ -30,4 +30,5 @@ object Strings {
     const val PROFILE = "Profile"
     const val MEASURE = "Measure"
     const val EXERCISES = "Exercises"
+    const val ROUTINE = "Routine"
 }

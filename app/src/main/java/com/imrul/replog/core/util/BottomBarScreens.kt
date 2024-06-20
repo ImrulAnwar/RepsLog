@@ -1,12 +1,5 @@
-package route
+package com.imrul.replog.core.util
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.ui.graphics.painter.Painter
 import com.imrul.replog.R
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
@@ -35,13 +28,13 @@ sealed class BottomBarScreens(
         route = Routes.ScreenExercises,
         selectedIcon = R.drawable.icon_exercises,
         unselectedIcon = R.drawable.icon_exercises,
-        title = Strings.EXERCISE
+        title = Strings.EXERCISES
     )
 
     data object ProfileScreenObject : BottomBarScreens(
         route = Routes.ScreenProfile,
-        selectedIcon = R.drawable.icon_exercises,
-        unselectedIcon = R.drawable.icon_exercises,
+        selectedIcon = R.drawable.icon_profile,
+        unselectedIcon = R.drawable.icon_profile,
         title = Strings.PROFILE
     )
 
@@ -49,6 +42,6 @@ sealed class BottomBarScreens(
         route = Routes.ScreenRoutine,
         selectedIcon = R.drawable.icon_routine,
         unselectedIcon = R.drawable.icon_routine,
-        title = Strings.PROFILE
+        title = Strings.ROUTINE
     )
 }
