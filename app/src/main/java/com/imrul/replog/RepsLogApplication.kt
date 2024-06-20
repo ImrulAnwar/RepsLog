@@ -10,7 +10,7 @@ import com.imrul.replog.core.Strings
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class ReplogApplication : Application() {
+class RepsLogApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -41,10 +41,8 @@ import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleText
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.ExerciseItem
 import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.WhiteCustom
-import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.Maroon90
-import com.imrul.replog.ui.theme.Red
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

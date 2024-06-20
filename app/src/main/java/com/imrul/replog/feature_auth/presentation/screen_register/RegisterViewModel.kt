@@ -7,11 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.util.Resource
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
-import com.imrul.replog.feature_auth.presentation.screen_login.model.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

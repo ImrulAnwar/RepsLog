@@ -16,7 +16,6 @@ import com.imrul.replog.feature_auth.domain.use_cases.LinkAccountUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.RegisterWithEmailUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.SignInWithEmailUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.SignOutUseCase
-import com.imrul.replog.feature_workout.data.data_source.WorkoutDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

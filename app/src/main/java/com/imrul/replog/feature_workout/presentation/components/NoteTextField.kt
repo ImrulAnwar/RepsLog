@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.imrul.replog.core.Strings
 import com.imrul.replog.ui.theme.Maroon10
-import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 
 @Composable

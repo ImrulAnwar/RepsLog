@@ -1,6 +1,5 @@
 package com.imrul.replog.feature_auth.data.data_source
 
-import com.google.firebase.auth.EmailAuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
