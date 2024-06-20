@@ -18,7 +18,7 @@
         android:theme="@style/Theme.RepLog"
         tools:targetApi="31">
         <activity
-            android:name=".feature_workout.presentation.MainActivity"
+            android:name=".core.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.RepLog">
             <intent-filter>

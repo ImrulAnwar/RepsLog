@@ -2,17 +2,10 @@ package com.imrul.replog.feature_workout.presentation.screen_workout_history
 
 import android.content.Intent
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,8 +26,8 @@ import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
-import com.imrul.replog.ui.theme.WhiteCustom
 import com.imrul.replog.ui.theme.Maroon70
+import com.imrul.replog.ui.theme.WhiteCustom
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

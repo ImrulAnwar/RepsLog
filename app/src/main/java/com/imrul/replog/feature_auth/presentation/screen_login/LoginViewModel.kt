@@ -3,6 +3,7 @@ package com.imrul.replog.feature_auth.presentation.screen_login
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -31,9 +33,6 @@ class LoginViewModel @Inject constructor(
     var isLoggedIn by mutableStateOf(false)
         private set
 
-    private val _selectedItemIndex = MutableStateFlow(0)
-    val selectedItemIndex: StateFlow<Int> = _selectedItemIndex.asStateFlow()
-
     fun onEmailChanged(value: String) {
         emailText = value
     }
@@ -44,10 +43,6 @@ class LoginViewModel @Inject constructor(
 
     init {
         currentUser()
-    }
-
-    fun setSelectedItem(index: Int) {
-        _selectedItemIndex.value = index
     }
 
     fun currentUser() = viewModelScope.launch {

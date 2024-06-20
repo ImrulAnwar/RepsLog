@@ -23,4 +23,7 @@ open class Routes {
 
     @Serializable
     object ScreenProfile : Routes()
+
+    @Serializable
+    object ScreenRoutine : Routes()
 }

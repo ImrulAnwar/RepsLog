@@ -1,4 +1,4 @@
-package com.imrul.replog.feature_workout.presentation.screen_exercises
+package com.imrul.replog.feature_exercises.presentation.screen_exercises
 
 import androidx.compose.runtime.Composable
 

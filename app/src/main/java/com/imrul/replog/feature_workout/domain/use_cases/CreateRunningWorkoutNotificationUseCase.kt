@@ -8,7 +8,7 @@ import androidx.core.app.NotificationCompat
 import com.imrul.replog.R
 import com.imrul.replog.core.Constants
 import com.imrul.replog.core.Strings
-import com.imrul.replog.feature_workout.presentation.MainActivity
+import com.imrul.replog.core.presentation.MainActivity
 
 class CreateRunningWorkoutNotificationUseCase {
     operator fun invoke(duration: String = "00:00", context: Context): Notification {

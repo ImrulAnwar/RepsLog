@@ -1,4 +1,4 @@
-package com.imrul.replog.feature_workout.presentation
+package com.imrul.replog.core.presentation
 
 import android.Manifest
 import android.app.Activity
@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -15,8 +14,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -27,11 +28,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.navigation.NavGraph
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
 import com.imrul.replog.feature_workout.presentation.components.PermissionDialog
@@ -60,6 +63,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RepLogTheme {
+
+                val window = (LocalView.current.context as Activity).window
+                window.statusBarColor =
+                    if (!isSystemInDarkTheme()) Maroon70.toArgb() else Maroon20.toArgb()
+
                 val navController = rememberNavController()
                 val isLoggedIn = loginViewModel.isLoggedIn
                 val dialogQueue = viewModel.visiblePermissionsDialogueQueue
@@ -76,11 +84,43 @@ class MainActivity : ComponentActivity() {
                 )
 
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val selectedItemIndex by loginViewModel.selectedItemIndex.collectAsState()
+                val selectedItemIndex = viewModel.selectedItemIndex
+                val screens = listOf(
+                    BottomBarScreens.WorkoutHistoryScreenObject,
+                    BottomBarScreens.MeasurementsScreenObject,
+                    BottomBarScreens.RoutineScreenObject,
+                    BottomBarScreens.ExercisesScreenObject,
+                    BottomBarScreens.ProfileScreenObject
+                )
 
+                val shouldShowBottomNavigation =
+                    when (navBackStackEntry?.destination?.route?.substringAfterLast('.')) {
+                        screens[0].route::class.java.simpleName,
+                        screens[1].route::class.java.simpleName,
+                        screens[2].route::class.java.simpleName,
+                        screens[3].route::class.java.simpleName,
+                        screens[4].route::class.java.simpleName,
+                        -> true
+
+                        else -> false
+                    }
 
                 LaunchedEffect(Unit) {
                     multiplePermissionsLauncher.launch(permissionsToRequest)
+                }
+
+                LaunchedEffect(selectedItemIndex) {
+                    navController.popBackStack()
+                    navController.navigate(screens[selectedItemIndex].route)
+                }
+
+                LaunchedEffect(navBackStackEntry) {
+                    // because of a bug that was pre selecting the profile icon
+                    if (navBackStackEntry?.destination?.route?.substringAfterLast('.') ==
+                        screens[0].route::class.java.simpleName
+                    ) {
+                        viewModel.setSelectedItem(0)
+                    }
                 }
 
                 dialogQueue.reversed().forEach { permission ->
@@ -103,24 +143,6 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                val screens = listOf(
-                    BottomBarScreens.WorkoutHistoryScreenObject,
-                    BottomBarScreens.MeasurementsScreenObject,
-                    BottomBarScreens.ExercisesScreenObject,
-                    BottomBarScreens.ProfileScreenObject
-                )
-
-                val shouldShowBottomNavigation =
-                    when (navBackStackEntry?.destination?.route?.substringAfterLast('.')) {
-                        screens[0].route::class.java.simpleName,
-                        screens[1].route::class.java.simpleName,
-                        screens[2].route::class.java.simpleName,
-                        screens[3].route::class.java.simpleName
-                        -> true
-
-                        else -> false
-                    }
-
                 Scaffold(
                     bottomBar = {
                         if (shouldShowBottomNavigation)
@@ -135,9 +157,9 @@ class MainActivity : ComponentActivity() {
                                         ),
                                         selected = selectedItemIndex == index,
                                         onClick = {
-                                            loginViewModel.setSelectedItem(index)
-                                            navController.popBackStack()
-                                            navController.navigate(item.route)
+                                            if (selectedItemIndex != index) {
+                                                viewModel.setSelectedItem(index)
+                                            }
                                         },
 
                                         label = {
@@ -150,7 +172,8 @@ class MainActivity : ComponentActivity() {
                                         alwaysShowLabel = false,
                                         icon = {
                                             Icon(
-                                                imageVector = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
+                                                modifier = Modifier.size(25.dp),
+                                                painter = painterResource(id = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon),
                                                 contentDescription = item.title,
                                                 tint = if (index == selectedItemIndex) Maroon70 else Maroon20 // Set the desired color conditionally
                                             )
