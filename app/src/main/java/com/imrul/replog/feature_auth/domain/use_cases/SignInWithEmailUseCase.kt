@@ -15,6 +15,10 @@ class SignInWithEmailUseCase @Inject constructor(
     operator fun invoke(email: String, password: String): Flow<Resource<FirebaseUser?>> = flow {
         try {
             emit(Resource.Loading())
+            if (email.isBlank() or password.isBlank()) {
+                emit(Resource.Error(message = "Fields can not be empty"))
+                return@flow
+            }
             val user = repository.signInWithEmail(email, password)
             emit(Resource.Success(user))
         } catch (e: FirebaseAuthException) {

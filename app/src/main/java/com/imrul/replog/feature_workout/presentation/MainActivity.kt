@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.navigation.NavGraph
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
 import com.imrul.replog.feature_workout.presentation.components.PermissionDialog
@@ -60,7 +61,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             RepLogTheme {
                 val navController = rememberNavController()
-                val loginState by loginViewModel.loginState.collectAsState()
+                val isLoggedIn = loginViewModel.isLoggedIn
+
+                LaunchedEffect(isLoggedIn) {
+                    if (!isLoggedIn) {
+                        navController.navigate(Routes.ScreenLogin)
+                    }
+                }
 
                 val dialogQueue = viewModel.visiblePermissionsDialogueQueue
                 val multiplePermissionsLauncher = rememberLauncherForActivityResult(
@@ -162,7 +169,7 @@ class MainActivity : ComponentActivity() {
                     containerColor = Maroon10,
                     contentColor = Maroon70
                 ) {
-                    NavGraph(navController = navController, loginState = loginState)
+                    NavGraph(navController = navController, isLoggedIn = isLoggedIn)
                 }
             }
         }

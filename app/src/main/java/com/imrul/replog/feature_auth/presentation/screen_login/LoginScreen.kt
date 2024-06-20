@@ -1,6 +1,7 @@
 package com.imrul.replog.feature_auth.presentation.screen_login
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 import com.imrul.replog.R
 import com.imrul.replog.core.Constants
 import com.imrul.replog.core.Routes
@@ -117,6 +119,15 @@ fun LoginScreen(
                     },
                 color = Maroon70
             )
+            Button(onClick = {
+                Toast.makeText(
+                    context,
+                    FirebaseAuth.getInstance().currentUser?.email.toString() + "\n${viewModel.isLoggedIn}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }) {
+                Text(text = "currentUser")
+            }
         }
     }
 }

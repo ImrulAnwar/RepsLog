@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.firebase.auth.FirebaseAuth
 import com.imrul.replog.core.Routes
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginScreen
 import com.imrul.replog.feature_auth.presentation.screen_login.model.LoginState
@@ -30,12 +31,12 @@ import com.imrul.replog.feature_workout.presentation.screen_workout_history.Work
 fun NavGraph(
     navController: NavHostController,
     context: Context = LocalContext.current,
-    loginState: LoginState?
+    isLoggedIn: Boolean
 ) {
 
     NavHost(
         navController = navController,
-        startDestination = if (loginState?.isLoggedIn == true) Routes.ScreenWorkoutHistory else Routes.ScreenLogin
+        startDestination = if (isLoggedIn) Routes.ScreenWorkoutHistory else Routes.ScreenLogin
     ) {
         composable<Routes.ScreenWorkoutHistory> {
             WorkoutHistoryScreen(navController = navController)
@@ -52,7 +53,7 @@ fun NavGraph(
         }
 
         composable<Routes.ScreenProfile> {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
         composable<Routes.ScreenMeasurements> {
             MeasurementsScreen()
