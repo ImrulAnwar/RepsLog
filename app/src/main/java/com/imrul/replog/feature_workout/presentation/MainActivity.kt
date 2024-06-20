@@ -62,13 +62,6 @@ class MainActivity : ComponentActivity() {
             RepLogTheme {
                 val navController = rememberNavController()
                 val isLoggedIn = loginViewModel.isLoggedIn
-
-                LaunchedEffect(isLoggedIn) {
-                    if (!isLoggedIn) {
-                        navController.navigate(Routes.ScreenLogin)
-                    }
-                }
-
                 val dialogQueue = viewModel.visiblePermissionsDialogueQueue
                 val multiplePermissionsLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions(),

@@ -51,7 +51,11 @@ class RegisterViewModel @Inject constructor(
 
     fun registerWithEmail(context: Context, navController: NavHostController) =
         viewModelScope.launch {
-            authUseCases.registerEmailUseCase(emailText, passwordText, confirmPasswordText)
+            authUseCases.registerEmailUseCase(
+                email = emailText,
+                username = usernameText,
+                password = passwordText
+            )
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
