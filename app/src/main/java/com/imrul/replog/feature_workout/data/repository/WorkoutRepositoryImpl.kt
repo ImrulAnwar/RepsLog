@@ -49,7 +49,7 @@ class WorkoutRepositoryImp(
         return dao.getAllExercisesByWorkoutId(workoutId)
     }
 
-    override fun getAllSessionByExerciseId(exerciseId: Long?): Flow<List<Set>> =
+    override fun getAllSessionByExerciseId(exerciseId: Long?): Flow<List<Session>> =
         dao.getAllSessionByExerciseId(exerciseId)
 
 

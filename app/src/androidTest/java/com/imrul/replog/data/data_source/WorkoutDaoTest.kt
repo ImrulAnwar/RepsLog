@@ -49,7 +49,9 @@ class WorkoutDaoTest {
     @Test
     fun insertSet() = runTest {
         val sessionId = 10L
-        val set = Set(sessionIdForeign = sessionId)
+        val set = Set(
+            sessionIdForeign = sessionId,
+        )
         dao.insertSet(set)
         var allSets: List<Set>? = null
 

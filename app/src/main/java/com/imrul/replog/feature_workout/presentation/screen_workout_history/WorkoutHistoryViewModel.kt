@@ -46,13 +46,13 @@ class WorkoutHistoryViewModel @Inject constructor(
         }
     }
 
-    fun getSetCount(exerciseId: Long) {
-        viewModelScope.launch {
-            workoutUseCases.getAllSets().collect {
-                it.map { set ->
-                    set.exerciseIdForeign == exerciseId
-                }.count()
-            }
-        }
-    }
+//    fun getSetCount(exerciseId: Long) {
+//        viewModelScope.launch {
+//            workoutUseCases.getAllSets().collect {
+//                it.map { set ->
+//                    set.exerciseIdForeign == exerciseId
+//                }.count()
+//            }
+//        }
+//    }
 }

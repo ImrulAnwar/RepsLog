@@ -31,7 +31,7 @@ interface WorkoutRepository {
 
     fun getAllExercisesByWorkoutId(workoutId: Long?): Flow<List<Exercise>>
 
-    fun getAllSessionByExerciseId(exerciseId: Long?): Flow<List<Set>>
+    fun getAllSessionByExerciseId(exerciseId: Long?): Flow<List<Session>>
     fun getLatestSessionByExerciseId(exerciseId: Long?): Flow<Session>
     fun getAllNotes(): Flow<List<Note>>
 
