@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.feature_exercises.presentation.components.CustomDropDownMenu
 import com.imrul.replog.feature_workout.domain.model.Exercise
@@ -21,32 +23,31 @@ import com.imrul.replog.ui.theme.WhiteCustom
 
 @Composable
 fun AddEditExerciseScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: AddEditExerciseViewModel = hiltViewModel()
 ) {
-    // Sample items for the dropdown menu
-    val muscleGroupList = Exercise.muscleGroups
-    val weightTypeList = Exercise.weightTypes
 
-    // State to store the selected item
-    var selectedMuscleGroup by remember { mutableStateOf(muscleGroupList[0]) }
-    var selectedWeightType by remember { mutableStateOf(weightTypeList[0]) }
+    val selectedMuscleGroup = viewModel.selectedMuscleGroup
+    val selectedWeightType = viewModel.selectedWeightType
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(WhiteCustom),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Center
     ) {
         CustomDropDownMenu(
             text = selectedMuscleGroup,
-            items = muscleGroupList,
-            onItemSelected = { selectedMuscleGroup = it }
+            items = viewModel.muscleGroupList,
+            onItemSelected = { viewModel.onSelectedMuscleGroup(it) },
+            modifier = Modifier.padding(horizontal = 20.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
         CustomDropDownMenu(
             text = selectedWeightType,
-            items = weightTypeList,
-            onItemSelected = { selectedWeightType = it }
+            items = viewModel.weightTypeList,
+            onItemSelected = { viewModel.onSelectedWeightType(it) },
+            modifier = Modifier.padding(horizontal = 20.dp)
         )
     }
 }

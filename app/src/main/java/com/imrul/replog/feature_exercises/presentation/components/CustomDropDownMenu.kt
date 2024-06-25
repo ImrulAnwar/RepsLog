@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon70
+import com.imrul.replog.ui.theme.WhiteCustom
 
 @Composable
 fun CustomDropDownMenu(
@@ -57,12 +58,14 @@ fun CustomDropDownMenu(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.width(150.dp)
+            modifier = Modifier
+                .width(150.dp)
+                .background(WhiteCustom)
         ) {
             Column(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
-                    .height(320.dp)
+                    .height(220.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 items.forEach { item ->
