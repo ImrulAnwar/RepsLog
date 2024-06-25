@@ -15,10 +15,10 @@ import com.imrul.replog.feature_workout.domain.use_cases.DeleteSet
 import com.imrul.replog.feature_workout.domain.use_cases.DeleteWorkout
 import com.imrul.replog.feature_workout.domain.use_cases.DurationUseCase
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllExercises
-import com.imrul.replog.feature_workout.domain.use_cases.GetAllExercisesByWorkoutId
+import com.imrul.replog.feature_workout.domain.use_cases.GetExerciseById
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllNotes
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllSessions
-import com.imrul.replog.feature_workout.domain.use_cases.GetAllSessionsByExerciseId
+import com.imrul.replog.feature_workout.domain.use_cases.GetAllSessionsByWorkoutId
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllSets
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllSetsBySessionId
 import com.imrul.replog.feature_workout.domain.use_cases.GetAllWorkouts
@@ -63,7 +63,7 @@ object RoomModule {
         deleteExercise = DeleteExercise(repository),
         deleteSet = DeleteSet(repository),
         deleteWorkout = DeleteWorkout(repository),
-        getAllExercisesByWorkoutId = GetAllExercisesByWorkoutId(repository),
+        getExerciseById = GetExerciseById(repository),
         getAllSetsBySessionId = GetAllSetsBySessionId(repository),
         getAllWorkouts = GetAllWorkouts(repository),
         getWorkoutById = GetWorkoutById(repository),
@@ -80,7 +80,7 @@ object RoomModule {
         deleteSession = DeleteSession(repository),
         getAllNotes = GetAllNotes(repository),
         getAllSessions = GetAllSessions(repository),
-        getAllSessionsByExerciseId = GetAllSessionsByExerciseId(repository),
+        getAllSessionsByWorkoutId = GetAllSessionsByWorkoutId(repository),
         getLatestSessionByExerciseId = GetLatestSessionByExerciseId(repository),
         insertSession = InsertSession(repository)
     )

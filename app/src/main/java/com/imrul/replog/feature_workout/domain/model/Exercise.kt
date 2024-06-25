@@ -9,7 +9,6 @@ data class Exercise(
     val exerciseId: Long? = null,
     val name: String = "",
     val imageUrl: String? = null,
-    val workoutIdForeign: Long? = null,
     val targetMuscleGroup: String? = muscleGroups[0],
     val weightType: String? = weightTypes[0]
 ) {
