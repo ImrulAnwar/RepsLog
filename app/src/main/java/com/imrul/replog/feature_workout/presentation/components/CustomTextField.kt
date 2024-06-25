@@ -12,11 +12,11 @@ import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
-fun NoteTextField(
+fun CustomTextField(
+    modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
     label: String = Strings.ADD_A_NOTE,
-    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         modifier = modifier,

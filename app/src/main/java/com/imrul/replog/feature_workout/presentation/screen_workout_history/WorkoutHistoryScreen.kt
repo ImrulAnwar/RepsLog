@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
+import com.imrul.replog.core.presentation.CustomButton
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
 import com.imrul.replog.ui.theme.Maroon70
@@ -57,8 +58,7 @@ fun WorkoutHistoryScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-
-                Button(
+                CustomButton(
                     onClick = {
                         navController.navigate(Routes.ScreenWorkout)
                         // start service
@@ -67,19 +67,9 @@ fun WorkoutHistoryScreen(
                             context.startForegroundService(it)
                         }
                     },
-                    colors = ButtonColors(
-                        containerColor = Maroon70,
-                        contentColor = WhiteCustom,
-                        disabledContentColor = Maroon70,
-                        disabledContainerColor = WhiteCustom
-                    ),
-                    modifier = Modifier.padding(top = 20.dp)
-                ) {
-                    Text(
-                        text = Strings.START_EMPTY_WORKOUT
-                    )
-
-                }
+                    modifier = Modifier.padding(top = 20.dp),
+                    text = Strings.START_EMPTY_WORKOUT
+                )
             }
             items(workoutListState) { workout ->
                 WorkoutItem(workout)

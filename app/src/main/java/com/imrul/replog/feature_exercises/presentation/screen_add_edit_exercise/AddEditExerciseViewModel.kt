@@ -20,6 +20,8 @@ class AddEditExerciseViewModel @Inject constructor(
         private set
     var selectedWeightType by mutableStateOf(weightTypeList[0])
         private set
+    var exerciseName by mutableStateOf("")
+        private set
 
     fun onSelectedMuscleGroup(string: String) {
         selectedMuscleGroup = string
@@ -27,5 +29,9 @@ class AddEditExerciseViewModel @Inject constructor(
 
     fun onSelectedWeightType(string: String) {
         selectedWeightType = string
+    }
+
+    fun onExerciseNameChanged(string: String) {
+        exerciseName = string
     }
 }

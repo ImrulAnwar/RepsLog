@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.imrul.replog.core.Strings
-import com.imrul.replog.feature_workout.presentation.components.NoteTextField
+import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
@@ -42,7 +42,7 @@ fun ExerciseItem(
                 )
             },
         )
-        NoteTextField(
+        CustomTextField(
             text = listOfNotes[exerciseIndex],
             onValueChange = {
                 workoutViewModel.onNoteValueChanged(
