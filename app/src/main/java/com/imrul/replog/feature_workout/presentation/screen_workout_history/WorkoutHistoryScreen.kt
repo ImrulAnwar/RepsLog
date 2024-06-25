@@ -5,6 +5,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -42,42 +44,48 @@ fun WorkoutHistoryScreen(
     val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
     val context = LocalContext.current
 
-    LazyColumn(
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(WhiteCustom)
-            .padding(bottom = 80.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        item {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 80.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
 
-            Button(
-                onClick = {
-                    navController.navigate(Routes.ScreenWorkout)
-                    // start service
-                    Intent(context, WorkoutService::class.java).also {
-                        it.action = WorkoutService.Actions.START.toString()
-                        context.startForegroundService(it)
-                    }
-                },
-                colors = ButtonColors(
-                    containerColor = Maroon70,
-                    contentColor = WhiteCustom,
-                    disabledContentColor = Maroon70,
-                    disabledContainerColor = WhiteCustom
-                ),
-                modifier = Modifier.padding(top = 20.dp)
-            ) {
-                Text(
-                    text = Strings.START_EMPTY_WORKOUT
-                )
+                Button(
+                    onClick = {
+                        navController.navigate(Routes.ScreenWorkout)
+                        // start service
+                        Intent(context, WorkoutService::class.java).also {
+                            it.action = WorkoutService.Actions.START.toString()
+                            context.startForegroundService(it)
+                        }
+                    },
+                    colors = ButtonColors(
+                        containerColor = Maroon70,
+                        contentColor = WhiteCustom,
+                        disabledContentColor = Maroon70,
+                        disabledContainerColor = WhiteCustom
+                    ),
+                    modifier = Modifier.padding(top = 20.dp)
+                ) {
+                    Text(
+                        text = Strings.START_EMPTY_WORKOUT
+                    )
 
+                }
             }
-        }
-        items(workoutListState) { workout ->
-            WorkoutItem(workout)
-        }
+            items(workoutListState) { workout ->
+                WorkoutItem(workout)
+            }
 
+        }
     }
+
 }
