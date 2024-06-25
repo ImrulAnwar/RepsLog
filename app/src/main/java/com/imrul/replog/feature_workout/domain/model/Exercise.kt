@@ -10,7 +10,8 @@ data class Exercise(
     val name: String = "",
     val imageUrl: String? = null,
     val workoutIdForeign: Long? = null,
-    val targetMuscleGroup: String? = muscleGroups[0]
+    val targetMuscleGroup: String? = muscleGroups[0],
+    val weightType: String? = weightTypes[0]
 ) {
     companion object {
         val muscleGroups = listOf(
@@ -27,6 +28,13 @@ data class Exercise(
             "Front Shoulders",
             "Traps",
             "Calves"
+        )
+        val weightTypes = listOf(
+            "Dumbbell",
+            "Barbell",
+            "Cable",
+            "Machine",
+            "Other"
         )
     }
 }
