@@ -13,8 +13,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.imrul.replog.core.presentation.navigation.NavGraph
+import com.imrul.replog.core.util.BottomBarScreens
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
 import com.imrul.replog.feature_workout.presentation.components.PermissionDialog
 import com.imrul.replog.feature_workout.presentation.components.PostNotificationTextProvider
@@ -42,7 +45,6 @@ import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.RepLogTheme
 import com.imrul.replog.ui.theme.WhiteCustom
 import dagger.hilt.android.AndroidEntryPoint
-import com.imrul.replog.core.util.BottomBarScreens
 
 @AndroidEntryPoint
 
@@ -180,10 +182,15 @@ class MainActivity : ComponentActivity() {
                             }
                     },
                     containerColor = Maroon10,
-                    contentColor = Maroon70
-                ) {
-                    NavGraph(navController = navController, isLoggedIn = isLoggedIn)
-                }
+                    contentColor = Maroon70,
+                    content = { paddingValues ->
+                        NavGraph(
+                            navController = navController,
+                            isLoggedIn = isLoggedIn,
+                            modifier = Modifier.padding(paddingValues)
+                        )
+                    }
+                )
             }
         }
     }

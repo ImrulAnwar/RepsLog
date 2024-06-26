@@ -19,7 +19,10 @@ open class Routes {
     object ScreenMeasurements : Routes()
 
     @Serializable
-    object ScreenExercises : Routes()
+    object ScreenExerciseList : Routes()
+
+    @Serializable
+    object ScreenAddEditExercises : Routes()
 
     @Serializable
     object ScreenProfile : Routes()

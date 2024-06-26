@@ -21,6 +21,7 @@ object Strings {
     const val START_EMPTY_WORKOUT = "Start an empty workout"
     const val WORKOUT_NOTIFICATION_CHANNEL_TITLE = "Running Workout"
     const val EXERCISE = "Exercise"
+    const val EXERCISE_NAME = "Exercise Name"
     const val BEST_SET = "Best Set"
     const val SET = "SET"
     const val PREVIOUS = "PREVIOUS"
@@ -31,4 +32,9 @@ object Strings {
     const val MEASURE = "Measure"
     const val EXERCISES = "Exercises"
     const val ROUTINE = "Routine"
+    const val WEIGHT_TYPE = "Weight Type:"
+    const val MUSCLE_GROUP = "Muscle Group:"
+    const val SAVE_EXERCISE = "Save Exercise"
+    const val EDIT = "Edit"
+    const val DELETE = "Delete"
 }

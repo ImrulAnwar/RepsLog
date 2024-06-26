@@ -25,7 +25,7 @@ sealed class BottomBarScreens(
     )
 
     data object ExercisesScreenObject : BottomBarScreens(
-        route = Routes.ScreenExercises,
+        route = Routes.ScreenExerciseList,
         selectedIcon = R.drawable.icon_exercises,
         unselectedIcon = R.drawable.icon_exercises,
         title = Strings.EXERCISES

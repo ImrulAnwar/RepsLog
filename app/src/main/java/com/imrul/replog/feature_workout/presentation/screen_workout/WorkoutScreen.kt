@@ -109,7 +109,7 @@ fun WorkoutScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                workoutViewModel.insertWorkout()
+//                                workoutViewModel.insertWorkout()
                                 navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
                                     // When navigation is complete, stop the service and pop the back stack
                                     Intent(context, WorkoutService::class.java).also {

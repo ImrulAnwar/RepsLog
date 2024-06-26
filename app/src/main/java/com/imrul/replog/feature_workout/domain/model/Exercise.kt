@@ -8,10 +8,32 @@ data class Exercise(
     @PrimaryKey
     val exerciseId: Long? = null,
     val name: String = "",
-    val note: String = "",
-    val repsSlower: Boolean = false,
     val imageUrl: String? = null,
-    val workoutIdForeign: Long? = null,
-    val setCount: Long? = 0,
-    val bestSet: String = ""
-)
+    val targetMuscleGroup: String? = muscleGroups[0],
+    val weightType: String? = weightTypes[0]
+) {
+    companion object {
+        val muscleGroups = listOf(
+            "Chest",
+            "Lats",
+            "Quads",
+            "Hamstrings",
+            "Glutes",
+            "Abs",
+            "Biceps",
+            "Triceps",
+            "Forearms",
+            "Rear Shoulders",
+            "Front Shoulders",
+            "Traps",
+            "Calves"
+        )
+        val weightTypes = listOf(
+            "Dumbbell",
+            "Barbell",
+            "Cable",
+            "Machine",
+            "Other"
+        )
+    }
+}

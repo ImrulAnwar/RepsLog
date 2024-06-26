@@ -100,18 +100,18 @@ fun WorkoutItem(
         }
 
         // using column instead of lazy column is because i don't want nested scrolling
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            exerciseListState.forEach { exercise ->
-                if (exercise.workoutIdForeign == workout.workoutId) {
-                    Text(
-                        text = "${exercise.setCount} x ${exercise.name}",
-                        fontSize = 16.sp,
-                        color = Maroon70
-                    )
-                }
-            }
-        }
+//        Column(
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            exerciseListState.forEach { exercise ->
+//                if (exercise.workoutIdForeign == workout.workoutId) {
+//                    Text(
+//                        text = "${exercise.setCount} x ${exercise.name}",
+//                        fontSize = 16.sp,
+//                        color = Maroon70
+//                    )
+//                }
+//            }
+//        }
     }
 }

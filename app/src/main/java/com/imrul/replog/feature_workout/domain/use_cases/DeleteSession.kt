@@ -1,9 +1,10 @@
 package com.imrul.replog.feature_workout.domain.use_cases
 
+import com.imrul.replog.feature_workout.domain.model.Session
 import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
 
-class GetAllExercisesByWorkoutId(
+class DeleteSession(
     private val repository: WorkoutRepository
 ) {
-    operator fun invoke(workoutId: Long) = repository.getAllExercisesByWorkoutId(workoutId)
+    suspend operator fun invoke(session: Session) = repository.deleteSession(session)
 }

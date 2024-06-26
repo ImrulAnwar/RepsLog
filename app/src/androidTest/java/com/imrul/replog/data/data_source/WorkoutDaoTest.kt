@@ -48,13 +48,15 @@ class WorkoutDaoTest {
 
     @Test
     fun insertSet() = runTest {
-        val exerciseId = 10L
-        val set = Set(exerciseIdForeign = exerciseId)
+        val sessionId = 10L
+        val set = Set(
+            sessionIdForeign = sessionId,
+        )
         dao.insertSet(set)
         var allSets: List<Set>? = null
 
         val job = launch {
-            dao.getAllSetsByExerciseId(exerciseId).collect {
+            dao.getAllSetsBySessionId(sessionId).collect {
                 allSets = it
             }
         }
@@ -101,14 +103,14 @@ class WorkoutDaoTest {
 
     @Test
     fun deleteSet() = runTest {
-        val exerciseId = 10L
-        val set = Set(exerciseIdForeign = exerciseId)
+        val sessionId = 10L
+        val set = Set(sessionIdForeign = sessionId)
         dao.insertSet(set)
         dao.deleteSet(set)
         var allSets: List<Set>? = null
 
         val job = launch {
-            dao.getAllSetsByExerciseId(exerciseId).collect {
+            dao.getAllSetsBySessionId(sessionId).collect {
                 allSets = it
             }
         }

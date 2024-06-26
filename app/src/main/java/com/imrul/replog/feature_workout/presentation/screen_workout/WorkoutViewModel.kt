@@ -107,62 +107,62 @@ class WorkoutViewModel @Inject constructor(
         listOfExercises[exerciseIndex] = content
     }
 
-    private suspend fun insertExercises(exerciseIndex: Int, workoutId: Long) {
-        // exercise id ta exercise insert korar por pabo. workout id ta use kore
+//    private suspend fun insertExercises(exerciseIndex: Int, workoutId: Long) {
+//        // exercise id ta exercise insert korar por pabo. workout id ta use kore
+//
+//        var exercise = Exercise(
+//            name = listOfExercises[exerciseIndex],
+//            note = listOfNotes[exerciseIndex],
+//            workoutIdForeign = workoutId
+//        )
+//        val exerciseId = workoutUseCases.insertExercise(exercise)
+//        var setCount = 0
+//        listOfWeights.forEachIndexed { i, item ->
+//            if (item.first == exerciseIndex) {
+//                //this set belongs to the exercise
+//                val set = Set(
+//                    weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
+//                    reps = listOfReps[i].toFloatOrNull() ?: 0f,
+//                    exerciseIdForeign = exerciseId
+//                )
+//                if (listOfIsDone[i]) {
+//                    setCount++
+//                    workoutUseCases.insertSet(set)
+//                }
+//            }
+//        }
+//        exercise = Exercise(
+//            exerciseId = exerciseId,
+//            name = listOfExercises[exerciseIndex],
+//            note = listOfNotes[exerciseIndex],
+//            workoutIdForeign = workoutId,
+//            setCount = setCount.toLong()
+//        )
+//        workoutUseCases.insertExercise(exercise)
+//    }
 
-        var exercise = Exercise(
-            name = listOfExercises[exerciseIndex],
-            note = listOfNotes[exerciseIndex],
-            workoutIdForeign = workoutId
-        )
-        val exerciseId = workoutUseCases.insertExercise(exercise)
-        var setCount = 0
-        listOfWeights.forEachIndexed { i, item ->
-            if (item.first == exerciseIndex) {
-                //this set belongs to the exercise
-                val set = Set(
-                    weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
-                    reps = listOfReps[i].toFloatOrNull() ?: 0f,
-                    exerciseIdForeign = exerciseId
-                )
-                if (listOfIsDone[i]) {
-                    setCount++
-                    workoutUseCases.insertSet(set)
-                }
-            }
-        }
-        exercise = Exercise(
-            exerciseId = exerciseId,
-            name = listOfExercises[exerciseIndex],
-            note = listOfNotes[exerciseIndex],
-            workoutIdForeign = workoutId,
-            setCount = setCount.toLong()
-        )
-        workoutUseCases.insertExercise(exercise)
-    }
-
-    fun insertWorkout() {
-        viewModelScope.launch {
-            val date = System.currentTimeMillis()
-            var dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
-            val dateString = dateFormat.format(Date(date))
-            dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
-            val weekDayString = dateFormat.format(Date(date))
-
-            val workout = Workout(
-                name = workoutTitle,
-                durationString = elapsedTime.split(":")[0].toInt().toString() + "m",
-                date = date,
-                dateString = dateString,
-                weekdayString = weekDayString
-            )
-            val workoutId: Long = workoutUseCases.insertWorkout(workout)
-
-            listOfExercises.forEachIndexed { index, item ->
-                insertExercises(index, workoutId)
-            }
-        }
-    }
+//    fun insertWorkout() {
+//        viewModelScope.launch {
+//            val date = System.currentTimeMillis()
+//            var dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
+//            val dateString = dateFormat.format(Date(date))
+//            dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+//            val weekDayString = dateFormat.format(Date(date))
+//
+//            val workout = Workout(
+//                name = workoutTitle,
+//                durationString = elapsedTime.split(":")[0].toInt().toString() + "m",
+//                date = date,
+//                dateString = dateString,
+//                weekdayString = weekDayString
+//            )
+//            val workoutId: Long = workoutUseCases.insertWorkout(workout)
+//
+//            listOfExercises.forEachIndexed { index, item ->
+//                insertExercises(index, workoutId)
+//            }
+//        }
+//    }
 
     fun toggleIsDone(setIndex: Int) {
         listOfIsDone[setIndex] = !listOfIsDone[setIndex]
