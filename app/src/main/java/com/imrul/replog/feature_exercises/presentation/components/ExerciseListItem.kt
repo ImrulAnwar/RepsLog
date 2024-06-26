@@ -1,6 +1,7 @@
 package com.imrul.replog.feature_exercises.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,11 +45,8 @@ fun ExerciseListItem(
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 10.dp)
             )
-            Icon(
-                imageVector = Icons.Filled.MoreVert,
-                contentDescription = "More Details",
-                modifier = Modifier.size(24.dp)
-            )
+
+            DropDownMenuForExerciseItem(onEditClicked = {}, onDeleteClicked = {})
         }
         Row(
             modifier = Modifier.fillMaxWidth(),

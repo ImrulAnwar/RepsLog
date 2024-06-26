@@ -56,12 +56,6 @@ class AddEditExerciseViewModel @Inject constructor(
             try {
                 workoutUseCases.insertExercise(exercise)
                 navController.navigateUp()
-                Toast.makeText(
-                    context,
-                    "inserted successfully: ${exercise.name}",
-                    Toast.LENGTH_SHORT
-                ).show()
-
             } catch (e: Exception) {
                 Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
             }

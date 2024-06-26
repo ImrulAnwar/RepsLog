@@ -35,4 +35,6 @@ object Strings {
     const val WEIGHT_TYPE = "Weight Type:"
     const val MUSCLE_GROUP = "Muscle Group:"
     const val SAVE_EXERCISE = "Save Exercise"
+    const val EDIT = "Edit"
+    const val DELETE = "Delete"
 }
