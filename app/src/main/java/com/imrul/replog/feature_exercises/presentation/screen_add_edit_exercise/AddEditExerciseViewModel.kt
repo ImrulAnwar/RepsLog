@@ -1,13 +1,18 @@
 package com.imrul.replog.feature_exercises.presentation.screen_add_edit_exercise
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,5 +38,33 @@ class AddEditExerciseViewModel @Inject constructor(
 
     fun onExerciseNameChanged(string: String) {
         exerciseName = string
+    }
+
+    fun insertExercise(context: Context, navController: NavHostController) {
+        viewModelScope.launch {
+            if (exerciseName == "") {
+                Toast.makeText(context, "Exercise Name can not be empty.", Toast.LENGTH_SHORT)
+                    .show()
+                return@launch
+            }
+            val exercise = Exercise(
+                name = exerciseName,
+                targetMuscleGroup = selectedMuscleGroup,
+                weightType = selectedWeightType,
+                // might add imageUrl later
+            )
+            try {
+                workoutUseCases.insertExercise(exercise)
+                navController.navigateUp()
+                Toast.makeText(
+                    context,
+                    "inserted successfully: ${exercise.name}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            } catch (e: Exception) {
+                Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

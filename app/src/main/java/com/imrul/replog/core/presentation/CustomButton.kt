@@ -6,6 +6,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.sp
 import com.imrul.replog.core.Strings
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
@@ -28,7 +29,8 @@ fun CustomButton(
         colors = colors
     ) {
         Text(
-            text = text
+            text = text,
+            fontSize = 18.sp
         )
     }
 }

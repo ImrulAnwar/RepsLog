@@ -1,5 +1,6 @@
 package com.imrul.replog.feature_exercises.presentation.screen_add_edit_exercise
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,7 +30,8 @@ import com.imrul.replog.ui.theme.WhiteCustom
 @Composable
 fun AddEditExerciseScreen(
     navController: NavHostController,
-    viewModel: AddEditExerciseViewModel = hiltViewModel()
+    viewModel: AddEditExerciseViewModel = hiltViewModel(),
+    context: Context = LocalContext.current
 ) {
 
     val selectedMuscleGroup = viewModel.selectedMuscleGroup
@@ -82,7 +86,7 @@ fun AddEditExerciseScreen(
         }
         CustomButton(
             onClick = {
-
+                viewModel.insertExercise(context = context, navController = navController)
             },
             modifier = Modifier
                 .padding(horizontal = 20.dp, vertical = 10.dp),

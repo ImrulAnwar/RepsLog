@@ -1,5 +1,10 @@
 package com.imrul.replog.feature_workout.domain.use_cases
 
+import com.imrul.replog.feature_exercises.domain.use_cases.DeleteExercise
+import com.imrul.replog.feature_exercises.domain.use_cases.GetAllExercises
+import com.imrul.replog.feature_exercises.domain.use_cases.GetExerciseById
+import com.imrul.replog.feature_exercises.domain.use_cases.InsertExercise
+
 data class WorkoutUseCases(
     val deleteExercise: DeleteExercise,
     val deleteSet: DeleteSet,
