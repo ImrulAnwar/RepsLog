@@ -90,7 +90,10 @@ fun ExerciseListScreen(
             verticalArrangement = Arrangement.Top,
         ) {
             items(exerciseListState.size) { exercise ->
-                ExerciseListItem(exercise = exerciseListState[exercise])
+                ExerciseListItem(
+                    navController = navController,
+                    exercise = exerciseListState[exercise]
+                )
             }
 
         }

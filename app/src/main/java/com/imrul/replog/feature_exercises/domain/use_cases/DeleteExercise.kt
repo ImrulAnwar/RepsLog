@@ -8,7 +8,7 @@ class DeleteExercise(
     private val repository: WorkoutRepository
 ) {
     suspend operator fun invoke(exercise: Exercise) {
-        deleteSetsAndExercise(repository, exercise)
+        repository.deleteExercise(exercise)
     }
 }
 
