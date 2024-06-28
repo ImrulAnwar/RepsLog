@@ -26,4 +26,10 @@ class ExerciseListViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteExercise(exercise: Exercise) {
+        viewModelScope.launch {
+            workoutUseCases.deleteExercise(exercise)
+        }
+    }
 }

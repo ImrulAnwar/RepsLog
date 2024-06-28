@@ -70,7 +70,7 @@ fun DropDownMenuForExerciseItem(
                     Text(
                         modifier = Modifier
                             .padding(8.dp),
-                        text = Strings.EXERCISE,
+                        text = Strings.EDIT,
                         color = Maroon70
                     )
                 })

@@ -2,6 +2,7 @@ package com.imrul.replog.feature_exercises.presentation.screen_add_edit_exercise
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,12 +33,20 @@ import com.imrul.replog.ui.theme.WhiteCustom
 fun AddEditExerciseScreen(
     navController: NavHostController,
     viewModel: AddEditExerciseViewModel = hiltViewModel(),
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    exerciseId: Long
 ) {
 
     val selectedMuscleGroup = viewModel.selectedMuscleGroup
     val selectedWeightType = viewModel.selectedWeightType
     val exerciseName = viewModel.exerciseName
+    LaunchedEffect(Unit) {
+        if (exerciseId != -1L) {
+            viewModel.initializeParameters(exerciseId = exerciseId)
+            Toast.makeText(context, "To Edit", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

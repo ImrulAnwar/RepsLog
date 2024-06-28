@@ -1,5 +1,7 @@
 package com.imrul.replog.feature_exercises.presentation.components
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,26 +15,51 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.imrul.replog.core.Routes
+import com.imrul.replog.core.presentation.CustomButton
+import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListViewModel
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.ui.theme.Maroon10
 
 @Composable
 fun ExerciseListItem(
-    exercise: Exercise
+    navController: NavHostController,
+    context: Context = LocalContext.current,
+    exercise: Exercise,
+    viewModel: ExerciseListViewModel = hiltViewModel()
 ) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    if (showDialog) {
+        DeleteAlertDialog(onDelete = {
+            viewModel.deleteExercise(exercise)
+        }, onDismiss = { showDialog = false })
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp, start = 20.dp, end = 20.dp)
+            .padding(start = 20.dp, end = 20.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -46,10 +73,20 @@ fun ExerciseListItem(
                 modifier = Modifier.padding(bottom = 10.dp)
             )
 
-            DropDownMenuForExerciseItem(onEditClicked = {}, onDeleteClicked = {})
+            DropDownMenuForExerciseItem(
+                onEditClicked = {
+                    navController.navigate(
+                        Routes.ScreenAddEditExercises(
+                            exerciseId = exercise.exerciseId ?: -1
+                        )
+                    )
+                },
+                onDeleteClicked = { showDialog = true })
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
