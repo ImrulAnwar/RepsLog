@@ -45,7 +45,7 @@ class WorkoutRepositoryImp(
         return dao.getAllWorkouts()
     }
 
-    override fun getExerciseById(exerciseId: Long?): Exercise {
+    override suspend fun getExerciseById(exerciseId: Long?): Exercise {
         return dao.getExerciseById(exerciseId)
     }
 

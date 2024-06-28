@@ -42,6 +42,7 @@ fun AddEditExerciseScreen(
     val exerciseName = viewModel.exerciseName
     LaunchedEffect(Unit) {
         if (exerciseId != -1L) {
+            viewModel.initializeParameters(exerciseId = exerciseId)
             Toast.makeText(context, "To Edit", Toast.LENGTH_SHORT).show()
         }
     }

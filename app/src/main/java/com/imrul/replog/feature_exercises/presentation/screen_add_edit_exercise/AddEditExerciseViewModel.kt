@@ -3,8 +3,8 @@ package com.imrul.replog.feature_exercises.presentation.screen_add_edit_exercise
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,6 +28,9 @@ class AddEditExerciseViewModel @Inject constructor(
     var exerciseName by mutableStateOf("")
         private set
 
+    var currentExerciseId by mutableLongStateOf(-1L)
+        private set
+
     fun onSelectedMuscleGroup(string: String) {
         selectedMuscleGroup = string
     }
@@ -47,18 +50,41 @@ class AddEditExerciseViewModel @Inject constructor(
                     .show()
                 return@launch
             }
-            val exercise = Exercise(
-                name = exerciseName,
-                targetMuscleGroup = selectedMuscleGroup,
-                weightType = selectedWeightType,
-                // might add imageUrl later
-            )
+            val exercise: Exercise
+            if (currentExerciseId == -1L) {
+                exercise = Exercise(
+                    name = exerciseName,
+                    targetMuscleGroup = selectedMuscleGroup,
+                    weightType = selectedWeightType,
+                    // might add imageUrl later
+                )
+            } else {
+                exercise = Exercise(
+                    exerciseId = currentExerciseId,
+                    name = exerciseName,
+                    targetMuscleGroup = selectedMuscleGroup,
+                    weightType = selectedWeightType,
+                    // might add imageUrl later
+                )
+            }
             try {
                 workoutUseCases.insertExercise(exercise)
                 navController.navigateUp()
             } catch (e: Exception) {
                 Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    fun initializeParameters(
+        exerciseId: Long,
+    ) {
+        viewModelScope.launch {
+            val exercise = workoutUseCases.getExerciseById(exerciseId)
+            currentExerciseId = exerciseId
+            exerciseName = exercise.name
+            selectedMuscleGroup = exercise.targetMuscleGroup.toString()
+            selectedWeightType = exercise.weightType.toString()
         }
     }
 }
