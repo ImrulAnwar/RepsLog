@@ -32,7 +32,7 @@
 
 <h2><strong>Installation</strong></h2>
 
-<p>To get started with RepsLog, download the app from the <a href="link-to-release-section">Release</a> section.</p>
+<p>To get started with RepsLog, download the app from the <a href="https://github.com/ImrulAnwar/RepsLog/releases">Releases</a> section.</p>
 
 <h2><strong>Getting Started</strong></h2>
 
