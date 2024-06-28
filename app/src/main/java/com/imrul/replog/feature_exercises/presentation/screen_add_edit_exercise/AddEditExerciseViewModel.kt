@@ -61,6 +61,4 @@ class AddEditExerciseViewModel @Inject constructor(
             }
         }
     }
-
-
 }

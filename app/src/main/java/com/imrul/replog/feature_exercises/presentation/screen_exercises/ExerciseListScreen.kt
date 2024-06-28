@@ -63,7 +63,13 @@ fun ExerciseListScreen(
 
         ) {
             CustomButton(
-                onClick = { navController.navigate(Routes.ScreenAddEditExercises) },
+                onClick = {
+                    navController.navigate(
+                        Routes.ScreenAddEditExercises(
+                            exerciseId = -1
+                        )
+                    )
+                },
                 text = "Add Exercise",
                 modifier = Modifier.padding(10.dp)
             )

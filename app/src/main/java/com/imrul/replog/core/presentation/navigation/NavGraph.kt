@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.imrul.replog.core.Routes
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginScreen
 import com.imrul.replog.feature_auth.presentation.screen_profile.ProfileScreen
@@ -61,7 +62,8 @@ fun NavGraph(
             ExerciseListScreen(navController = navController)
         }
         composable<Routes.ScreenAddEditExercises> {
-            AddEditExerciseScreen(navController = navController)
+            val args = it.toRoute<Routes.ScreenAddEditExercises>()
+            AddEditExerciseScreen(navController = navController, exerciseId = args.exerciseId)
         }
         composable<Routes.ScreenRoutine> {
             RoutineScreen(navController = navController)

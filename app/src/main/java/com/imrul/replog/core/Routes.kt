@@ -1,5 +1,6 @@
 package com.imrul.replog.core
 
+import com.imrul.replog.feature_workout.domain.model.Exercise
 import kotlinx.serialization.Serializable
 
 open class Routes {
@@ -22,7 +23,9 @@ open class Routes {
     object ScreenExerciseList : Routes()
 
     @Serializable
-    object ScreenAddEditExercises : Routes()
+    data class ScreenAddEditExercises(
+        val exerciseId: Long = -1
+    ) : Routes()
 
     @Serializable
     object ScreenProfile : Routes()

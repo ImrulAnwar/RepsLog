@@ -74,7 +74,13 @@ fun ExerciseListItem(
             )
 
             DropDownMenuForExerciseItem(
-                onEditClicked = { navController.navigate(Routes.ScreenAddEditExercises) },
+                onEditClicked = {
+                    navController.navigate(
+                        Routes.ScreenAddEditExercises(
+                            exerciseId = exercise.exerciseId ?: -1
+                        )
+                    )
+                },
                 onDeleteClicked = { showDialog = true })
         }
         Row(
