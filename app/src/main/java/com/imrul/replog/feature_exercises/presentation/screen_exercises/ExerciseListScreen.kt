@@ -1,9 +1,8 @@
 package com.imrul.replog.feature_exercises.presentation.screen_exercises
 
 import android.content.Context
-import android.inputmethodservice.Keyboard
-import android.widget.Space
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,20 +13,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -37,6 +35,7 @@ import com.imrul.replog.R
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.CustomButton
 import com.imrul.replog.feature_exercises.presentation.components.ExerciseListItem
+import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.ui.theme.WhiteCustom
 
 @Composable
@@ -46,14 +45,21 @@ fun ExerciseListScreen(
     context: Context = LocalContext.current
 ) {
     val exerciseListState by viewModel.exercisesListState.collectAsState()
+    var isSearchExpanded by remember { mutableStateOf(false) }
+    val searchText = viewModel.searchText
+
     LaunchedEffect(Unit) {
         viewModel.getAllExercises()
+    }
+    LaunchedEffect(isSearchExpanded) {
+        if (!isSearchExpanded) viewModel.onSearchTextChanged("")
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(WhiteCustom)
     ) {
+        // top bar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,24 +68,37 @@ fun ExerciseListScreen(
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            CustomButton(
-                onClick = {
-                    navController.navigate(
-                        Routes.ScreenAddEditExercises(
-                            exerciseId = -1
+            if (!isSearchExpanded)
+                CustomButton(
+                    onClick = {
+                        navController.navigate(
+                            Routes.ScreenAddEditExercises(
+                                exerciseId = -1
+                            )
                         )
-                    )
-                },
-                text = "Add Exercise",
-                modifier = Modifier.padding(10.dp)
+                    },
+                    text = "Add Exercise",
+                    modifier = Modifier.padding(10.dp)
+                )
+            else CustomTextField(
+                text = searchText,
+                onValueChange = { viewModel.onSearchTextChanged(it) },
+                label = "Search",
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(vertical = 2.dp, horizontal = 5.dp)
             )
             Row(
                 Modifier.padding(10.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Search,
+                    imageVector = if (isSearchExpanded) Icons.Filled.Clear else Icons.Filled.Search,
                     contentDescription = "More Details",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable {
+                            isSearchExpanded = !isSearchExpanded
+                        }
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 Icon(
@@ -89,6 +108,8 @@ fun ExerciseListScreen(
                 )
             }
         }
+
+        // list
         LazyColumn(
             modifier = Modifier
                 .padding(bottom = 80.dp),

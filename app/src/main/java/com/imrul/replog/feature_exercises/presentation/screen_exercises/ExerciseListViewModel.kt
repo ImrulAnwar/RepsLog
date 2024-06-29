@@ -1,14 +1,14 @@
 package com.imrul.replog.feature_exercises.presentation.screen_exercises
 
-import android.content.Context
-import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +18,13 @@ class ExerciseListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _exercisesListState = MutableStateFlow<List<Exercise>>(emptyList())
     val exercisesListState = _exercisesListState
+
+    var searchText by mutableStateOf("")
+        private set
+
+    fun onSearchTextChanged(value: String) {
+        searchText = value
+    }
 
     fun getAllExercises() {
         viewModelScope.launch {
