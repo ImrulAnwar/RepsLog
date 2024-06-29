@@ -36,4 +36,20 @@ data class Exercise(
             "Other"
         )
     }
+
+    // I will make this a useCase
+    fun doesMatchSearchQuery(query: String): Boolean {
+        // this will return true if the name contains our search query
+        // doesn't matter if the name has spaces
+        val matchingCombinations = listOf(
+            removeSpaces(name)
+        )
+        return matchingCombinations.any {
+            it.contains(query, ignoreCase = true)
+        }
+    }
+
+    private fun removeSpaces(input: String): String {
+        return input.replace("\\s".toRegex(), "")
+    }
 }
