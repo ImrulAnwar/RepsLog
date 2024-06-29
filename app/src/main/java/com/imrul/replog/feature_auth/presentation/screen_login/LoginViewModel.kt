@@ -39,7 +39,7 @@ class LoginViewModel @Inject constructor(
         currentUser()
     }
 
-    fun currentUser() = viewModelScope.launch {
+    private fun currentUser() = viewModelScope.launch {
         authUseCases.currentUserUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {

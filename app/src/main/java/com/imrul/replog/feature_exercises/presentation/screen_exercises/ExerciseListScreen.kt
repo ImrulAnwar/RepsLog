@@ -44,7 +44,9 @@ fun ExerciseListScreen(
     viewModel: ExerciseListViewModel = hiltViewModel(),
     context: Context = LocalContext.current
 ) {
-    val exerciseListState by viewModel.exercisesListState.collectAsState()
+    val exerciseListState by viewModel.exercisesList.collectAsState()
+    val weightTypeFilterList by viewModel.weightTypeFilterList.collectAsState()
+    val targetMuscleFilterList by viewModel.targetMuscleFilterList.collectAsState()
     var isSearchExpanded by remember { mutableStateOf(false) }
     val searchText = viewModel.searchText
 
@@ -54,6 +56,11 @@ fun ExerciseListScreen(
     LaunchedEffect(isSearchExpanded) {
         if (!isSearchExpanded) viewModel.onSearchTextChanged("")
     }
+
+    LaunchedEffect(searchText, weightTypeFilterList, targetMuscleFilterList) {
+        viewModel.updateExerciseList()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -104,7 +111,11 @@ fun ExerciseListScreen(
                 Icon(
                     painter = painterResource(R.drawable.icon_filter),
                     contentDescription = "More Details",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable {
+                            viewModel.addWeightTypeOnFilter("Barbell")
+                        }
                 )
             }
         }
