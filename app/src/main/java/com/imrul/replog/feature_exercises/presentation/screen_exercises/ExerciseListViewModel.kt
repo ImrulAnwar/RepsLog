@@ -26,6 +26,8 @@ class ExerciseListViewModel @Inject constructor(
 
     var searchText by mutableStateOf("")
         private set
+    var isSearching by mutableStateOf(false)
+        private set
 
 
     fun onSearchTextChanged(value: String) {
@@ -55,7 +57,22 @@ class ExerciseListViewModel @Inject constructor(
         }
     }
 
-    fun addWeightTypeOnFilter(value: String) {
-        _weightTypeFilterList.value += value
+    fun toggleWeightTypeOnFilter(value: String) {
+        _weightTypeFilterList.value =
+//            if (value in _weightTypeFilterList.value)
+//                _weightTypeFilterList.value.filter { it != value }
+//            else
+                _weightTypeFilterList.value + value
+    }
+
+    fun toggleTargetMuscleFilter(value: String) {
+        _targetMuscleFilterList.value = if (value in _targetMuscleFilterList.value)
+            _targetMuscleFilterList.value.filter { it != value }
+        else
+            _targetMuscleFilterList.value + value
+    }
+
+    fun toggleIsSearching() {
+        isSearching = !isSearching
     }
 }
