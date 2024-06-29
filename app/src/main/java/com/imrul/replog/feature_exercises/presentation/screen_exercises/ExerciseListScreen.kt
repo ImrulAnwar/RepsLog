@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -123,13 +120,14 @@ fun ExerciseListScreen(
                     modifier = Modifier
                         .size(30.dp)
                         .clickable {
-                            viewModel.toggleWeightTypeOnFilter("Barbell")
+                            // go to filter page
+                            // then toggle filters
                         }
                 )
             }
         }
         CustomFlowRow(
-            filterList = weightTypeFilterList,
+            filterList = weightTypeFilterList + targetMuscleFilterList,
             item = { text ->
                 Text(
                     text = text,
@@ -140,7 +138,10 @@ fun ExerciseListScreen(
                         .padding(5.dp),
                 )
             },
-            onCLick = {}
+            onCLick = {
+                viewModel.removeWeightTypeOnFilter(it)
+                viewModel.removeTargetMuscleFilter(it)
+            }
         )
 
         // list

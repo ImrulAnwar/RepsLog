@@ -58,18 +58,35 @@ class ExerciseListViewModel @Inject constructor(
     }
 
     fun toggleWeightTypeOnFilter(value: String) {
-        _weightTypeFilterList.value =
-//            if (value in _weightTypeFilterList.value)
-//                _weightTypeFilterList.value.filter { it != value }
-//            else
-                _weightTypeFilterList.value + value
+        if (value in _weightTypeFilterList.value)
+            removeWeightTypeOnFilter(value)
+        else
+            addWeightTypeOnFilter(value)
     }
 
+    fun addWeightTypeOnFilter(value: String) {
+        _weightTypeFilterList.value += value
+    }
+
+    fun removeWeightTypeOnFilter(value: String) {
+        _weightTypeFilterList.value = _weightTypeFilterList.value.filter { it != value }
+    }
+
+    fun addTargetMuscleFilter(value: String) {
+        _targetMuscleFilterList.value += value
+    }
+
+    fun removeTargetMuscleFilter(value: String) {
+        _targetMuscleFilterList.value = _targetMuscleFilterList.value.filter { it != value }
+    }
+
+
     fun toggleTargetMuscleFilter(value: String) {
-        _targetMuscleFilterList.value = if (value in _targetMuscleFilterList.value)
-            _targetMuscleFilterList.value.filter { it != value }
+
+        if (value in _targetMuscleFilterList.value)
+            removeTargetMuscleFilter(value)
         else
-            _targetMuscleFilterList.value + value
+            addTargetMuscleFilter(value)
     }
 
     fun toggleIsSearching() {

@@ -18,7 +18,7 @@ fun CustomFlowRow(
     filterList: List<String>,
     modifier: Modifier = Modifier,
     item: @Composable (String) -> Unit,
-    onCLick: () -> Unit
+    onCLick: (String) -> Unit
 ) {
     FlowRow(
         modifier = modifier
@@ -28,7 +28,7 @@ fun CustomFlowRow(
     ) {
         filterList.forEach { text ->
             Box(Modifier.clickable {
-                onCLick()
+                onCLick(text)
             }) {
                 item(text)
             }
