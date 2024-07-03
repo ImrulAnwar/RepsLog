@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.imrul.replog.feature_workout.domain.model.Exercise
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,8 +28,10 @@ class ExerciseListViewModel @Inject constructor(
 
     var searchText by mutableStateOf("")
         private set
-    var isSearching by mutableStateOf(false)
+    var isLoading by mutableStateOf(false)
         private set
+
+    var debounceJob: Job? = null
 
 
     fun onSearchTextChanged(value: String) {
@@ -50,29 +54,35 @@ class ExerciseListViewModel @Inject constructor(
     }
 
     fun updateExerciseList() {
-        _exercisesList.value = _originalExerciseList.value.filter { exercise ->
-            exercise.doesMatchSearchQuery(searchText) &&
-                    (_weightTypeFilterList.value.isEmpty() || exercise.weightType in _weightTypeFilterList.value) &&
-                    (_targetMuscleFilterList.value.isEmpty() || exercise.targetMuscleGroup in _targetMuscleFilterList.value)
+        debounceJob?.cancel()
+        isLoading = true
+        debounceJob = viewModelScope.launch {
+            delay(500)
+            _exercisesList.value = _originalExerciseList.value.filter { exercise ->
+                exercise.doesMatchSearchQuery(searchText) &&
+                        (_weightTypeFilterList.value.isEmpty() || exercise.weightType in _weightTypeFilterList.value) &&
+                        (_targetMuscleFilterList.value.isEmpty() || exercise.targetMuscleGroup in _targetMuscleFilterList.value)
+            }
+            isLoading = false
         }
     }
 
-    fun toggleWeightTypeOnFilter(value: String) {
+    fun toggleWeightTypeFilter(value: String) {
         if (value in _weightTypeFilterList.value)
-            removeWeightTypeOnFilter(value)
+            removeWeightTypeFilter(value)
         else
-            addWeightTypeOnFilter(value)
+            addWeightTypeFilter(value)
     }
 
-    fun addWeightTypeOnFilter(value: String) {
+    fun addWeightTypeFilter(value: String) {
         _weightTypeFilterList.value += value
     }
 
-    fun removeWeightTypeOnFilter(value: String) {
+    fun removeWeightTypeFilter(value: String) {
         _weightTypeFilterList.value = _weightTypeFilterList.value.filter { it != value }
     }
 
-    fun addTargetMuscleFilter(value: String) {
+    private fun addTargetMuscleFilter(value: String) {
         _targetMuscleFilterList.value += value
     }
 
@@ -82,14 +92,9 @@ class ExerciseListViewModel @Inject constructor(
 
 
     fun toggleTargetMuscleFilter(value: String) {
-
         if (value in _targetMuscleFilterList.value)
             removeTargetMuscleFilter(value)
         else
             addTargetMuscleFilter(value)
-    }
-
-    fun toggleIsSearching() {
-        isSearching = !isSearching
     }
 }
