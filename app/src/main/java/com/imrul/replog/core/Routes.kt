@@ -32,4 +32,7 @@ open class Routes {
 
     @Serializable
     object ScreenRoutine : Routes()
+
+    @Serializable
+    object ScreenFilterExercise : Routes()
 }

@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +34,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.R
 import com.imrul.replog.core.Routes
@@ -41,12 +42,14 @@ import com.imrul.replog.feature_exercises.presentation.components.CustomFlowRow
 import com.imrul.replog.feature_exercises.presentation.components.ExerciseListItem
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.ui.theme.Maroon10
+import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
+import kotlinx.coroutines.delay
 
 @Composable
 fun ExerciseListScreen(
     navController: NavHostController,
-    viewModel: ExerciseListViewModel = hiltViewModel(),
+    viewModel: ExerciseListViewModel,
     context: Context = LocalContext.current
 ) {
     val exerciseListState by viewModel.exercisesList.collectAsState()
@@ -54,7 +57,7 @@ fun ExerciseListScreen(
     val targetMuscleFilterList by viewModel.targetMuscleFilterList.collectAsState()
     var isSearchExpanded by remember { mutableStateOf(false) }
     val searchText = viewModel.searchText
-    val isSearching = viewModel.isSearching
+    val isLoading = viewModel.isLoading
 
     LaunchedEffect(Unit) {
         viewModel.getAllExercises()
@@ -70,7 +73,8 @@ fun ExerciseListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(WhiteCustom)
+            .background(WhiteCustom),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // top bar
         Row(
@@ -122,6 +126,7 @@ fun ExerciseListScreen(
                         .clickable {
                             // go to filter page
                             // then toggle filters
+                            navController.navigate(Routes.ScreenFilterExercise)
                         }
                 )
             }
@@ -129,36 +134,49 @@ fun ExerciseListScreen(
         CustomFlowRow(
             filterList = weightTypeFilterList + targetMuscleFilterList,
             item = { text ->
-                Text(
-                    text = text,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(5.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .background(Maroon10)
+                        .padding(start = 5.dp)
                         .padding(5.dp),
-                )
+                ) {
+                    Text(
+                        text = text,
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Icon(
+                        imageVector = Icons.Outlined.Clear,
+                        contentDescription = "close"
+                    )
+                }
             },
             onCLick = {
-                viewModel.removeWeightTypeOnFilter(it)
+                viewModel.removeWeightTypeFilter(it)
                 viewModel.removeTargetMuscleFilter(it)
             }
         )
 
         // list
-        LazyColumn(
-            modifier = Modifier
-                .padding(bottom = 80.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-        ) {
-            items(exerciseListState.size) { exercise ->
-                ExerciseListItem(
-                    navController = navController,
-                    exercise = exerciseListState[exercise]
-                )
-            }
+        if (isLoading)
+            CircularProgressIndicator(color = Maroon70)
+        else
+            LazyColumn(
+                modifier = Modifier
+                    .padding(bottom = 80.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+            ) {
+                items(exerciseListState.size) { exercise ->
+                    ExerciseListItem(
+                        navController = navController,
+                        exercise = exerciseListState[exercise]
+                    )
+                }
 
-        }
+            }
     }
 
 }

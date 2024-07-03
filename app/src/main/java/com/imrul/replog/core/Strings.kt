@@ -37,4 +37,7 @@ object Strings {
     const val SAVE_EXERCISE = "Save Exercise"
     const val EDIT = "Edit"
     const val DELETE = "Delete"
+    const val WEIGHT_TYPES = "Weight Types"
+    const val TARGET_MUSCLE_GROUP = "Target Muscle Group"
+
 }
