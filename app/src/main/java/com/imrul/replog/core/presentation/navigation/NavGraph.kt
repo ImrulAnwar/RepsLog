@@ -65,6 +65,9 @@ fun NavGraph(
         composable<Routes.ScreenExerciseList> {
             ExerciseListScreen(navController = navController, viewModel = exerciseListViewModel)
         }
+        composable<Routes.ScreenExerciseListFromWorkout> {
+            ExerciseListScreen(navController = navController, viewModel = exerciseListViewModel)
+        }
         composable<Routes.ScreenAddEditExercises> {
             val args = it.toRoute<Routes.ScreenAddEditExercises>()
             AddEditExerciseScreen(navController = navController, exerciseId = args.exerciseId)

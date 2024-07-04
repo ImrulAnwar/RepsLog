@@ -26,7 +26,7 @@ fun ExerciseItem(
     exerciseIndex: Int,
     workoutViewModel: WorkoutViewModel = hiltViewModel()
 ) {
-    val listOfExercises = workoutViewModel.listOfExercises
+    val listOfExercises = workoutViewModel.listOfExerciseName
     val listOfWeights = workoutViewModel.listOfWeights
     val listOfReps = workoutViewModel.listOfReps
     val listOfNotes = workoutViewModel.listOfNotes

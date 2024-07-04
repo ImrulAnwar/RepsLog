@@ -55,12 +55,12 @@ fun WorkoutScreen(
     val workoutTitle = workoutViewModel.workoutTitle
     val listState = rememberScrollState()
 
-    val listOfExercises = workoutViewModel.listOfExercises
+    val listOfExercises = workoutViewModel.listOfExerciseName
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { workoutViewModel.addExercise() },
+                onClick = { workoutViewModel.addExercise(navController) },
                 shape = RoundedCornerShape(percent = 50),
                 contentColor = Maroon70,
                 containerColor = Maroon10
@@ -109,7 +109,7 @@ fun WorkoutScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-//                                workoutViewModel.insertWorkout()
+                                workoutViewModel.insertWorkout()
                                 navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
                                     // When navigation is complete, stop the service and pop the back stack
                                     Intent(context, WorkoutService::class.java).also {

@@ -23,6 +23,9 @@ open class Routes {
     object ScreenExerciseList : Routes()
 
     @Serializable
+    object ScreenExerciseListFromWorkout : Routes()
+
+    @Serializable
     data class ScreenAddEditExercises(
         val exerciseId: Long = -1
     ) : Routes()

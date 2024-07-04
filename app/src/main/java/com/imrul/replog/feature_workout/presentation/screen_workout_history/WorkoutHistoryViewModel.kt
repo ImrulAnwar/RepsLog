@@ -3,6 +3,7 @@ package com.imrul.replog.feature_workout.presentation.screen_workout_history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imrul.replog.feature_workout.domain.model.Exercise
+import com.imrul.replog.feature_workout.domain.model.Session
 import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
@@ -19,6 +20,9 @@ class WorkoutHistoryViewModel @Inject constructor(
     val workoutListState = _workoutListState
     private val _exercisesListState = MutableStateFlow<List<Exercise>>(emptyList())
     val exercisesListState = _exercisesListState
+
+    private val _sessionsList = MutableStateFlow<List<Session>>(emptyList())
+    val sessionsList = _sessionsList
     private val _setsListState = MutableStateFlow<List<Set>>(emptyList())
     val setsListState = _setsListState
 
@@ -34,6 +38,14 @@ class WorkoutHistoryViewModel @Inject constructor(
         viewModelScope.launch {
             workoutUseCases.getAllExercises().collect {
                 _exercisesListState.value = it
+            }
+        }
+    }
+
+    fun getAllSessions() {
+        viewModelScope.launch {
+            workoutUseCases.getAllSessions().collect {
+                _sessionsList.value = it
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout_history.components
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,13 +29,15 @@ import com.imrul.replog.ui.theme.Maroon70
 @Composable
 fun WorkoutItem(
     workout: Workout,
-    workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel()
+    workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel(),
+    context: Context = LocalContext.current
 ) {
     LaunchedEffect(Unit) {
         workoutHistoryViewModel.getAllExercise()
         workoutHistoryViewModel.getAllSets()
+        workoutHistoryViewModel.getAllSessions()
     }
-    val exerciseListState by workoutHistoryViewModel.exercisesListState.collectAsState()
+    val sessionsList by workoutHistoryViewModel.sessionsList.collectAsState()
     val setsListState by workoutHistoryViewModel.setsListState.collectAsState()
     Column(
         modifier = Modifier
@@ -100,18 +105,19 @@ fun WorkoutItem(
         }
 
         // using column instead of lazy column is because i don't want nested scrolling
-//        Column(
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            exerciseListState.forEach { exercise ->
-//                if (exercise.workoutIdForeign == workout.workoutId) {
-//                    Text(
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            sessionsList.forEach { session ->
+                if (session.workoutIdForeign == workout.workoutId) {
+                    Text(
 //                        text = "${exercise.setCount} x ${exercise.name}",
-//                        fontSize = 16.sp,
-//                        color = Maroon70
-//                    )
-//                }
-//            }
-//        }
+                        text = "${session.setCount}",
+                        fontSize = 16.sp,
+                        color = Maroon70
+                    )
+                }
+            }
+        }
     }
 }
