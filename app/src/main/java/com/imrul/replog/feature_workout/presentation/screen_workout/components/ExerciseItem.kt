@@ -24,7 +24,7 @@ import com.imrul.replog.ui.theme.Maroon70
 @Composable
 fun ExerciseItem(
     exerciseIndex: Int,
-    workoutViewModel: WorkoutViewModel = hiltViewModel()
+    workoutViewModel: WorkoutViewModel
 ) {
     val listOfExercises = workoutViewModel.listOfExerciseName
     val listOfWeights = workoutViewModel.listOfWeights
@@ -34,16 +34,16 @@ fun ExerciseItem(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WorkoutTitleTextField(
-            text = listOfExercises[exerciseIndex],
+            text = if (listOfExercises.isNotEmpty()) listOfExercises[exerciseIndex] else "list is Empty",
             onValueChange = {
-                workoutViewModel.onExerciseNameValueChanged(
-                    exerciseIndex = exerciseIndex,
-                    content = it
-                )
+//                workoutViewModel.onExerciseNameValueChanged(
+//                    exerciseIndex = exerciseIndex,
+//                    content = it
+//                )
             },
         )
         CustomTextField(
-            text = listOfNotes[exerciseIndex],
+            text =if (listOfNotes.isNotEmpty()) listOfNotes[exerciseIndex] else "",
             onValueChange = {
                 workoutViewModel.onNoteValueChanged(
                     exerciseIndex = exerciseIndex,

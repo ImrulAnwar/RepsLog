@@ -3,12 +3,9 @@ package com.imrul.replog.core.presentation.navigation
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,9 +21,10 @@ import com.imrul.replog.feature_exercises.presentation.screen_exercises.Exercise
 import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListViewModel
 import com.imrul.replog.feature_exercises.presentation.screen_filter_exercise.FilterExerciseScreen
 import com.imrul.replog.feature_routine.presentation.screen_routine.RoutineScreen
+import com.imrul.replog.feature_workout.presentation.screen_exercise_list_from_workout.ExerciseListScreenFromWorkout
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutScreen
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.WorkoutHistoryScreen
-import com.imrul.replog.ui.theme.WhiteCustom
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -35,7 +33,8 @@ fun NavGraph(
     navController: NavHostController,
     context: Context = LocalContext.current,
     isLoggedIn: Boolean,
-    exerciseListViewModel: ExerciseListViewModel = hiltViewModel()
+    exerciseListViewModel: ExerciseListViewModel = hiltViewModel(),
+    workoutViewModel: WorkoutViewModel = hiltViewModel()
 ) {
 
     NavHost(
@@ -46,7 +45,7 @@ fun NavGraph(
             WorkoutHistoryScreen(navController = navController)
         }
         composable<Routes.ScreenWorkout> {
-            WorkoutScreen(navController = navController)
+            WorkoutScreen(navController = navController, workoutViewModel = workoutViewModel)
         }
 
         composable<Routes.ScreenLogin> {
@@ -66,7 +65,11 @@ fun NavGraph(
             ExerciseListScreen(navController = navController, viewModel = exerciseListViewModel)
         }
         composable<Routes.ScreenExerciseListFromWorkout> {
-            ExerciseListScreen(navController = navController, viewModel = exerciseListViewModel)
+            ExerciseListScreenFromWorkout(
+                navController = navController,
+                exerciseListViewModel = exerciseListViewModel,
+                workoutViewModel = workoutViewModel
+            )
         }
         composable<Routes.ScreenAddEditExercises> {
             val args = it.toRoute<Routes.ScreenAddEditExercises>()

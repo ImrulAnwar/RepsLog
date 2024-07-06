@@ -1,5 +1,7 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -94,8 +96,13 @@ class WorkoutViewModel @Inject constructor(
 
     fun addExercise(navController: NavHostController) {
         navController.navigate(Routes.ScreenExerciseListFromWorkout)
-        listOfExerciseName.add("Exercise Name")
         listOfNotes.add("")
+    }
+
+    fun addExerciseNameAndId(name: String, exerciseId: Long, context: Context) {
+        listOfExerciseName.add(name)
+        listOfExerciseId.add(exerciseId)
+        Toast.makeText(context, listOfExerciseName.size.toString(), Toast.LENGTH_SHORT).show()
     }
 
     fun onNoteValueChanged(
@@ -103,13 +110,6 @@ class WorkoutViewModel @Inject constructor(
         content: String
     ) {
         listOfNotes[exerciseIndex] = content
-    }
-
-    fun onExerciseNameValueChanged(
-        exerciseIndex: Int,
-        content: String
-    ) {
-        listOfExerciseName[exerciseIndex] = content
     }
 
     private suspend fun insertSessions(exerciseIndex: Int, workoutId: Long) {

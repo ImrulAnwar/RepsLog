@@ -48,7 +48,7 @@ import com.imrul.replog.ui.theme.Maroon90
 @Composable
 fun WorkoutScreen(
     navController: NavHostController,
-    workoutViewModel: WorkoutViewModel = hiltViewModel(),
+    workoutViewModel: WorkoutViewModel,
     context: Context = LocalContext.current
 ) {
     val elapsedTime = workoutViewModel.elapsedTime
@@ -138,7 +138,7 @@ fun WorkoutScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     listOfExercises.forEachIndexed { exerciseIndex, _ ->
-                        ExerciseItem(exerciseIndex = exerciseIndex)
+                        ExerciseItem(exerciseIndex = exerciseIndex, workoutViewModel = workoutViewModel)
                     }
                     Text(
                         text = Strings.CANCEL_WORKOUT,
