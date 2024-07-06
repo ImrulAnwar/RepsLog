@@ -57,7 +57,7 @@ class ExerciseListViewModel @Inject constructor(
         debounceJob?.cancel()
         isLoading = true
         debounceJob = viewModelScope.launch {
-            delay(500)
+            delay(300)
             _exercisesList.value = _originalExerciseList.value.filter { exercise ->
                 exercise.doesMatchSearchQuery(searchText) &&
                         (_weightTypeFilterList.value.isEmpty() || exercise.weightType in _weightTypeFilterList.value) &&

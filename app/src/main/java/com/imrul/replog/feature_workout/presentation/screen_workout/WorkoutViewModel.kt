@@ -96,7 +96,7 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun addExercise(navController: NavHostController) {
-        navController.navigate(Routes.ScreenExerciseListFromWorkout)
+
 //        listOfNotes.add("")
     }
 
@@ -138,7 +138,9 @@ class WorkoutViewModel @Inject constructor(
         session = Session(
             sessionId = sessionId,
             workoutIdForeign = workoutId,
-            setCount = setCount.toLong()
+            setCount = setCount.toLong(),
+            exerciseIdForeign = listOfExerciseId[exerciseIndex],
+            exerciseName = listOfExerciseName[exerciseIndex]
         )
         workoutUseCases.insertSession(session)
     }

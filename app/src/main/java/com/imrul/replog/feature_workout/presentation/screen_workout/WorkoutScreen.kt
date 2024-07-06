@@ -61,7 +61,7 @@ fun WorkoutScreen(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { workoutViewModel.addExercise(navController) },
+                onClick = { navController.navigate(Routes.ScreenExerciseListFromWorkout) },
                 shape = RoundedCornerShape(percent = 50),
                 contentColor = Maroon70,
                 containerColor = Maroon10

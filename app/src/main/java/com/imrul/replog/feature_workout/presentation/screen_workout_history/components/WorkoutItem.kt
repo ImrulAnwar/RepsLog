@@ -111,8 +111,7 @@ fun WorkoutItem(
             sessionsList.forEach { session ->
                 if (session.workoutIdForeign == workout.workoutId) {
                     Text(
-//                        text = "${exercise.setCount} x ${exercise.name}",
-                        text = "${session.setCount}",
+                        text = "${session.setCount} X ${session.exerciseName}",
                         fontSize = 16.sp,
                         color = Maroon70
                     )
