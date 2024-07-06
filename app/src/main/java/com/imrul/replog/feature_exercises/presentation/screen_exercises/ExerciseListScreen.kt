@@ -38,6 +38,7 @@ import androidx.navigation.NavHostController
 import com.imrul.replog.R
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.CustomButton
+import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_exercises.presentation.components.CustomFlowRow
 import com.imrul.replog.feature_exercises.presentation.components.ExerciseListItem
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
@@ -167,7 +168,8 @@ fun ExerciseListScreen(
         else
             LazyColumn(
                 modifier = Modifier
-                    .padding(bottom = 80.dp),
+                    .padding(bottom = 80.dp)
+                    .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
             ) {
@@ -180,6 +182,12 @@ fun ExerciseListScreen(
                 }
 
             }
+
+        if (workoutViewModel.isWorkOutRunning)
+            MiniPlayer(
+                workoutViewModel = workoutViewModel,
+                navController = navController
+            )
     }
 
 }

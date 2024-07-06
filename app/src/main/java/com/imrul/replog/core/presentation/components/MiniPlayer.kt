@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,16 +27,16 @@ fun MiniPlayer(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(160.dp)
             .clickable {
                 navController.navigate(Routes.ScreenWorkout)
             }
             .background(WhiteCustom)
             .padding(10.dp)
+            .padding(bottom = 80.dp)
     ) {
         Text(
             text = workoutViewModel.workoutTitle,
-//            modifier = Modifier.padding(10.dp),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )

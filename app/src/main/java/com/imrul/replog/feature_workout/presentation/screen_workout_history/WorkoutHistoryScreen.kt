@@ -8,8 +8,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,7 +25,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -50,16 +55,21 @@ fun WorkoutHistoryScreen(
     val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
     val context = LocalContext.current
 
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val calculatedHeight =
+        (screenHeight - if (workoutViewModel.isWorkOutRunning) 208.dp else 128.dp)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(WhiteCustom),
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.Top
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = if (workoutViewModel.isWorkOutRunning) 160.dp else 80.dp),
+                .height(calculatedHeight) // Convert Dp to pixels using LocalDensity
+            ,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -93,6 +103,7 @@ fun WorkoutHistoryScreen(
                 workoutViewModel = workoutViewModel,
                 navController = navController
             )
+
     }
 
 }
