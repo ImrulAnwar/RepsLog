@@ -1,6 +1,7 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -96,7 +97,7 @@ class WorkoutViewModel @Inject constructor(
 
     fun addExercise(navController: NavHostController) {
         navController.navigate(Routes.ScreenExerciseListFromWorkout)
-        listOfNotes.add("")
+//        listOfNotes.add("")
     }
 
     fun addExerciseNameAndId(name: String, exerciseId: Long, context: Context) {
@@ -174,4 +175,8 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun shouldInsertWorkout(): Boolean = workoutUseCases.shouldInsertWorkout(listOfIsDone)
+    override fun onCleared() {
+        Log.d("viewmodel is destroyed", "onCleared: ")
+        super.onCleared()
+    }
 }

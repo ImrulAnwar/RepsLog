@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -127,6 +128,7 @@ fun WorkoutScreen(
                 WorkoutTitleTextField(
                     text = workoutTitle,
                     onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Text(
                     elapsedTime,

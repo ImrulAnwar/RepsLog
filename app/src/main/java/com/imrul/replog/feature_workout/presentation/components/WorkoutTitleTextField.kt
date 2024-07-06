@@ -17,9 +17,7 @@ import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
 fun WorkoutTitleTextField(
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp),
+    modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
     label: String = ""
