@@ -42,7 +42,7 @@ fun NavGraph(
         startDestination = if (isLoggedIn) Routes.ScreenWorkoutHistory else Routes.ScreenLogin,
     ) {
         composable<Routes.ScreenWorkoutHistory> {
-            WorkoutHistoryScreen(navController = navController)
+            WorkoutHistoryScreen(navController = navController, workoutViewModel = workoutViewModel)
         }
         composable<Routes.ScreenWorkout> {
             WorkoutScreen(navController = navController, workoutViewModel = workoutViewModel)
@@ -56,13 +56,13 @@ fun NavGraph(
         }
 
         composable<Routes.ScreenProfile> {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, workoutViewModel = workoutViewModel)
         }
         composable<Routes.ScreenMeasurements> {
-            MeasurementsScreen(navController = navController)
+            MeasurementsScreen(navController = navController, workoutViewModel = workoutViewModel)
         }
         composable<Routes.ScreenExerciseList> {
-            ExerciseListScreen(navController = navController, viewModel = exerciseListViewModel)
+            ExerciseListScreen(navController = navController, viewModel = exerciseListViewModel, workoutViewModel = workoutViewModel)
         }
         composable<Routes.ScreenExerciseListFromWorkout> {
             ExerciseListScreenFromWorkout(
@@ -76,7 +76,7 @@ fun NavGraph(
             AddEditExerciseScreen(navController = navController, exerciseId = args.exerciseId)
         }
         composable<Routes.ScreenRoutine> {
-            RoutineScreen(navController = navController)
+            RoutineScreen(navController = navController, workoutViewModel = workoutViewModel)
         }
         composable<Routes.ScreenFilterExercise> {
             FilterExerciseScreen(navController = navController, viewModel = exerciseListViewModel)

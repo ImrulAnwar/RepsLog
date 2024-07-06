@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
@@ -117,6 +119,7 @@ fun WorkoutScreen(
                                         it.action = WorkoutService.Actions.STOP.toString()
                                         context.startForegroundService(it)
                                     }
+                                    workoutViewModel.clearAllData()
                                     navController.popBackStack()
                                 }
                             }
@@ -140,7 +143,10 @@ fun WorkoutScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     listOfExercises.forEachIndexed { exerciseIndex, _ ->
-                        ExerciseItem(exerciseIndex = exerciseIndex, workoutViewModel = workoutViewModel)
+                        ExerciseItem(
+                            exerciseIndex = exerciseIndex,
+                            workoutViewModel = workoutViewModel
+                        )
                     }
                     Text(
                         text = Strings.CANCEL_WORKOUT,
@@ -156,6 +162,7 @@ fun WorkoutScreen(
                                         context.startForegroundService(it)
                                     }
                                     navController.popBackStack()
+                                    workoutViewModel.clearAllData()
                                 }
                             },
                         color = Maroon90
@@ -165,7 +172,6 @@ fun WorkoutScreen(
             }
         }
     )
-
 }
 
 

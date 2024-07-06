@@ -18,12 +18,14 @@ import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.imrul.replog.core.Constants
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
     viewModel: LoginViewModel = hiltViewModel(),
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    workoutViewModel: WorkoutViewModel
 ) {
     Column(
         modifier = Modifier

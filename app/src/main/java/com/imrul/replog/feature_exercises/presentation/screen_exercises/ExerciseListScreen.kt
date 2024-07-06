@@ -41,6 +41,7 @@ import com.imrul.replog.core.presentation.CustomButton
 import com.imrul.replog.feature_exercises.presentation.components.CustomFlowRow
 import com.imrul.replog.feature_exercises.presentation.components.ExerciseListItem
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
@@ -50,7 +51,8 @@ import kotlinx.coroutines.delay
 fun ExerciseListScreen(
     navController: NavHostController,
     viewModel: ExerciseListViewModel,
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    workoutViewModel: WorkoutViewModel
 ) {
     val exerciseListState by viewModel.exercisesList.collectAsState()
     val weightTypeFilterList by viewModel.weightTypeFilterList.collectAsState()

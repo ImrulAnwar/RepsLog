@@ -1,7 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -21,11 +20,15 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
-
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
     private val workoutUseCases: WorkoutUseCases,
 ) : ViewModel() {
+    var isWorkOutRunning by mutableStateOf(
+        false
+    )
+        private set
+
     var workoutTitle by mutableStateOf(Strings.WORKOUT_TITLE)
         private set
 
@@ -54,10 +57,6 @@ class WorkoutViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { observeDuration() }
-    }
-
-    fun start() {
-        workoutUseCases.durationUseCase.start()
     }
 
     private suspend fun observeDuration() {
@@ -112,7 +111,6 @@ class WorkoutViewModel @Inject constructor(
     }
 
     private suspend fun insertSessions(exerciseIndex: Int, workoutId: Long) {
-        // exercise id ta exercise insert korar por pabo. workout id ta use kore
 
         var session = Session(
             workoutIdForeign = workoutId
@@ -164,7 +162,7 @@ class WorkoutViewModel @Inject constructor(
             )
             val workoutId: Long = workoutUseCases.insertWorkout(workout)
 
-            listOfExerciseName.forEachIndexed { index, item ->
+            listOfExerciseName.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)
             }
         }
@@ -174,13 +172,35 @@ class WorkoutViewModel @Inject constructor(
         listOfIsDone[setIndex] = !listOfIsDone[setIndex]
     }
 
+    fun setWorkoutRunning(flag: Boolean) {
+        isWorkOutRunning = flag
+    }
+
     fun toggleTillFailure(setIndex: Int) {
         listOfTillFailure[setIndex] = !listOfTillFailure[setIndex]
     }
 
-    fun shouldInsertWorkout(): Boolean = workoutUseCases.shouldInsertWorkout(listOfIsDone)
+    fun shouldInsertWorkout(): Boolean =
+        workoutUseCases.shouldInsertWorkout(listOfIsDone, listOfWeights, listOfReps)
+
     override fun onCleared() {
-        Log.d("viewmodel is destroyed", "onCleared: ")
+        isWorkOutRunning = false
         super.onCleared()
     }
+
+    fun clearAllData() {
+        isWorkOutRunning = false
+        workoutTitle = Strings.WORKOUT_TITLE
+        elapsedTime = "00:00"
+        listOfWeights.clear()
+        listOfReps.clear()
+        listOfIsDone.clear()
+        listOfTillFailure.clear()
+        listOfExerciseName.clear()
+        listOfWeightUnits.clear()
+        listOfExerciseId.clear()
+        listOfNotes.clear()
+    }
+
 }
+
