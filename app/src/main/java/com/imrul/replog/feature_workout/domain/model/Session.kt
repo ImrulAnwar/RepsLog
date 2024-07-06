@@ -8,14 +8,17 @@ data class Session(
     @PrimaryKey
     val sessionId: Long? = null,
     val exerciseIdForeign: Long? = null,
+    val exerciseName: String? = null,
     val workoutIdForeign: Long? = null,
     val repsSlower: Boolean = false,
-    val weightUnit: String = weightUnits[0],
+    val weightUnit: String = WEIGHT_UNIT_KG,
     val setCount: Long = 0,
-    val isTimerEnabled: Boolean = false
+    val isTimerEnabled: Boolean = false,
+    val bestSet: String? = null
 ) {
     companion object {
-        val weightUnits = listOf("kg", "lb")
+        const val WEIGHT_UNIT_KG = "kg"
+        const val WEIGHT_UNIT_LB = "lb"
     }
 }
 

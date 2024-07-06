@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -33,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
@@ -48,19 +51,19 @@ import com.imrul.replog.ui.theme.Maroon90
 @Composable
 fun WorkoutScreen(
     navController: NavHostController,
-    workoutViewModel: WorkoutViewModel = hiltViewModel(),
+    workoutViewModel: WorkoutViewModel,
     context: Context = LocalContext.current
 ) {
     val elapsedTime = workoutViewModel.elapsedTime
     val workoutTitle = workoutViewModel.workoutTitle
     val listState = rememberScrollState()
 
-    val listOfExercises = workoutViewModel.listOfExercises
+    val listOfExercises = workoutViewModel.listOfExerciseName
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { workoutViewModel.addExercise() },
+                onClick = { navController.navigate(Routes.ScreenExerciseListFromWorkout) },
                 shape = RoundedCornerShape(percent = 50),
                 contentColor = Maroon70,
                 containerColor = Maroon10
@@ -109,13 +112,14 @@ fun WorkoutScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-//                                workoutViewModel.insertWorkout()
+                                workoutViewModel.insertWorkout()
                                 navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
                                     // When navigation is complete, stop the service and pop the back stack
                                     Intent(context, WorkoutService::class.java).also {
                                         it.action = WorkoutService.Actions.STOP.toString()
                                         context.startForegroundService(it)
                                     }
+                                    workoutViewModel.clearAllData()
                                     navController.popBackStack()
                                 }
                             }
@@ -127,6 +131,7 @@ fun WorkoutScreen(
                 WorkoutTitleTextField(
                     text = workoutTitle,
                     onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Text(
                     elapsedTime,
@@ -138,7 +143,10 @@ fun WorkoutScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     listOfExercises.forEachIndexed { exerciseIndex, _ ->
-                        ExerciseItem(exerciseIndex = exerciseIndex)
+                        ExerciseItem(
+                            exerciseIndex = exerciseIndex,
+                            workoutViewModel = workoutViewModel
+                        )
                     }
                     Text(
                         text = Strings.CANCEL_WORKOUT,
@@ -154,6 +162,7 @@ fun WorkoutScreen(
                                         context.startForegroundService(it)
                                     }
                                     navController.popBackStack()
+                                    workoutViewModel.clearAllData()
                                 }
                             },
                         color = Maroon90
@@ -163,7 +172,6 @@ fun WorkoutScreen(
             }
         }
     )
-
 }
 
 

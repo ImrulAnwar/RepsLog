@@ -39,6 +39,7 @@ import com.imrul.replog.core.util.BottomBarScreens
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
 import com.imrul.replog.feature_workout.presentation.components.PermissionDialog
 import com.imrul.replog.feature_workout.presentation.components.PostNotificationTextProvider
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
@@ -193,6 +194,14 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onDestroy() {
+        Intent(this, WorkoutService::class.java).also {
+            it.action = WorkoutService.Actions.STOP.toString()
+            this.startForegroundService(it)
+        }
+        super.onDestroy()
     }
 }
 

@@ -31,7 +31,7 @@ import com.imrul.replog.ui.theme.Red
 fun SetItem(
     setIndex: Int,
     exerciseIndex: Int? = null,
-    workoutViewModel: WorkoutViewModel = hiltViewModel(),
+    workoutViewModel: WorkoutViewModel,
 ) {
     val listOfIsDone = workoutViewModel.listOfIsDone
     val listOfTillFailure = workoutViewModel.listOfTillFailure

@@ -46,7 +46,8 @@ fun ExerciseListItem(
     navController: NavHostController,
     context: Context = LocalContext.current,
     exercise: Exercise,
-    viewModel: ExerciseListViewModel = hiltViewModel()
+    viewModel: ExerciseListViewModel = hiltViewModel(),
+    onClick: () -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -60,6 +61,7 @@ fun ExerciseListItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
+            .clickable { onClick() }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

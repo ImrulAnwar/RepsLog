@@ -1,6 +1,7 @@
-package com.imrul.replog.feature_exercises.presentation.screen_exercises
+package com.imrul.replog.feature_workout.presentation.screen_exercise_list_from_workout
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,39 +39,38 @@ import androidx.navigation.NavHostController
 import com.imrul.replog.R
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.CustomButton
-import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_exercises.presentation.components.CustomFlowRow
 import com.imrul.replog.feature_exercises.presentation.components.ExerciseListItem
+import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListViewModel
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
-import kotlinx.coroutines.delay
 
 @Composable
-fun ExerciseListScreen(
+fun ExerciseListScreenFromWorkout(
     navController: NavHostController,
-    viewModel: ExerciseListViewModel,
+    exerciseListViewModel: ExerciseListViewModel,
     context: Context = LocalContext.current,
     workoutViewModel: WorkoutViewModel
 ) {
-    val exerciseListState by viewModel.exercisesList.collectAsState()
-    val weightTypeFilterList by viewModel.weightTypeFilterList.collectAsState()
-    val targetMuscleFilterList by viewModel.targetMuscleFilterList.collectAsState()
+    val exerciseListState by exerciseListViewModel.exercisesList.collectAsState()
+    val weightTypeFilterList by exerciseListViewModel.weightTypeFilterList.collectAsState()
+    val targetMuscleFilterList by exerciseListViewModel.targetMuscleFilterList.collectAsState()
     var isSearchExpanded by remember { mutableStateOf(false) }
-    val searchText = viewModel.searchText
-    val isLoading = viewModel.isLoading
+    val searchText = exerciseListViewModel.searchText
+    val isLoading = exerciseListViewModel.isLoading
 
     LaunchedEffect(Unit) {
-        viewModel.getAllExercises()
+        exerciseListViewModel.getAllExercises()
     }
     LaunchedEffect(isSearchExpanded) {
-        if (!isSearchExpanded) viewModel.onSearchTextChanged("")
+        if (!isSearchExpanded) exerciseListViewModel.onSearchTextChanged("")
     }
 
     LaunchedEffect(searchText, weightTypeFilterList, targetMuscleFilterList) {
-        viewModel.updateExerciseList()
+        exerciseListViewModel.updateExerciseList()
     }
 
     Column(
@@ -102,7 +102,7 @@ fun ExerciseListScreen(
                 )
             else CustomTextField(
                 text = searchText,
-                onValueChange = { viewModel.onSearchTextChanged(it) },
+                onValueChange = { exerciseListViewModel.onSearchTextChanged(it) },
                 label = "Search",
                 modifier = Modifier
                     .weight(1f)
@@ -157,8 +157,8 @@ fun ExerciseListScreen(
                 }
             },
             onCLick = {
-                viewModel.removeWeightTypeFilter(it)
-                viewModel.removeTargetMuscleFilter(it)
+                exerciseListViewModel.removeWeightTypeFilter(it)
+                exerciseListViewModel.removeTargetMuscleFilter(it)
             }
         )
 
@@ -167,27 +167,28 @@ fun ExerciseListScreen(
             CircularProgressIndicator(color = Maroon70)
         else
             LazyColumn(
-                modifier = Modifier
-                    .padding(bottom = 80.dp)
-                    .weight(1f),
+                modifier = Modifier,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
             ) {
-                items(exerciseListState.size) { exercise ->
+                items(exerciseListState.size) { index ->
                     ExerciseListItem(
                         navController = navController,
-                        exercise = exerciseListState[exercise],
-                        onClick = {}
+                        exercise = exerciseListState[index],
+                        onClick = {
+                            exerciseListState[index].exerciseId?.let {
+                                workoutViewModel.addExerciseNameAndId(
+                                    name = exerciseListState[index].name,
+                                    exerciseId = it,
+                                    context = context
+                                )
+                                navController.navigateUp()
+                            }
+                        }
                     )
                 }
 
             }
-
-        if (workoutViewModel.isWorkOutRunning)
-            MiniPlayer(
-                workoutViewModel = workoutViewModel,
-                navController = navController
-            )
     }
 
 }

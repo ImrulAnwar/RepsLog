@@ -2,12 +2,17 @@ package com.imrul.replog.feature_workout.presentation.screen_workout_history
 
 import android.content.Intent
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,14 +25,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.CustomButton
+import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
@@ -37,6 +46,7 @@ import com.imrul.replog.ui.theme.WhiteCustom
 fun WorkoutHistoryScreen(
     navController: NavHostController,
     workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel(),
+    workoutViewModel: WorkoutViewModel
 ) {
     LaunchedEffect(Unit) {
         workoutHistoryViewModel.getAllWorkouts()
@@ -45,26 +55,38 @@ fun WorkoutHistoryScreen(
     val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
     val context = LocalContext.current
 
-    Box(
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val calculatedHeight =
+        (screenHeight - if (workoutViewModel.isWorkOutRunning) 208.dp else 128.dp)
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(WhiteCustom)
+            .background(WhiteCustom),
+        verticalArrangement = Arrangement.Top
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 80.dp),
+                .height(calculatedHeight) // Convert Dp to pixels using LocalDensity
+            ,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 CustomButton(
                     onClick = {
-                        navController.navigate(Routes.ScreenWorkout)
-                        // start service
-                        Intent(context, WorkoutService::class.java).also {
-                            it.action = WorkoutService.Actions.START.toString()
-                            context.startForegroundService(it)
+                        if (!workoutViewModel.isWorkOutRunning) {
+                            workoutViewModel.setWorkoutRunning(true)
+                            navController.navigate(Routes.ScreenWorkout)
+                            // start service
+                            Intent(context, WorkoutService::class.java).also {
+                                it.action = WorkoutService.Actions.START.toString()
+                                context.startForegroundService(it)
+                            }
+                        } else {
+                            Toast.makeText(context, "Already Running Workout", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     },
                     modifier = Modifier.padding(top = 20.dp),
@@ -76,6 +98,12 @@ fun WorkoutHistoryScreen(
             }
 
         }
+        if (workoutViewModel.isWorkOutRunning)
+            MiniPlayer(
+                workoutViewModel = workoutViewModel,
+                navController = navController
+            )
+
     }
 
 }

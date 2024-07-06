@@ -17,35 +17,51 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.imrul.replog.core.Constants
+import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
     viewModel: LoginViewModel = hiltViewModel(),
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    workoutViewModel: WorkoutViewModel
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Button(onClick = {
-            viewModel.signOut(context, navController = navController)
-        }) {
-            Text(text = Constants.SIGN_OUT)
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+                .weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            Button(onClick = {
+                viewModel.signOut(context, navController = navController)
+            }) {
+                Text(text = Constants.SIGN_OUT)
+            }
+
+            Button(onClick = {
+                Toast.makeText(
+                    context,
+                    FirebaseAuth.getInstance().currentUser?.email.toString() + "\n${viewModel.isLoggedIn}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }) {
+                Text(text = "currentUser")
+            }
         }
 
-        Button(onClick = {
-            Toast.makeText(
-                context,
-                FirebaseAuth.getInstance().currentUser?.email.toString() + "\n${viewModel.isLoggedIn}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }) {
-            Text(text = "currentUser")
-        }
+        if (workoutViewModel.isWorkOutRunning)
+            MiniPlayer(
+                workoutViewModel = workoutViewModel,
+                navController = navController
+            )
     }
 }

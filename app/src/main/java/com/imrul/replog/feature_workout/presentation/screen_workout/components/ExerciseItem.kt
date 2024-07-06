@@ -14,8 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
+import com.imrul.replog.feature_exercises.presentation.components.DropDownMenuForExerciseItem
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
+import com.imrul.replog.feature_workout.presentation.components.DropDownMenuForExerciseName
 import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
@@ -24,26 +27,38 @@ import com.imrul.replog.ui.theme.Maroon70
 @Composable
 fun ExerciseItem(
     exerciseIndex: Int,
-    workoutViewModel: WorkoutViewModel = hiltViewModel()
+    workoutViewModel: WorkoutViewModel
 ) {
-    val listOfExercises = workoutViewModel.listOfExercises
+    val listOfExercises = workoutViewModel.listOfExerciseName
     val listOfWeights = workoutViewModel.listOfWeights
     val listOfReps = workoutViewModel.listOfReps
     val listOfNotes = workoutViewModel.listOfNotes
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        WorkoutTitleTextField(
-            text = listOfExercises[exerciseIndex],
-            onValueChange = {
-                workoutViewModel.onExerciseNameValueChanged(
-                    exerciseIndex = exerciseIndex,
-                    content = it
-                )
-            },
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = listOfExercises[exerciseIndex],
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Maroon70,
+                modifier = Modifier.padding(start = 5.dp)
+            )
+            DropDownMenuForExerciseName(
+                onEditClicked = {
+
+                },
+                onDeleteClicked = { })
+        }
+
         CustomTextField(
-            text = listOfNotes[exerciseIndex],
+            text = if (listOfNotes.isNotEmpty()) listOfNotes[exerciseIndex] else "",
             onValueChange = {
                 workoutViewModel.onNoteValueChanged(
                     exerciseIndex = exerciseIndex,
@@ -52,9 +67,8 @@ fun ExerciseItem(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp, 0.dp)
+                .padding(15.dp, 0.dp)
         )
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,7 +109,11 @@ fun ExerciseItem(
         }
         listOfWeights.forEachIndexed { setIndex, item ->
             if (item.first == exerciseIndex) {
-                SetItem(exerciseIndex = exerciseIndex, setIndex = setIndex)
+                SetItem(
+                    exerciseIndex = exerciseIndex,
+                    setIndex = setIndex,
+                    workoutViewModel = workoutViewModel
+                )
             }
         }
         Text(
