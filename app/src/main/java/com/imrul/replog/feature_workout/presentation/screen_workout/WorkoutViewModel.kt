@@ -9,8 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
-import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.domain.model.Session
 import com.imrul.replog.feature_workout.domain.model.Set
@@ -45,6 +43,9 @@ class WorkoutViewModel @Inject constructor(
         private set
 
     var listOfExerciseName = mutableStateListOf<String>()
+        private set
+
+    var listOfWeightUnits = mutableStateListOf<String>()
         private set
     var listOfExerciseId = mutableStateListOf<Long>()
         private set
@@ -95,14 +96,11 @@ class WorkoutViewModel @Inject constructor(
         listOfReps[setIndex] = content
     }
 
-    fun addExercise(navController: NavHostController) {
-
-//        listOfNotes.add("")
-    }
-
     fun addExerciseNameAndId(name: String, exerciseId: Long, context: Context) {
         listOfExerciseName.add(name)
         listOfExerciseId.add(exerciseId)
+        // add the previous Weight Unit
+        listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
         Toast.makeText(context, listOfExerciseName.size.toString(), Toast.LENGTH_SHORT).show()
     }
 
@@ -127,7 +125,9 @@ class WorkoutViewModel @Inject constructor(
                 val set = Set(
                     weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
                     reps = listOfReps[i].toFloatOrNull() ?: 0f,
-                    sessionIdForeign = sessionId
+                    sessionIdForeign = sessionId,
+                    isDone = true,
+                    setType = if (listOfTillFailure[i]) Set.SET_TYPE_FAILURE else Set.SET_TYPE_WARM_UP
                 )
                 if (listOfIsDone[i]) {
                     setCount++
@@ -140,7 +140,9 @@ class WorkoutViewModel @Inject constructor(
             workoutIdForeign = workoutId,
             setCount = setCount.toLong(),
             exerciseIdForeign = listOfExerciseId[exerciseIndex],
-            exerciseName = listOfExerciseName[exerciseIndex]
+            exerciseName = listOfExerciseName[exerciseIndex],
+            bestSet = "",
+            weightUnit = listOfWeightUnits[exerciseIndex]
         )
         workoutUseCases.insertSession(session)
     }

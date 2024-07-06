@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Set(
     @PrimaryKey
     val setId: Long? = null,
-    val setType: String = setTypes[0],
+    val setType: String = SET_TYPE_WARM_UP,
     val weightValue: Float = 0f,
     val reps: Float = 0f,
     val isDone: Boolean = false,
@@ -15,7 +15,8 @@ data class Set(
     val timerDuration: Long? = null
 ) {
     companion object {
-        val setTypes = listOf("regular set", "warm up set", "failure set")
+        const val SET_TYPE_WARM_UP = "warm up set"
+        const val SET_TYPE_FAILURE = "failure"
     }
 }
 
