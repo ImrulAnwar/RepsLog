@@ -1,7 +1,5 @@
 <h1><strong>RepsLog</strong></h1>
 
-![App Screenshot](https://example.com/app-screenshot.png)
-
 <p>RepsLog is a comprehensive app designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
 
 <h2><strong>Features</strong></h2>
@@ -14,6 +12,18 @@
 <li><strong>Background Workout</strong>: Run your workout in the background, allowing you to use other apps while working out.</li>
 
 <li><strong>Workout Templates</strong>: Create your own workout templates or choose from existing ones to streamline your workout planning.</li>
+
+<li><strong>Exercise Management:</strong>
+    <ul>
+      <li>Filter and Search Exercise</li>
+      <li>Create, Edit & Delete your own exercise</li>
+      <li>
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise">
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Edit Exercise">
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Delete Exercise">
+      </li>
+    </ul>
+  </li>
 
 <li><strong>Custom Workout Routines</strong>: Personalize your fitness plan by designing custom workout routines tailored to your goals & preferences.</li>
 
