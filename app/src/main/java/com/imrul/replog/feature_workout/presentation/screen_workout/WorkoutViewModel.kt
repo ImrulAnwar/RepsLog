@@ -14,6 +14,7 @@ import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -100,7 +101,6 @@ class WorkoutViewModel @Inject constructor(
         listOfExerciseId.add(exerciseId)
         // add the previous Weight Unit
         listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
-        Toast.makeText(context, listOfExerciseName.size.toString(), Toast.LENGTH_SHORT).show()
     }
 
     fun onNoteValueChanged(
@@ -143,6 +143,8 @@ class WorkoutViewModel @Inject constructor(
             weightUnit = listOfWeightUnits[exerciseIndex]
         )
         workoutUseCases.insertSession(session)
+
+//        clearAllData()
     }
 
     fun insertWorkout() {
@@ -165,6 +167,8 @@ class WorkoutViewModel @Inject constructor(
             listOfExerciseName.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)
             }
+        }.invokeOnCompletion {
+            clearAllData()
         }
     }
 
