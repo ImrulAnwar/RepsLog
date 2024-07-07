@@ -41,6 +41,9 @@ class WorkoutViewModel @Inject constructor(
     var listOfReps = mutableStateListOf<String>()
         private set
 
+    var listOfPrevious = mutableStateListOf<String>()
+        private set
+
     var listOfIsDone = mutableStateListOf<Boolean>()
         private set
     var listOfTillFailure = mutableStateListOf<Boolean>()
@@ -70,12 +73,13 @@ class WorkoutViewModel @Inject constructor(
         workoutTitle = value
     }
 
-    fun addSet(first: String, second: String, exerciseIndex: Int? = null) {
+    fun addSet(exerciseIndex: Int? = null) {
         exerciseIndex?.let {
             listOfWeights.add(Pair(it, ""))
             listOfReps.add("")
             listOfIsDone.add(false)
             listOfTillFailure.add(false)
+            listOfPrevious.add("-")
         }
     }
 
@@ -99,6 +103,28 @@ class WorkoutViewModel @Inject constructor(
     fun addExerciseNameAndId(name: String, exerciseId: Long, context: Context) {
         listOfExerciseName.add(name)
         listOfExerciseId.add(exerciseId)
+        // loading previous session
+        viewModelScope.launch {
+            workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
+                .collect { session ->
+                    val sessionId = session.sessionId
+                    if (sessionId != null) {
+                        workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
+                            .collect { listOfSets ->
+                                val exerciseIndex = listOfExerciseName.size - 1
+                                listOfSets.forEach { set ->
+
+                                    listOfWeights.add(Pair(exerciseIndex, ""))
+                                    listOfReps.add("")
+                                    listOfIsDone.add(false)
+                                    listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
+                                    listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
+                                }
+
+                            }
+                    }
+                }
+        }
         // add the previous Weight Unit
         listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
     }
@@ -143,8 +169,6 @@ class WorkoutViewModel @Inject constructor(
             weightUnit = listOfWeightUnits[exerciseIndex]
         )
         workoutUseCases.insertSession(session)
-
-//        clearAllData()
     }
 
     fun insertWorkout() {
