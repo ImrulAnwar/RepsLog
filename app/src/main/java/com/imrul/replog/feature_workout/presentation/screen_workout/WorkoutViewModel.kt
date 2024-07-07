@@ -1,7 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +13,6 @@ import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -113,7 +111,6 @@ class WorkoutViewModel @Inject constructor(
                             .collect { listOfSets ->
                                 val exerciseIndex = listOfExerciseName.size - 1
                                 listOfSets.forEach { set ->
-
                                     listOfWeights.add(Pair(exerciseIndex, ""))
                                     listOfReps.add("")
                                     listOfIsDone.add(false)
@@ -143,7 +140,9 @@ class WorkoutViewModel @Inject constructor(
         )
         val sessionId = workoutUseCases.insertSession(session)
         var setCount = 0
-        listOfWeights.forEachIndexed { i, item ->
+
+        val listOfWeightsCopy = listOfWeights.toList()
+        listOfWeightsCopy.forEachIndexed { i, item ->
             if (item.first == exerciseIndex) {
                 //this set belongs to the exercise
                 val set = Set(
@@ -187,8 +186,8 @@ class WorkoutViewModel @Inject constructor(
                 weekdayString = weekDayString
             )
             val workoutId: Long = workoutUseCases.insertWorkout(workout)
-
-            listOfExerciseName.forEachIndexed { index, _ ->
+            val exerciseNamesCopy = listOfExerciseName.toList()
+            exerciseNamesCopy.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)
             }
         }.invokeOnCompletion {
@@ -228,6 +227,7 @@ class WorkoutViewModel @Inject constructor(
         listOfWeightUnits.clear()
         listOfExerciseId.clear()
         listOfNotes.clear()
+        listOfPrevious.clear()
     }
 
 }
