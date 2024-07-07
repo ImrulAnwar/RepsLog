@@ -54,7 +54,8 @@ fun WorkoutHistoryScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .padding(bottom = if(!workoutViewModel.isWorkOutRunning) 80.dp else 0.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
