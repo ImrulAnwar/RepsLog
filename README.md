@@ -30,10 +30,6 @@
 
 <li><strong>Custom Workout Routines</strong>: Personalize your fitness plan by designing custom workout routines tailored to your goals & preferences.</li>
 
-<li><strong>Exercise Management</strong>: Create, delete, & edit exercises as needed to personalize your workout routine.</li>
-
-<li><strong>Search, Sort & Filter Exercises</strong>: Easily find, organize & refine exercise for your workout routine.</li>
-
 <li><strong>Progress Tracking</strong>: Track your progress for each exercise to monitor improvements over time.</li>
 
 <li><strong>Body Measurements</strong>: Log body measurements like muscle size & body weight to visualize your fitness progress.</li>
