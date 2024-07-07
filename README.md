@@ -3,7 +3,6 @@
 <p>RepsLog is a comprehensive app designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
 
 <h2><strong>Features</strong></h2>
-
 <ul>
 <li><strong>Workout Tracking</strong>: Add multiple exercises to your workout & multiple sets per exercise.</li>
   
@@ -16,14 +15,18 @@
 <li><strong>Exercise Management:</strong>
     <ul>
       <li>Filter and Search Exercise</li>
+       <li>
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/d346d847-7a47-43e9-87dd-e33e5ce8067b" alt="Add Exercise" style="width: 200px;">
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/6ad0ffe9-3daf-4522-8556-d05f2d0672c3" alt="Edit Exercise" style="width: 200px;">
+      </li>
       <li>Create, Edit & Delete your own exercise</li>
       <li>
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise">
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Edit Exercise">
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Delete Exercise">
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise" style="width: 200px;">
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/1f2137b8-1429-4eb2-9e6f-a7185337fd03" alt="Edit Exercise" style="width: 200px;">
+        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/31434f99-e73c-445a-9360-26cc4e50e169" alt="Delete Exercise" style="width: 200px;">
       </li>
     </ul>
-  </li>
+</li>
 
 <li><strong>Custom Workout Routines</strong>: Personalize your fitness plan by designing custom workout routines tailored to your goals & preferences.</li>
 
