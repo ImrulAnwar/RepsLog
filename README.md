@@ -14,7 +14,7 @@
 
 <li><strong>Exercise Management:</strong>
     <ul>
-      <li>Filter and Search Exercise</li>
+      <li>Filter and Search Exercises</li>
        <li>
         <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/d346d847-7a47-43e9-87dd-e33e5ce8067b" alt="Add Exercise" style="width: 200px;">
         <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/6ad0ffe9-3daf-4522-8556-d05f2d0672c3" alt="Edit Exercise" style="width: 200px;">
