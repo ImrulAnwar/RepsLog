@@ -4,8 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,7 +42,7 @@ fun ExerciseItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -73,38 +76,49 @@ fun ExerciseItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = Strings.SET,
+                text = "\t ${Strings.SET}",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
-                color = Maroon70
+                color = Maroon70,
+                modifier = Modifier.width(60.dp)
             )
+            Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = Strings.PREVIOUS,
+                text = "\t ${Strings.PREVIOUS}",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
-                color = Maroon70
+                color = Maroon70,
+                modifier = Modifier.weight(1f)
             )
+            Spacer(modifier = Modifier.width(10.dp))
+
             Text(
-                text = "KG",
+                text = "\tKG",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
-                color = Maroon70
+                color = Maroon70,
+                modifier = Modifier.width(80.dp)
             )
+            Spacer(modifier = Modifier.width(10.dp))
+
             Text(
-                text = Strings.REPS,
+                text = "\t ${Strings.REPS}",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
-                color = Maroon70
+                color = Maroon70,
+                modifier = Modifier.width(80.dp)
             )
+            Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = "\t\t\t",
+                text = "",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
-                color = Maroon70
+                color = Maroon70,
+                modifier = Modifier.width(44.dp)
             )
         }
         listOfWeights.forEachIndexed { setIndex, item ->
@@ -123,7 +137,7 @@ fun ExerciseItem(
             modifier = Modifier
                 .padding(10.dp)
                 .clickable {
-                    workoutViewModel.addSet("", "", exerciseIndex = exerciseIndex)
+                    workoutViewModel.addSet(exerciseIndex = exerciseIndex)
                 },
             color = Maroon70
         )

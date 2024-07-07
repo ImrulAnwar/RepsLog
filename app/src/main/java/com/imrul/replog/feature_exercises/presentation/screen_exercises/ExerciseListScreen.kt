@@ -164,7 +164,7 @@ fun ExerciseListScreen(
 
         // list
         if (isLoading)
-            CircularProgressIndicator(color = Maroon70)
+            CircularProgressIndicator(color = Maroon70, modifier = Modifier.weight(1f))
         else
             LazyColumn(
                 modifier = Modifier

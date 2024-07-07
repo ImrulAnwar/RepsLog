@@ -16,11 +16,11 @@ import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
 fun NumberTextField(
-    text: String,
-    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
         .width(60.dp)
-        .padding(0.dp, 10.dp),
+        .padding(horizontal = 0.dp, vertical = 5.dp),
+    text: String,
+    onValueChange: (String) -> Unit,
     isDone: Boolean
 ) {
     OutlinedTextField(

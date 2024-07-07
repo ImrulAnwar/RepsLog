@@ -1,7 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +39,9 @@ class WorkoutViewModel @Inject constructor(
     var listOfReps = mutableStateListOf<String>()
         private set
 
+    var listOfPrevious = mutableStateListOf<String>()
+        private set
+
     var listOfIsDone = mutableStateListOf<Boolean>()
         private set
     var listOfTillFailure = mutableStateListOf<Boolean>()
@@ -69,12 +71,13 @@ class WorkoutViewModel @Inject constructor(
         workoutTitle = value
     }
 
-    fun addSet(first: String, second: String, exerciseIndex: Int? = null) {
+    fun addSet(exerciseIndex: Int? = null) {
         exerciseIndex?.let {
             listOfWeights.add(Pair(it, ""))
             listOfReps.add("")
             listOfIsDone.add(false)
             listOfTillFailure.add(false)
+            listOfPrevious.add("-")
         }
     }
 
@@ -98,9 +101,29 @@ class WorkoutViewModel @Inject constructor(
     fun addExerciseNameAndId(name: String, exerciseId: Long, context: Context) {
         listOfExerciseName.add(name)
         listOfExerciseId.add(exerciseId)
+        // loading previous session
+        viewModelScope.launch {
+            workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
+                .collect { session ->
+                    val sessionId = session.sessionId
+                    if (sessionId != null) {
+                        workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
+                            .collect { listOfSets ->
+                                val exerciseIndex = listOfExerciseName.size - 1
+                                listOfSets.forEach { set ->
+                                    listOfWeights.add(Pair(exerciseIndex, ""))
+                                    listOfReps.add("")
+                                    listOfIsDone.add(false)
+                                    listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
+                                    listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
+                                }
+
+                            }
+                    }
+                }
+        }
         // add the previous Weight Unit
         listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
-        Toast.makeText(context, listOfExerciseName.size.toString(), Toast.LENGTH_SHORT).show()
     }
 
     fun onNoteValueChanged(
@@ -117,7 +140,9 @@ class WorkoutViewModel @Inject constructor(
         )
         val sessionId = workoutUseCases.insertSession(session)
         var setCount = 0
-        listOfWeights.forEachIndexed { i, item ->
+
+        val listOfWeightsCopy = listOfWeights.toList()
+        listOfWeightsCopy.forEachIndexed { i, item ->
             if (item.first == exerciseIndex) {
                 //this set belongs to the exercise
                 val set = Set(
@@ -161,10 +186,12 @@ class WorkoutViewModel @Inject constructor(
                 weekdayString = weekDayString
             )
             val workoutId: Long = workoutUseCases.insertWorkout(workout)
-
-            listOfExerciseName.forEachIndexed { index, _ ->
+            val exerciseNamesCopy = listOfExerciseName.toList()
+            exerciseNamesCopy.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)
             }
+        }.invokeOnCompletion {
+            clearAllData()
         }
     }
 
@@ -200,6 +227,7 @@ class WorkoutViewModel @Inject constructor(
         listOfWeightUnits.clear()
         listOfExerciseId.clear()
         listOfNotes.clear()
+        listOfPrevious.clear()
     }
 
 }

@@ -3,8 +3,10 @@ package com.imrul.replog.feature_workout.presentation.screen_workout.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Button
@@ -38,9 +40,10 @@ fun SetItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(if (listOfIsDone[setIndex]) Maroon20 else WhiteCustom),
+            .background(if (listOfIsDone[setIndex]) Maroon20 else WhiteCustom)
+            .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Button(
             onClick = {
@@ -50,7 +53,8 @@ fun SetItem(
                 contentColor = if (listOfTillFailure[setIndex]) Maroon90 else Maroon70,
                 disabledContainerColor = Maroon20,
                 disabledContentColor = WhiteCustom
-            )
+            ),
+            modifier = Modifier.width(60.dp)
         ) {
             Text(
                 if (!listOfTillFailure[setIndex]) "W" else "F",
@@ -58,7 +62,15 @@ fun SetItem(
                 fontWeight = FontWeight.Bold
             )
         }
-        Text("50 kg x 12", color = Maroon70)
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+            text = workoutViewModel.listOfPrevious[setIndex],
+            color = Maroon70,
+            modifier = Modifier
+                .weight(1f)
+                .padding(5.dp)
+        )
+        Spacer(modifier = Modifier.width(10.dp))
         NumberTextField(
             text = workoutViewModel.listOfWeights[setIndex].second,
             isDone = listOfIsDone[setIndex],
@@ -67,8 +79,9 @@ fun SetItem(
                     setIndex = setIndex,
                     content = it
                 )
-            },
+            }, modifier = Modifier.width(80.dp)
         )
+        Spacer(modifier = Modifier.width(10.dp))
         NumberTextField(
             text = workoutViewModel.listOfReps[setIndex],
             isDone = listOfIsDone[setIndex],
@@ -77,8 +90,9 @@ fun SetItem(
                     setIndex = setIndex,
                     content = it
                 )
-            },
+            }, modifier = Modifier.width(80.dp)
         )
+        Spacer(modifier = Modifier.width(10.dp))
         SetIsDoneIcon(
             painter = rememberVectorPainter(image = Icons.Outlined.Done),
             contentDescription = Strings.FINISHED_SET_BUTTON,

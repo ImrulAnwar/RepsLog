@@ -119,7 +119,6 @@ fun WorkoutScreen(
                                         it.action = WorkoutService.Actions.STOP.toString()
                                         context.startForegroundService(it)
                                     }
-                                    workoutViewModel.clearAllData()
                                     navController.popBackStack()
                                 }
                             }
