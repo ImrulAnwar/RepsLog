@@ -53,7 +53,7 @@ class WorkoutRepositoryImp(
         dao.getAllSessionByWorkoutId(workoutId)
 
 
-    override fun getLatestSessionByExerciseId(exerciseId: Long?): Flow<Session> =
+    override fun getLatestSessionByExerciseId(exerciseId: Long?): Flow<Session?> =
         dao.getLatestSessionByExerciseId(exerciseId)
 
     override fun getAllNotes(): Flow<List<Note>> = dao.getAllNotes()

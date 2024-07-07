@@ -54,7 +54,7 @@ interface WorkoutDao {
     fun getAllSessionByWorkoutId(workoutId: Long?): Flow<List<Session>>
 
     @Query("SELECT * FROM `Session` WHERE exerciseIdForeign = :exerciseId ORDER BY sessionId DESC LIMIT 1")
-    fun getLatestSessionByExerciseId(exerciseId: Long?): Flow<Session>
+    fun getLatestSessionByExerciseId(exerciseId: Long?): Flow<Session?>
 
 
     @Query("SELECT * FROM `Set` WHERE sessionIdForeign = :sessionId")

@@ -105,8 +105,7 @@ class WorkoutViewModel @Inject constructor(
         viewModelScope.launch {
             workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
                 .collect { session ->
-                    val sessionId = session.sessionId
-                    if (sessionId != null) {
+                    session?.sessionId?.let { sessionId ->
                         workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
                             .collect { listOfSets ->
                                 val exerciseIndex = listOfExerciseName.size - 1
@@ -117,7 +116,6 @@ class WorkoutViewModel @Inject constructor(
                                     listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
                                     listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
                                 }
-
                             }
                     }
                 }
