@@ -110,11 +110,21 @@ fun WorkoutItem(
         ) {
             sessionsList.forEach { session ->
                 if (session.workoutIdForeign == workout.workoutId) {
-                    Text(
-                        text = "${session.setCount} X ${session.exerciseName}",
-                        fontSize = 16.sp,
-                        color = Maroon70
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "${session.setCount} X ${session.exerciseName}",
+                            fontSize = 16.sp,
+                            color = Maroon70
+                        )
+                        Text(
+                            text = "${session.bestSet}",
+                            fontSize = 16.sp,
+                            color = Maroon70
+                        )
+                    }
                 }
             }
         }

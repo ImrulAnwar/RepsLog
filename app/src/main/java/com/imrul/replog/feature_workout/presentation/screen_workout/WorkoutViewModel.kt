@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.max
 
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
@@ -106,6 +107,7 @@ class WorkoutViewModel @Inject constructor(
             workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
                 .collect { session ->
                     session?.sessionId?.let { sessionId ->
+
                         workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
                             .collect { listOfSets ->
                                 val exerciseIndex = listOfExerciseName.size - 1
@@ -138,6 +140,8 @@ class WorkoutViewModel @Inject constructor(
         )
         val sessionId = workoutUseCases.insertSession(session)
         var setCount = 0
+        var maxWeight = 0f
+        var maxReps = 0
 
         val listOfWeightsCopy = listOfWeights.toList()
         listOfWeightsCopy.forEachIndexed { i, item ->
@@ -154,6 +158,12 @@ class WorkoutViewModel @Inject constructor(
                     setCount++
                     workoutUseCases.insertSet(set)
                 }
+
+                // for best set
+                if (maxWeight < listOfWeights[i].second.toFloat()) {
+                    maxWeight = listOfWeights[i].second.toFloat()
+                    maxReps = listOfReps[i].toInt()
+                }
             }
         }
         session = Session(
@@ -162,10 +172,19 @@ class WorkoutViewModel @Inject constructor(
             setCount = setCount.toLong(),
             exerciseIdForeign = listOfExerciseId[exerciseIndex],
             exerciseName = listOfExerciseName[exerciseIndex],
-            bestSet = "",
+            bestSet = "${convertFloatToIntIfPossible(maxWeight)} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
             weightUnit = listOfWeightUnits[exerciseIndex]
         )
         workoutUseCases.insertSession(session)
+    }
+
+    private fun convertFloatToIntIfPossible(number: Float): Number {
+        val numberAsString = number.toString()
+        return if (numberAsString.endsWith(".0") || numberAsString.endsWith(".")) {
+            number.toInt()
+        } else {
+            number
+        }
     }
 
     fun insertWorkout() {
