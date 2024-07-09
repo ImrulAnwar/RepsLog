@@ -1,5 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,15 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
-import com.imrul.replog.feature_exercises.presentation.components.DropDownMenuForExerciseItem
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.components.DropDownMenuForExerciseName
-import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
+import com.imrul.replog.ui.theme.Maroon90
 
 
 @Composable
@@ -54,10 +51,14 @@ fun ExerciseItem(
                 modifier = Modifier.padding(start = 5.dp)
             )
             DropDownMenuForExerciseName(
-                onEditClicked = {
+                addANoteClicked = {
 
                 },
-                onDeleteClicked = { })
+                onRemoveExerciseClicked = {
+                    workoutViewModel.removeExercise(exerciseId = workoutViewModel.listOfExerciseId[exerciseIndex])
+                },
+                onChangeWeightUnitClicked = {}
+            )
         }
 
         CustomTextField(
@@ -126,7 +127,8 @@ fun ExerciseItem(
                 SetItem(
                     exerciseIndex = exerciseIndex,
                     setIndex = setIndex,
-                    workoutViewModel = workoutViewModel
+                    workoutViewModel = workoutViewModel,
+                    onSwiped = { workoutViewModel.removeSet(setIndex) }
                 )
             }
         }

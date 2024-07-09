@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.imrul.replog"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.compose.material)
 
 // Unit Test
     testImplementation(libs.junit) // default

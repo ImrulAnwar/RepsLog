@@ -1,8 +1,6 @@
 package com.imrul.replog.feature_exercises.presentation.screen_add_edit_exercise
 
 import android.content.Context
-import android.content.Intent
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,12 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.CustomButton
 import com.imrul.replog.feature_exercises.presentation.components.CustomDropDownMenu
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
-import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.ui.theme.WhiteCustom
 
 @Composable
@@ -43,7 +38,6 @@ fun AddEditExerciseScreen(
     LaunchedEffect(Unit) {
         if (exerciseId != -1L) {
             viewModel.initializeParameters(exerciseId = exerciseId)
-            Toast.makeText(context, "To Edit", Toast.LENGTH_SHORT).show()
         }
     }
 

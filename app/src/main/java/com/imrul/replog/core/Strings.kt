@@ -39,5 +39,7 @@ object Strings {
     const val DELETE = "Delete"
     const val WEIGHT_TYPES = "Weight Types"
     const val TARGET_MUSCLE_GROUP = "Target Muscle Group"
+    const val REMOVE_EXERCISE = "Remove Exercise"
+    const val CHANGE_WEIGHT_UNIT = "Change Weight Unit"
 
 }

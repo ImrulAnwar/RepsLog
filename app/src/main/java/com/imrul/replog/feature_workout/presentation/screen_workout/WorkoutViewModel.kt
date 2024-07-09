@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.math.max
 
 @HiltViewModel
 class WorkoutViewModel @Inject constructor(
@@ -124,6 +123,40 @@ class WorkoutViewModel @Inject constructor(
         }
         // add the previous Weight Unit
         listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
+    }
+
+    fun removeExercise(exerciseId: Long) {
+        val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
+        listOfExerciseName.removeAt(exerciseIndex)
+        listOfExerciseId.removeAt(exerciseIndex)
+
+        val listOfWeightsCopy = listOfWeights.toList()
+        val listOfIndicesToRemove = mutableListOf<Int>()
+        listOfWeightsCopy.forEachIndexed { i, item ->
+            if (item.first == exerciseIndex) {
+                listOfIndicesToRemove.add(i)
+            }
+        }
+
+        // since I am using index to determine which set belong to which exercise
+        // so when i remove an exercise, I will have to update to the new index
+        listOfWeightsCopy.forEachIndexed { index, item ->
+            if (item.first > exerciseIndex) {
+                listOfWeights[index] = Pair(item.first - 1, item.second)
+            }
+        }
+        // descending because removed item doesn't change the next items index
+        listOfIndicesToRemove.sortedDescending().forEach { index ->
+            removeSet(index)
+        }
+    }
+
+    fun removeSet(index: Int) {
+        listOfWeights.removeAt(index)
+        listOfReps.removeAt(index)
+        listOfIsDone.removeAt(index)
+        listOfTillFailure.removeAt(index)
+        listOfPrevious.removeAt(index)
     }
 
     fun onNoteValueChanged(
