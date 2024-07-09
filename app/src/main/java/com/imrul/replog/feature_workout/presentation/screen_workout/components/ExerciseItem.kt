@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.imrul.replog.core.Strings
+import com.imrul.replog.feature_workout.domain.model.Session
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.components.DropDownMenuForExerciseName
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
@@ -101,7 +102,9 @@ fun ExerciseItem(
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
-                text = "\t${workoutViewModel.listOfWeightUnits[exerciseIndex].uppercase()}",
+                text = if (exerciseIndex in workoutViewModel.listOfWeightUnits.indices)
+                    "\t${workoutViewModel.listOfWeightUnits[exerciseIndex].uppercase()}"
+                else Session.WEIGHT_UNIT_KG,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
                 color = Maroon70,

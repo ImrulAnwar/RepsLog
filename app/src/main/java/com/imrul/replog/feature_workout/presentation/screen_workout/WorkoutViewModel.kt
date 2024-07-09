@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imrul.replog.core.Strings
+import com.imrul.replog.feature_workout.domain.model.Note
 import com.imrul.replog.feature_workout.domain.model.Session
 import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
@@ -237,10 +238,13 @@ class WorkoutViewModel @Inject constructor(
                 }
 
                 // for best set
-                if (maxWeight < listOfWeights[i].second.toFloat()) {
-                    maxWeight = listOfWeights[i].second.toFloat()
-                    maxReps = listOfReps[i].toInt()
-                }
+                val weightString = listOfWeights[i].second
+                val repString = listOfReps[i]
+                if (weightString.isNotEmpty() && repString.isNotEmpty())
+                    if (maxWeight < listOfWeights[i].second.toFloat()) {
+                        maxWeight = listOfWeights[i].second.toFloat()
+                        maxReps = listOfReps[i].toInt()
+                    }
             }
         }
         session = Session(
@@ -253,6 +257,23 @@ class WorkoutViewModel @Inject constructor(
             weightUnit = listOfWeightUnits[exerciseIndex]
         )
         workoutUseCases.insertSession(session)
+    }
+
+    fun insertExerciseNotes() {
+        val listOfNotesCopy = listOfNotes.toList()
+        listOfNotesCopy.forEachIndexed { index, item ->
+            val exerciseIndex = item.first
+            val exerciseId = listOfExerciseId[exerciseIndex]
+            val note = Note(
+                idForeign = exerciseId,
+                belongsTo = Note.SESSION,
+                content = item.second
+            )
+            viewModelScope.launch {
+                workoutUseCases.insertNote(note)
+            }
+        }
+
     }
 
     private fun convertFloatToIntIfPossible(number: Float): Number {
@@ -284,6 +305,7 @@ class WorkoutViewModel @Inject constructor(
             exerciseNamesCopy.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)
             }
+            insertExerciseNotes()
         }.invokeOnCompletion {
             clearAllData()
         }

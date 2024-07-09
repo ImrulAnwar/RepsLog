@@ -8,10 +8,12 @@ data class Note(
     @PrimaryKey
     val noteId: Long? = null,
     val idForeign: Long? = null,
-    val belongsTo: String = mayBelongTo[0],
-    val isPinned: Boolean = false
+    val belongsTo: String = SESSION,
+    val isPinned: Boolean = false,
+    val content: String = ""
 ) {
     companion object {
-        val mayBelongTo = listOf("session", "workout")
+        const val SESSION = "Session"
+        const val WORKOUT = "Workout"
     }
 }
