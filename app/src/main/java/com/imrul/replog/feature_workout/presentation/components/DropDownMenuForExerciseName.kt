@@ -28,7 +28,7 @@ import com.imrul.replog.ui.theme.WhiteCustom
 @Composable
 fun DropDownMenuForExerciseName(
     modifier: Modifier = Modifier,
-    addANoteClicked: () -> Unit,
+    addExerciseNoteClicked: () -> Unit,
     onRemoveExerciseClicked: () -> Unit,
     onChangeWeightUnitClicked: () -> Unit,
 ) {
@@ -56,7 +56,7 @@ fun DropDownMenuForExerciseName(
                     .clip(RoundedCornerShape(10.dp))
             ) {
                 DropdownMenuItem(onClick = {
-                    addANoteClicked()
+                    addExerciseNoteClicked()
                     expanded = false
                 }, text = {
                     Text(

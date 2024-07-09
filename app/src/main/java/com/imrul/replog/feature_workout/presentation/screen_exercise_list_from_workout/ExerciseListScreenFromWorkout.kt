@@ -1,7 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_exercise_list_from_workout
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -177,7 +176,7 @@ fun ExerciseListScreenFromWorkout(
                         exercise = exerciseListState[index],
                         onClick = {
                             exerciseListState[index].exerciseId?.let {
-                                workoutViewModel.addExerciseNameAndId(
+                                workoutViewModel.addExerciseAndSets(
                                     name = exerciseListState[index].name,
                                     exerciseId = it,
                                     context = context

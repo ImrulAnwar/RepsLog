@@ -36,6 +36,8 @@ class WorkoutViewModel @Inject constructor(
 
     var listOfWeights = mutableStateListOf<Pair<Int, String>>()
         private set
+    var listOfNotes = mutableStateListOf<Pair<Int, String>>()
+        private set
     var listOfReps = mutableStateListOf<String>()
         private set
 
@@ -54,8 +56,6 @@ class WorkoutViewModel @Inject constructor(
         private set
     var listOfExerciseId = mutableStateListOf<Long>()
         private set
-    var listOfNotes = mutableStateListOf<String>()
-        private set
 
     init {
         viewModelScope.launch { observeDuration() }
@@ -65,6 +65,10 @@ class WorkoutViewModel @Inject constructor(
         workoutUseCases.durationUseCase.elapsedTime.collect {
             elapsedTime = it
         }
+    }
+
+    fun addExerciseNote(exerciseIndex: Int) {
+        listOfNotes.add(Pair(exerciseIndex, ""))
     }
 
     fun onWorkoutTitleChanged(value: String) {
@@ -91,6 +95,43 @@ class WorkoutViewModel @Inject constructor(
         )
     }
 
+    fun changeWeightUnit(exerciseIndex: Int) {
+        val lisOfWeightsCopy = listOfWeights.toList()
+        if (listOfWeightUnits[exerciseIndex] == Session.WEIGHT_UNIT_KG) {
+            listOfWeightUnits[exerciseIndex] = Session.WEIGHT_UNIT_LB
+            lisOfWeightsCopy.forEachIndexed { index, item ->
+                if (item.first == exerciseIndex) {
+                    val newWeight = item.second.toFloatOrNull()
+                    newWeight?.let {
+                        val formattedWeight = "%.2f".format(it * 2.205)
+                        listOfWeights[index] = Pair(exerciseIndex, formattedWeight)
+                    }
+                }
+            }
+        } else {
+            listOfWeightUnits[exerciseIndex] = Session.WEIGHT_UNIT_KG
+            lisOfWeightsCopy.forEachIndexed { index, item ->
+                if (item.first == exerciseIndex) {
+                    val newWeight = item.second.toFloatOrNull()
+                    newWeight?.let {
+                        val formattedWeight = "%.2f".format(it / 2.205)
+                        listOfWeights[index] = Pair(exerciseIndex, formattedWeight)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun extractNumbers(data: String): Pair<Float, Float> {
+        val parts = data.split(" ") // Split the string by whitespace
+
+        // Try converting the first and last elements to float
+        val firstNumber = parts.firstOrNull()?.toFloatOrNull() ?: 0.0f
+        val lastNumber = parts.lastOrNull()?.toFloatOrNull() ?: 0.0f
+
+        return Pair(firstNumber, lastNumber)
+    }
+
     fun onRepValueChanged(
         setIndex: Int,
         content: String,
@@ -98,7 +139,7 @@ class WorkoutViewModel @Inject constructor(
         listOfReps[setIndex] = content
     }
 
-    fun addExerciseNameAndId(name: String, exerciseId: Long, context: Context) {
+    fun addExerciseAndSets(name: String, exerciseId: Long, context: Context) {
         listOfExerciseName.add(name)
         listOfExerciseId.add(exerciseId)
         // loading previous session
@@ -117,12 +158,14 @@ class WorkoutViewModel @Inject constructor(
                                     listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
                                     listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
                                 }
+                                listOfWeightUnits.add(session.weightUnit)
                             }
+                    }
+                    if (session == null) {
+                        listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
                     }
                 }
         }
-        // add the previous Weight Unit
-        listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
     }
 
     fun removeExercise(exerciseId: Long) {
@@ -161,9 +204,10 @@ class WorkoutViewModel @Inject constructor(
 
     fun onNoteValueChanged(
         exerciseIndex: Int,
-        content: String
+        content: String,
+        noteIndex: Int
     ) {
-        listOfNotes[exerciseIndex] = content
+        listOfNotes[noteIndex] = Pair(exerciseIndex, content)
     }
 
     private suspend fun insertSessions(exerciseIndex: Int, workoutId: Long) {

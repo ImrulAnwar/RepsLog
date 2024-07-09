@@ -1,6 +1,5 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,6 @@ import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.components.DropDownMenuForExerciseName
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
-import com.imrul.replog.ui.theme.Maroon90
 
 
 @Composable
@@ -51,28 +49,33 @@ fun ExerciseItem(
                 modifier = Modifier.padding(start = 5.dp)
             )
             DropDownMenuForExerciseName(
-                addANoteClicked = {
-
+                addExerciseNoteClicked = {
+                    workoutViewModel.addExerciseNote(exerciseIndex = exerciseIndex)
                 },
                 onRemoveExerciseClicked = {
                     workoutViewModel.removeExercise(exerciseId = workoutViewModel.listOfExerciseId[exerciseIndex])
                 },
-                onChangeWeightUnitClicked = {}
+                onChangeWeightUnitClicked = {
+                    workoutViewModel.changeWeightUnit(exerciseIndex = exerciseIndex)
+                }
             )
         }
-
-        CustomTextField(
-            text = if (listOfNotes.isNotEmpty()) listOfNotes[exerciseIndex] else "",
-            onValueChange = {
-                workoutViewModel.onNoteValueChanged(
-                    exerciseIndex = exerciseIndex,
-                    content = it
-                )
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp, 0.dp)
-        )
+        if (workoutViewModel.listOfNotes.isNotEmpty())
+            workoutViewModel.listOfNotes.forEachIndexed { index, item ->
+                if (item.first == exerciseIndex)
+                    CustomTextField(
+                        text = item.second,
+                        onValueChange = {
+                            workoutViewModel.onNoteValueChanged(
+                                exerciseIndex = exerciseIndex,
+                                content = it, noteIndex = index
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(15.dp, 0.dp)
+                    )
+            }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -98,7 +101,7 @@ fun ExerciseItem(
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
-                text = "\tKG",
+                text = "\t${workoutViewModel.listOfWeightUnits[exerciseIndex].uppercase()}",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
                 color = Maroon70,
