@@ -57,6 +57,7 @@ fun SetItem(
     LaunchedEffect(swipeable.currentValue) {
         if (swipeable.currentValue == 1) {
             onSwiped()
+            swipeable.snapTo(0)
         }
     }
 

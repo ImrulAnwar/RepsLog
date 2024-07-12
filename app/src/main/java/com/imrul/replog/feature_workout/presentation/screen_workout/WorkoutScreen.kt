@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
+import com.imrul.replog.feature_workout.presentation.components.AddNoteTextField
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.DropDownMenuForWorkoutName
@@ -155,7 +156,7 @@ fun WorkoutScreen(
                     }
                     if (workoutViewModel.listOfWorkoutNotes.isNotEmpty())
                         workoutViewModel.listOfWorkoutNotes.forEachIndexed { index, item ->
-                            CustomTextField(
+                            AddNoteTextField(
                                 text = item,
                                 onValueChange = {
                                     workoutViewModel.onWorkoutNoteValueChanged(
@@ -165,7 +166,8 @@ fun WorkoutScreen(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(15.dp, 0.dp)
+                                    .padding(15.dp, 0.dp),
+                                onSwiped = { workoutViewModel.removeWorkoutNote(index) }
                             )
                         }
                     listOfExercises.forEachIndexed { exerciseIndex, _ ->

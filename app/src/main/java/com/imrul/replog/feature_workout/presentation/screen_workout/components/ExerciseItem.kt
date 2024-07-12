@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.domain.model.Session
+import com.imrul.replog.feature_workout.presentation.components.AddNoteTextField
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
@@ -73,7 +74,7 @@ fun ExerciseItem(
         if (workoutViewModel.listOfExerciseNotes.isNotEmpty())
             workoutViewModel.listOfExerciseNotes.forEachIndexed { index, item ->
                 if (item.first == exerciseIndex)
-                    CustomTextField(
+                    AddNoteTextField(
                         text = item.second,
                         onValueChange = {
                             workoutViewModel.onExerciseNoteValueChanged(
@@ -83,7 +84,8 @@ fun ExerciseItem(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(15.dp, 0.dp)
+                            .padding(15.dp, 0.dp),
+                        onSwiped = { workoutViewModel.removeExerciseNote(index) }
                     )
             }
         Row(

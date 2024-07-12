@@ -105,6 +105,14 @@ class WorkoutViewModel @Inject constructor(
         )
     }
 
+    fun removeExerciseNote(index: Int) {
+        listOfExerciseNotes.removeAt(index)
+    }
+
+    fun removeWorkoutNote(index: Int) {
+        listOfWorkoutNotes.removeAt(index)
+    }
+
     fun changeWeightUnit(exerciseIndex: Int) {
         val lisOfWeightsCopy = listOfWeights.toList()
         if (listOfWeightUnits[exerciseIndex] == Session.WEIGHT_UNIT_KG) {
@@ -402,6 +410,8 @@ class WorkoutViewModel @Inject constructor(
         listOfExerciseId.clear()
         listOfExerciseNotes.clear()
         listOfPrevious.clear()
+        listOfExerciseNotes.clear()
+        listOfWorkoutNotes.clear()
     }
 
 }
