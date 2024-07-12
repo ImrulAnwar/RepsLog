@@ -37,7 +37,10 @@ class WorkoutViewModel @Inject constructor(
 
     var listOfWeights = mutableStateListOf<Pair<Int, String>>()
         private set
-    var listOfNotes = mutableStateListOf<Pair<Int, String>>()
+    var listOfExerciseNotes = mutableStateListOf<Pair<Int, String>>()
+        private set
+
+    var listOfWorkoutNotes = mutableStateListOf<String>()
         private set
     var listOfReps = mutableStateListOf<String>()
         private set
@@ -68,8 +71,12 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-    fun addExerciseNote(exerciseIndex: Int) {
-        listOfNotes.add(Pair(exerciseIndex, ""))
+    fun addExerciseNote(exerciseIndex: Int, text: String = "") {
+        listOfExerciseNotes.add(Pair(exerciseIndex, text))
+    }
+
+    fun addWorkoutNote(text: String = "") {
+        listOfWorkoutNotes.add(text)
     }
 
     fun onWorkoutTitleChanged(value: String) {
@@ -203,13 +210,21 @@ class WorkoutViewModel @Inject constructor(
         listOfPrevious.removeAt(index)
     }
 
-    fun onNoteValueChanged(
+    fun onExerciseNoteValueChanged(
         exerciseIndex: Int,
         content: String,
         noteIndex: Int
     ) {
-        listOfNotes[noteIndex] = Pair(exerciseIndex, content)
+        listOfExerciseNotes[noteIndex] = Pair(exerciseIndex, content)
     }
+
+    fun onWorkoutNoteValueChanged(
+        index: Int,
+        content: String,
+    ) {
+        listOfWorkoutNotes[index] = content
+    }
+
 
     private suspend fun insertSessions(exerciseIndex: Int, workoutId: Long) {
 
@@ -260,7 +275,7 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun insertExerciseNotes() {
-        val listOfNotesCopy = listOfNotes.toList()
+        val listOfNotesCopy = listOfExerciseNotes.toList()
         listOfNotesCopy.forEachIndexed { index, item ->
             val exerciseIndex = item.first
             val exerciseId = listOfExerciseId[exerciseIndex]
@@ -270,11 +285,27 @@ class WorkoutViewModel @Inject constructor(
                 content = item.second
             )
             viewModelScope.launch {
-                workoutUseCases.insertNote(note)
+                if (note.content.isNotEmpty())
+                    workoutUseCases.insertNote(note)
             }
         }
-
     }
+
+    fun insertWorkoutNotes(workoutId: Long) {
+        val listOfNotesCopy = listOfWorkoutNotes.toList()
+        listOfNotesCopy.forEachIndexed { index, item ->
+            val note = Note(
+                idForeign = workoutId,
+                belongsTo = Note.WORKOUT,
+                content = item
+            )
+            viewModelScope.launch {
+                if (note.content.isNotEmpty())
+                    workoutUseCases.insertNote(note)
+            }
+        }
+    }
+
 
     private fun convertFloatToIntIfPossible(number: Float): Number {
         val numberAsString = number.toString()
@@ -305,6 +336,7 @@ class WorkoutViewModel @Inject constructor(
             exerciseNamesCopy.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)
             }
+            insertWorkoutNotes(workoutId = workoutId)
             insertExerciseNotes()
         }.invokeOnCompletion {
             clearAllData()
@@ -342,7 +374,7 @@ class WorkoutViewModel @Inject constructor(
         listOfExerciseName.clear()
         listOfWeightUnits.clear()
         listOfExerciseId.clear()
-        listOfNotes.clear()
+        listOfExerciseNotes.clear()
         listOfPrevious.clear()
     }
 

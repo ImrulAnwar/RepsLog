@@ -26,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -34,13 +33,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
+import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
+import com.imrul.replog.feature_workout.presentation.screen_workout.components.DropDownMenuForWorkoutName
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.ExerciseItem
 import com.imrul.replog.ui.theme.Maroon10
 import com.imrul.replog.ui.theme.WhiteCustom
@@ -127,11 +126,7 @@ fun WorkoutScreen(
                 }
                 // This is the body
 
-                WorkoutTitleTextField(
-                    text = workoutTitle,
-                    onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
-                    modifier = Modifier.fillMaxWidth()
-                )
+
                 Text(
                     elapsedTime,
                     color = Maroon70
@@ -141,6 +136,38 @@ fun WorkoutScreen(
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        WorkoutTitleTextField(
+                            text = workoutTitle,
+                            onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
+                        )
+                        DropDownMenuForWorkoutName(
+                            addWorkoutNoteClicked = {
+                                workoutViewModel.addWorkoutNote()
+                            }
+                        )
+                    }
+                    if (workoutViewModel.listOfWorkoutNotes.isNotEmpty())
+                        workoutViewModel.listOfWorkoutNotes.forEachIndexed { index, item ->
+                            CustomTextField(
+                                text = item,
+                                onValueChange = {
+                                    workoutViewModel.onWorkoutNoteValueChanged(
+                                        index = index,
+                                        content = it
+                                    )
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(15.dp, 0.dp)
+                            )
+                        }
                     listOfExercises.forEachIndexed { exerciseIndex, _ ->
                         ExerciseItem(
                             exerciseIndex = exerciseIndex,

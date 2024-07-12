@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.domain.model.Session
 import com.imrul.replog.feature_workout.presentation.components.CustomTextField
-import com.imrul.replog.feature_workout.presentation.components.DropDownMenuForExerciseName
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 
@@ -31,7 +30,7 @@ fun ExerciseItem(
     val listOfExercises = workoutViewModel.listOfExerciseName
     val listOfWeights = workoutViewModel.listOfWeights
     val listOfReps = workoutViewModel.listOfReps
-    val listOfNotes = workoutViewModel.listOfNotes
+    val listOfNotes = workoutViewModel.listOfExerciseNotes
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -61,13 +60,13 @@ fun ExerciseItem(
                 }
             )
         }
-        if (workoutViewModel.listOfNotes.isNotEmpty())
-            workoutViewModel.listOfNotes.forEachIndexed { index, item ->
+        if (workoutViewModel.listOfExerciseNotes.isNotEmpty())
+            workoutViewModel.listOfExerciseNotes.forEachIndexed { index, item ->
                 if (item.first == exerciseIndex)
                     CustomTextField(
                         text = item.second,
                         onValueChange = {
-                            workoutViewModel.onNoteValueChanged(
+                            workoutViewModel.onExerciseNoteValueChanged(
                                 exerciseIndex = exerciseIndex,
                                 content = it, noteIndex = index
                             )

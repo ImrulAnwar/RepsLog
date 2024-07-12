@@ -1,4 +1,4 @@
-package com.imrul.replog.feature_workout.presentation.components
+package com.imrul.replog.feature_workout.presentation.screen_workout.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,11 +26,9 @@ import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
 
 @Composable
-fun DropDownMenuForExerciseName(
+fun DropDownMenuForWorkoutName(
     modifier: Modifier = Modifier,
-    addExerciseNoteClicked: () -> Unit,
-    onRemoveExerciseClicked: () -> Unit,
-    onChangeWeightUnitClicked: () -> Unit,
+    addWorkoutNoteClicked: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -56,35 +54,13 @@ fun DropDownMenuForExerciseName(
                     .clip(RoundedCornerShape(10.dp))
             ) {
                 DropdownMenuItem(onClick = {
-                    addExerciseNoteClicked()
+                    addWorkoutNoteClicked()
                     expanded = false
                 }, text = {
                     Text(
                         modifier = Modifier
                             .padding(8.dp),
                         text = Strings.ADD_A_NOTE,
-                        color = Maroon70
-                    )
-                })
-                DropdownMenuItem(onClick = {
-                    onChangeWeightUnitClicked()
-                    expanded = false
-                }, text = {
-                    Text(
-                        modifier = Modifier
-                            .padding(8.dp),
-                        text = Strings.CHANGE_WEIGHT_UNIT,
-                        color = Maroon70
-                    )
-                })
-                DropdownMenuItem(onClick = {
-                    onRemoveExerciseClicked()
-                    expanded = false
-                }, text = {
-                    Text(
-                        modifier = Modifier
-                            .padding(8.dp),
-                        text = Strings.REMOVE_EXERCISE,
                         color = Maroon70
                     )
                 })
