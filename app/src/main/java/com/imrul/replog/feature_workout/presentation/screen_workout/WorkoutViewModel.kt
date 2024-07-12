@@ -192,7 +192,7 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun removeExercise(exerciseId: Long) {
-        val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
+        var exerciseIndex = listOfExerciseId.indexOf(exerciseId)
         listOfExerciseName.removeAt(exerciseIndex)
         listOfExerciseId.removeAt(exerciseIndex)
 
@@ -215,6 +215,17 @@ class WorkoutViewModel @Inject constructor(
         listOfIndicesToRemove.sortedDescending().forEach { index ->
             removeSet(index)
         }
+
+        val listOfNotesCopy = listOfExerciseNotes.toList()
+
+
+        listOfNotesCopy.forEachIndexed { index, item ->
+            if (item.first == exerciseIndex)
+                listOfExerciseNotes.remove(item)
+            if (item.first > exerciseIndex)
+                listOfExerciseNotes[index] = Pair(item.first - 1, item.second)
+        }
+
     }
 
     fun removeSet(index: Int) {
@@ -292,14 +303,14 @@ class WorkoutViewModel @Inject constructor(
 
     fun insertExerciseNotes(sessionId: Long, exerciseIndex: Int) {
         val listOfNotesCopy = listOfExerciseNotes.toList()
-        listOfNotesCopy.forEachIndexed { index, item ->
-//            val exerciseIndex = item.first
-            val note = Note(
-                idForeign = sessionId,
-                belongsTo = Note.SESSION,
-                content = item.second
-            )
-            viewModelScope.launch {
+        viewModelScope.launch {
+
+            listOfNotesCopy.forEachIndexed { index, item ->
+                val note = Note(
+                    idForeign = sessionId,
+                    belongsTo = Note.SESSION,
+                    content = item.second
+                )
                 if (note.content.isNotEmpty() && exerciseIndex == item.first)
                     workoutUseCases.insertNote(note)
             }

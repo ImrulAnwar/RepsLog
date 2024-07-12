@@ -54,7 +54,7 @@ fun ExerciseItem(
                     .padding(start = 5.dp)
                     .clickable {
                         Toast
-                            .makeText(context, listOfNotes.size.toString(), Toast.LENGTH_SHORT)
+                            .makeText(context, listOfNotes.toString(), Toast.LENGTH_SHORT)
                             .show()
                     }
             )
