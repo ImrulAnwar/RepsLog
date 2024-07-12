@@ -13,6 +13,8 @@ data class WorkoutUseCases(
     val deleteSession: DeleteSession,
     val getExerciseById: GetExerciseById,
     val getAllNotes: GetAllNotes,
+    val getNotesByWorkoutId: GetNotesByWorkoutId,
+    val getNotesBySessionId: GetNotesBySessionId,
     val getAllSessions: GetAllSessions,
     val getAllSessionsByWorkoutId: GetAllSessionsByWorkoutId,
     val getAllSetsBySessionId: GetAllSetsBySessionId,

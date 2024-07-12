@@ -25,6 +25,8 @@ import com.imrul.replog.feature_workout.domain.use_cases.GetAllWorkouts
 import com.imrul.replog.feature_workout.domain.use_cases.GetLatestSessionByExerciseId
 import com.imrul.replog.feature_workout.domain.use_cases.GetWorkoutById
 import com.imrul.replog.feature_exercises.domain.use_cases.InsertExercise
+import com.imrul.replog.feature_workout.domain.use_cases.GetNotesBySessionId
+import com.imrul.replog.feature_workout.domain.use_cases.GetNotesByWorkoutId
 import com.imrul.replog.feature_workout.domain.use_cases.InsertNote
 import com.imrul.replog.feature_workout.domain.use_cases.InsertSession
 import com.imrul.replog.feature_workout.domain.use_cases.InsertSet
@@ -82,6 +84,8 @@ object RoomModule {
         getAllSessions = GetAllSessions(repository),
         getAllSessionsByWorkoutId = GetAllSessionsByWorkoutId(repository),
         getLatestSessionByExerciseId = GetLatestSessionByExerciseId(repository),
-        insertSession = InsertSession(repository)
+        insertSession = InsertSession(repository),
+        getNotesByWorkoutId = GetNotesByWorkoutId(repository),
+        getNotesBySessionId = GetNotesBySessionId(repository)
     )
 }

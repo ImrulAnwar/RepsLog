@@ -1,6 +1,8 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -150,24 +152,37 @@ class WorkoutViewModel @Inject constructor(
     fun addExerciseAndSets(name: String, exerciseId: Long, context: Context) {
         listOfExerciseName.add(name)
         listOfExerciseId.add(exerciseId)
+
         // loading previous session
         viewModelScope.launch {
             workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
                 .collect { session ->
                     session?.sessionId?.let { sessionId ->
+                        launch {
+                            workoutUseCases.getNotesBySessionId(sessionId = sessionId)
+                                .collect { notes ->
 
-                        workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
-                            .collect { listOfSets ->
-                                val exerciseIndex = listOfExerciseName.size - 1
-                                listOfSets.forEach { set ->
-                                    listOfWeights.add(Pair(exerciseIndex, ""))
-                                    listOfReps.add("")
-                                    listOfIsDone.add(false)
-                                    listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
-                                    listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
+                                    val exerciseIndex = listOfExerciseName.size - 1
+                                    notes.forEach { note ->
+                                        listOfExerciseNotes.add(Pair(exerciseIndex, note.content))
+                                    }
                                 }
-                                listOfWeightUnits.add(session.weightUnit)
-                            }
+                        }
+                        launch {
+                            workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
+                                .collect { listOfSets ->
+                                    val exerciseIndex = listOfExerciseName.size - 1
+                                    listOfSets.forEach { set ->
+                                        listOfWeights.add(Pair(exerciseIndex, ""))
+                                        listOfReps.add("")
+                                        listOfIsDone.add(false)
+                                        listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
+                                        listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
+                                    }
+                                    listOfWeightUnits.add(session.weightUnit)
+                                }
+                        }
+
                     }
                     if (session == null) {
                         listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
@@ -271,21 +286,21 @@ class WorkoutViewModel @Inject constructor(
             bestSet = "${convertFloatToIntIfPossible(maxWeight)} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
             weightUnit = listOfWeightUnits[exerciseIndex]
         )
+        insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
         workoutUseCases.insertSession(session)
     }
 
-    fun insertExerciseNotes() {
+    fun insertExerciseNotes(sessionId: Long, exerciseIndex: Int) {
         val listOfNotesCopy = listOfExerciseNotes.toList()
         listOfNotesCopy.forEachIndexed { index, item ->
-            val exerciseIndex = item.first
-            val exerciseId = listOfExerciseId[exerciseIndex]
+//            val exerciseIndex = item.first
             val note = Note(
-                idForeign = exerciseId,
+                idForeign = sessionId,
                 belongsTo = Note.SESSION,
                 content = item.second
             )
             viewModelScope.launch {
-                if (note.content.isNotEmpty())
+                if (note.content.isNotEmpty() && exerciseIndex == item.first)
                     workoutUseCases.insertNote(note)
             }
         }
@@ -337,7 +352,7 @@ class WorkoutViewModel @Inject constructor(
                 insertSessions(index, workoutId)
             }
             insertWorkoutNotes(workoutId = workoutId)
-            insertExerciseNotes()
+//            insertExerciseNotes()
         }.invokeOnCompletion {
             clearAllData()
         }

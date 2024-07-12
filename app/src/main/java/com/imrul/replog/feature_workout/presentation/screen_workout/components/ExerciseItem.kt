@@ -1,5 +1,7 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout.components
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,7 +28,8 @@ import com.imrul.replog.ui.theme.Maroon70
 @Composable
 fun ExerciseItem(
     exerciseIndex: Int,
-    workoutViewModel: WorkoutViewModel
+    workoutViewModel: WorkoutViewModel,
+    context: Context = LocalContext.current
 ) {
     val listOfExercises = workoutViewModel.listOfExerciseName
     val listOfWeights = workoutViewModel.listOfWeights
@@ -46,7 +50,13 @@ fun ExerciseItem(
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = Maroon70,
-                modifier = Modifier.padding(start = 5.dp)
+                modifier = Modifier
+                    .padding(start = 5.dp)
+                    .clickable {
+                        Toast
+                            .makeText(context, listOfNotes.size.toString(), Toast.LENGTH_SHORT)
+                            .show()
+                    }
             )
             DropDownMenuForExerciseName(
                 addExerciseNoteClicked = {
