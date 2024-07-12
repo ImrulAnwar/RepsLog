@@ -66,6 +66,9 @@ interface WorkoutDao {
     @Query("SELECT * FROM `Note`")
     fun getAllNotes(): Flow<List<Note>>
 
+    @Query("SELECT * FROM `Note` WHERE idForeign = :foreignId")
+    fun getNotesByForeignId(foreignId: Long): Flow<List<Note>>
+
     @Query("SELECT * FROM `Session`")
     fun getAllSessions(): Flow<List<Session>>
 

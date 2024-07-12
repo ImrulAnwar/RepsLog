@@ -57,6 +57,9 @@ class WorkoutRepositoryImp(
         dao.getLatestSessionByExerciseId(exerciseId)
 
     override fun getAllNotes(): Flow<List<Note>> = dao.getAllNotes()
+    override fun getNotesByForeignId(foreignId: Long): Flow<List<Note>> =
+        dao.getNotesByForeignId(foreignId = foreignId)
+
 
     override fun getAllSessions(): Flow<List<Session>> = dao.getAllSessions()
 
