@@ -1,7 +1,11 @@
 <h1><strong>RepsLog</strong></h1>
 
 <p>RepsLog is a comprehensive app designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
-
+<img src="https://github.com/user-attachments/assets/53b2d34d-15af-4851-86ea-6d2295e9b8b1" alt="Screen History" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/17e03df6-d213-46a3-8a1e-89d2c7a7fb42" alt="Screen Workout" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/62c01380-9f67-4ad7-846e-6545d90e3449" alt="Screen Exercises" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/05ab3163-69d0-41b4-8d09-b9206ef02a5a" alt="Screen Login" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/8ea2925e-e898-4a5b-977e-4b52f2910c82" alt="Screen Register" style="width: 200px;">
 <h2><strong>Features</strong></h2>
 <ul>
 <li><strong>Workout Tracking:</strong>
