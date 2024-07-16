@@ -36,13 +36,12 @@
       </li>
     </ul>
 </li>
-
 <li><strong>Background Play & Miniplayer: </strong>
     <ul>
       <li>Your workout will be running in the background.</li>
       <li>
-         <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/6ad0ffe9-3daf-4522-8556-d05f2d0672c3" alt="Edit Exercise" style="width: 200px;">
-         <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/31434f99-e73c-445a-9360-26cc4e50e169" alt="Delete Exercise" style="width: 200px;">
+         <img src="https://github.com/user-attachments/assets/67473924-390d-449e-ad61-dd35df613498" alt="Background Play" style="width: 200px;">
+         <img src="https://github.com/user-attachments/assets/f1740afa-e2f6-4d24-931d-5cb8c236de62" alt="Miniplayer" style="width: 200px;">
       </li>
     </ul>
 </li>
