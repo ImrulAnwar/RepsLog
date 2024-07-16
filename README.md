@@ -4,12 +4,13 @@
 
 <h2><strong>Features</strong></h2>
 <ul>
+    
 <li><strong>Workout Tracking:</strong>
     <ul>
       <li>Start an Empty Workout, Edit Title & Choose Exercise</li>
        <li>
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/d346d847-7a47-43e9-87dd-e33e5ce8067b" alt="Add Exercise" style="width: 200px;">
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/6ad0ffe9-3daf-4522-8556-d05f2d0672c3" alt="Edit Exercise" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/31f9ef8f-16f3-417c-bf85-f54f5d8137f8" alt="Start an empty workout" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/4f3097c7-3858-40d0-b3b6-45108bc91500" alt="Choose Exercise" style="width: 200px;">
       </li>
       <li>Add Sets for each Exercise & Swipe to Remove</li>
       <li>
