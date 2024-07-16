@@ -4,7 +4,8 @@
 
 <h2><strong>Features</strong></h2>
 <ul>
-    
+
+
 <li><strong>Workout Tracking:</strong>
     <ul>
       <li>Start an Empty Workout, Edit Title & Choose Exercise</li>
@@ -14,8 +15,8 @@
       </li>
       <li>Add Sets for each Exercise & Swipe to Remove</li>
       <li>
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise" style="width: 200px;">
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/1f2137b8-1429-4eb2-9e6f-a7185337fd03" alt="Edit Exercise" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/06fd4296-084e-42ec-912c-b3b96ddf9b11" alt="Add Sets" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/99608b99-c671-4cb3-a6ab-3f990c25a758" alt="Remove Sets" style="width: 200px;">
       </li>
       <li>Add Notes & Swipe to Remove</li>
       <li>
