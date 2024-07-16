@@ -4,8 +4,6 @@
 
 <h2><strong>Features</strong></h2>
 <ul>
-
-
 <li><strong>Workout Tracking:</strong>
     <ul>
       <li>Start an Empty Workout, Edit Title & Choose Exercise</li>
@@ -20,21 +18,21 @@
       </li>
       <li>Add Notes & Swipe to Remove</li>
       <li>
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise" style="width: 200px;">
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/1f2137b8-1429-4eb2-9e6f-a7185337fd03" alt="Edit Exercise" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/0d8fbf75-4556-45a7-99dd-f5cca310c245" alt="Add Notes" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/9d287be2-302d-4ee5-850d-043bbdc4e66e" alt="Remove Notes" style="width: 200px;">
       </li>
       <li>Choosing a previously done exercise will automatically load previous Sets & Notes</li>
       <li>
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/b303e5ba-b037-4f36-bedc-60e52dccfd67" alt="Load Previous" style="width: 200px;">
       </li>
       <li>Change Weight Unit or Remove Exercise</li>
       <li>
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise" style="width: 200px;">
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/1f2137b8-1429-4eb2-9e6f-a7185337fd03" alt="Edit Exercise" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/39240504-3768-40d2-bfa0-bc89a394461c" alt="Change Unit" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/d2762c38-80c1-44ee-9371-aaf804a9fba8" alt="Remove Exercise" style="width: 200px;">
       </li>
       <li>Saving the workout will calculate your Best & Total Sets for each exercise</li>
       <li>
-        <img src="https://github.com/ImrulAnwar/RepsLog/assets/88951453/94390ab6-f770-4723-b7d1-72416a58e66c" alt="Add Exercise" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/4f7227fd-27a7-479a-9626-300063391b8b" alt="Save Workout" style="width: 200px;">
       </li>
     </ul>
 </li>
