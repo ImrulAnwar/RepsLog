@@ -1,16 +1,54 @@
 <h1><strong>RepsLog</strong></h1>
 
 <p>RepsLog is a comprehensive app designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
-
+<img src="https://github.com/user-attachments/assets/53b2d34d-15af-4851-86ea-6d2295e9b8b1" alt="Screen History" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/17e03df6-d213-46a3-8a1e-89d2c7a7fb42" alt="Screen Workout" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/62c01380-9f67-4ad7-846e-6545d90e3449" alt="Screen Exercises" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/05ab3163-69d0-41b4-8d09-b9206ef02a5a" alt="Screen Login" style="width: 200px;">
+<img src="https://github.com/user-attachments/assets/8ea2925e-e898-4a5b-977e-4b52f2910c82" alt="Screen Register" style="width: 200px;">
 <h2><strong>Features</strong></h2>
 <ul>
-<li><strong>Workout Tracking</strong>: Add multiple exercises to your workout & multiple sets per exercise.</li>
-  
-<li><strong>Miniplayer</strong>: Easily manage your running workout with a compact interface that provides essential controls on the go.</li>
-
-<li><strong>Background Workout</strong>: Run your workout in the background, allowing you to use other apps while working out.</li>
-
-<li><strong>Workout Templates</strong>: Create your own workout templates or choose from existing ones to streamline your workout planning.</li>
+<li><strong>Workout Tracking:</strong>
+    <ul>
+      <li>Start an Empty Workout, Edit Title & Choose Exercise</li>
+       <li>
+        <img src="https://github.com/user-attachments/assets/31f9ef8f-16f3-417c-bf85-f54f5d8137f8" alt="Start an empty workout" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/4f3097c7-3858-40d0-b3b6-45108bc91500" alt="Choose Exercise" style="width: 200px;">
+      </li>
+      <li>Add Sets for each Exercise & Swipe to Remove</li>
+      <li>
+        <img src="https://github.com/user-attachments/assets/06fd4296-084e-42ec-912c-b3b96ddf9b11" alt="Add Sets" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/99608b99-c671-4cb3-a6ab-3f990c25a758" alt="Remove Sets" style="width: 200px;">
+      </li>
+      <li>Add Notes & Swipe to Remove</li>
+      <li>
+        <img src="https://github.com/user-attachments/assets/0d8fbf75-4556-45a7-99dd-f5cca310c245" alt="Add Notes" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/9d287be2-302d-4ee5-850d-043bbdc4e66e" alt="Remove Notes" style="width: 200px;">
+      </li>
+      <li>Choosing a previously done exercise will automatically load previous Sets & Notes</li>
+      <li>
+        <img src="https://github.com/user-attachments/assets/b303e5ba-b037-4f36-bedc-60e52dccfd67" alt="Load Previous" style="width: 200px;">
+      </li>
+      <li>Change Weight Unit or Remove Exercise</li>
+      <li>
+        <img src="https://github.com/user-attachments/assets/39240504-3768-40d2-bfa0-bc89a394461c" alt="Change Unit" style="width: 200px;">
+        <img src="https://github.com/user-attachments/assets/d2762c38-80c1-44ee-9371-aaf804a9fba8" alt="Remove Exercise" style="width: 200px;">
+      </li>
+      <li>Saving the workout will calculate your Best & Total Sets for each exercise</li>
+      <li>
+        <img src="https://github.com/user-attachments/assets/4f7227fd-27a7-479a-9626-300063391b8b" alt="Save Workout" style="width: 200px;">
+      </li>
+    </ul>
+</li>
+<li><strong>Background Play & Miniplayer: </strong>
+    <ul>
+      <li>Your workout will be running in the background.</li>
+      <li>
+         <img src="https://github.com/user-attachments/assets/67473924-390d-449e-ad61-dd35df613498" alt="Background Play" style="width: 200px;">
+         <img src="https://github.com/user-attachments/assets/f1740afa-e2f6-4d24-931d-5cb8c236de62" alt="Miniplayer" style="width: 200px;">
+      </li>
+    </ul>
+</li>
 
 <li><strong>Exercise Management:</strong>
     <ul>
