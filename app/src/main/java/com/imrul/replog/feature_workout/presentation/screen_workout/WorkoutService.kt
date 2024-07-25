@@ -22,6 +22,10 @@ class WorkoutService : Service() {
         return null
     }
 
+    override fun onCreate() {
+        super.onCreate()
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             Actions.START.toString() -> {
@@ -36,6 +40,7 @@ class WorkoutService : Service() {
         }
         return START_STICKY
     }
+
 
     private suspend fun start() {
         isRunning = true

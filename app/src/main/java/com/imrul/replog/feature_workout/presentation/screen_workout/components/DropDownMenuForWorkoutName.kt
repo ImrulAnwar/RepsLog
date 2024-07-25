@@ -34,13 +34,14 @@ fun DropDownMenuForWorkoutName(
 
     Box(modifier = modifier) {
         Icon(
-            imageVector = Icons.Filled.MoreVert,
-            contentDescription = "More Details",
             modifier = Modifier
+                .padding(end = 20.dp)
                 .size(24.dp)
                 .clickable {
                     expanded = true
                 },
+            imageVector = Icons.Filled.MoreVert,
+            contentDescription = "More Details",
             tint = Maroon70
         )
         DropdownMenu(

@@ -11,7 +11,6 @@ class GetNotesBySessionId(
 ) {
     operator fun invoke(sessionId: Long): Flow<List<Note>> {
         return repository.getNotesByForeignId(foreignId = sessionId).map { notes ->
-            Log.d("Heyyya", "invoke: ${sessionId}")
             notes.filter {
                 it.belongsTo == Note.SESSION
             }

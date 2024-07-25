@@ -119,15 +119,15 @@ fun LoginScreen(
                     },
                 color = Maroon70
             )
-            Button(onClick = {
-                Toast.makeText(
-                    context,
-                    FirebaseAuth.getInstance().currentUser?.email.toString() + "\n${viewModel.isLoggedIn}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }) {
-                Text(text = "currentUser")
-            }
+//            Button(onClick = {
+//                Toast.makeText(
+//                    context,
+//                    FirebaseAuth.getInstance().currentUser?.email.toString() + "\n${viewModel.isLoggedIn}",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }) {
+//                Text(text = "currentUser")
+//            }
         }
     }
 }

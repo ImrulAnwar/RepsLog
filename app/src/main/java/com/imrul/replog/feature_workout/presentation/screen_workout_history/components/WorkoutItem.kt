@@ -3,6 +3,7 @@ package com.imrul.replog.feature_workout.presentation.screen_workout_history.com
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,8 @@ import com.imrul.replog.ui.theme.Maroon70
 fun WorkoutItem(
     workout: Workout,
     workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel(),
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    onClick: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         workoutHistoryViewModel.getAllExercise()
@@ -50,6 +52,9 @@ fun WorkoutItem(
                 color = Maroon70,
             )
             .padding(12.dp)
+            .clickable {
+                onClick()
+            }
     ) {
         Text(
             text = workout.name,

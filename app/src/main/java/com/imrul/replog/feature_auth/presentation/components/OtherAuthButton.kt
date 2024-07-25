@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.imrul.replog.ui.theme.Maroon10
+import com.imrul.replog.ui.theme.Maroon30
 import com.imrul.replog.ui.theme.Maroon70
 
 @Composable
@@ -29,7 +31,7 @@ fun OtherAuthButton(
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
+            containerColor = Maroon10,
             contentColor = Maroon70 // theme lagaite gele eita change korbo
         ),
         border = BorderStroke(width = 0.dp, color = Color.Transparent)  // theme lagaite gele eita change korbo

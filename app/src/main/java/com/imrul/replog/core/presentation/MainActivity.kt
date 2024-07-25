@@ -196,6 +196,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDestroy() {
         Intent(this, WorkoutService::class.java).also {
             it.action = WorkoutService.Actions.STOP.toString()

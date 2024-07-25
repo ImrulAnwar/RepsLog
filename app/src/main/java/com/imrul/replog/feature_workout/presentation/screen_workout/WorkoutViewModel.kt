@@ -1,8 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -61,6 +59,9 @@ class WorkoutViewModel @Inject constructor(
     var listOfWeightUnits = mutableStateListOf<String>()
         private set
     var listOfExerciseId = mutableStateListOf<Long>()
+        private set
+
+    var listOfNoteId = mutableStateListOf<Long>()
         private set
 
     init {
@@ -157,29 +158,80 @@ class WorkoutViewModel @Inject constructor(
         listOfReps[setIndex] = content
     }
 
-    fun addExerciseAndSets(name: String, exerciseId: Long, context: Context) {
+//    fun addExerciseAndSets(name: String, exerciseId: Long) {
+//        listOfExerciseName.add(name)
+//        listOfExerciseId.add(exerciseId)
+//        // loading previous session
+//        viewModelScope.launch {
+//
+//            workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
+//                .collect { session ->
+//                    session?.sessionId?.let { sessionId ->
+//                        launch {
+//                            workoutUseCases.getNotesBySessionId(sessionId = sessionId)
+//                                .collect { notes ->
+//
+//                                    val exerciseIndex = listOfExerciseName.size - 1
+//                                    notes.forEach { note ->
+//                                        listOfExerciseNotes.add(Pair(exerciseIndex, note.content))
+//                                    }
+//                                }
+//                        }
+//                        launch {
+//                            workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
+//                                .collect { listOfSets ->
+//                                    val exerciseIndex = listOfExerciseName.size - 1
+//                                    listOfSets.forEach { set ->
+//                                        listOfWeights.add(Pair(exerciseIndex, ""))
+//                                        listOfReps.add("")
+//                                        listOfIsDone.add(false)
+//                                        listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
+//                                        listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
+//                                    }
+//                                    listOfWeightUnits.add(session.weightUnit)
+//                                }
+//                        }
+//
+//                    }
+//                    if (session == null) {
+//                        listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
+//                    }
+//                }
+//        }
+//
+//    }
+
+    fun addExerciseAndSets(name: String, exerciseId: Long) {
         listOfExerciseName.add(name)
         listOfExerciseId.add(exerciseId)
+        var exerciseIndex = listOfExerciseId.indexOf(exerciseId)
 
         // loading previous session
         viewModelScope.launch {
+
             workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
                 .collect { session ->
                     session?.sessionId?.let { sessionId ->
                         launch {
                             workoutUseCases.getNotesBySessionId(sessionId = sessionId)
                                 .collect { notes ->
-
-                                    val exerciseIndex = listOfExerciseName.size - 1
                                     notes.forEach { note ->
-                                        listOfExerciseNotes.add(Pair(exerciseIndex, note.content))
+                                        if (!listOfNoteId.contains(note.noteId)) {
+                                            note.noteId?.let { listOfNoteId.add(it) }
+                                            listOfExerciseNotes.add(
+                                                Pair(
+                                                    exerciseIndex,
+                                                    note.content
+                                                )
+                                            )
+                                        }
+
                                     }
                                 }
                         }
                         launch {
                             workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
                                 .collect { listOfSets ->
-                                    val exerciseIndex = listOfExerciseName.size - 1
                                     listOfSets.forEach { set ->
                                         listOfWeights.add(Pair(exerciseIndex, ""))
                                         listOfReps.add("")
@@ -197,6 +249,7 @@ class WorkoutViewModel @Inject constructor(
                     }
                 }
         }
+
     }
 
     fun removeExercise(exerciseId: Long) {
@@ -211,7 +264,7 @@ class WorkoutViewModel @Inject constructor(
                 listOfIndicesToRemove.add(i)
             }
         }
-
+        // removing Sets
         // since I am using index to determine which set belong to which exercise
         // so when i remove an exercise, I will have to update to the new index
         listOfWeightsCopy.forEachIndexed { index, item ->
@@ -224,16 +277,22 @@ class WorkoutViewModel @Inject constructor(
             removeSet(index)
         }
 
-        val listOfNotesCopy = listOfExerciseNotes.toList()
-
-
+        // removing notes
+        var listOfNotesCopy = listOfExerciseNotes.toList()
         listOfNotesCopy.forEachIndexed { index, item ->
-            if (item.first == exerciseIndex)
-                listOfExerciseNotes.remove(item)
-            if (item.first > exerciseIndex)
+            if (item.first > exerciseIndex) {
                 listOfExerciseNotes[index] = Pair(item.first - 1, item.second)
+            }
         }
 
+        listOfNotesCopy = listOfExerciseNotes.toList()
+
+        listOfNotesCopy.forEachIndexed { index, item ->
+            if (item.first == exerciseIndex) {
+                listOfNoteId.removeAt(index)
+                removeExerciseNote(index = index)
+            }
+        }
     }
 
     fun removeSet(index: Int) {
@@ -340,7 +399,6 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-
     private fun convertFloatToIntIfPossible(number: Float): Number {
         val numberAsString = number.toString()
         return if (numberAsString.endsWith(".0") || numberAsString.endsWith(".")) {
@@ -379,6 +437,7 @@ class WorkoutViewModel @Inject constructor(
 
     fun toggleIsDone(setIndex: Int) {
         listOfIsDone[setIndex] = !listOfIsDone[setIndex]
+        Log.d("Amar Problem", "addExerciseAndSets: ${listOfWeights[setIndex].first}")
     }
 
     fun setWorkoutRunning(flag: Boolean) {
@@ -412,6 +471,7 @@ class WorkoutViewModel @Inject constructor(
         listOfPrevious.clear()
         listOfExerciseNotes.clear()
         listOfWorkoutNotes.clear()
+        listOfNoteId.clear()
     }
 
 }

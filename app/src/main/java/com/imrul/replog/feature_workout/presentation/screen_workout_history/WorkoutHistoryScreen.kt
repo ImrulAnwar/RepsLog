@@ -1,5 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout_history
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.Toast
@@ -43,6 +44,7 @@ fun WorkoutHistoryScreen(
     }
 
     val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
+    val sessionsList by workoutHistoryViewModel.sessionsList.collectAsState()
     val context = LocalContext.current
 
     Column(
@@ -55,32 +57,41 @@ fun WorkoutHistoryScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(bottom = if(!workoutViewModel.isWorkOutRunning) 80.dp else 0.dp),
+                .padding(bottom = if (!workoutViewModel.isWorkOutRunning) 80.dp else 0.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 CustomButton(
                     onClick = {
-                        if (!workoutViewModel.isWorkOutRunning) {
-                            workoutViewModel.setWorkoutRunning(true)
-                            navController.navigate(Routes.ScreenWorkout)
-                            // start service
-                            Intent(context, WorkoutService::class.java).also {
-                                it.action = WorkoutService.Actions.START.toString()
-                                context.startForegroundService(it)
-                            }
-                        } else {
-                            Toast.makeText(context, "Already Running Workout", Toast.LENGTH_SHORT)
-                                .show()
-                        }
+                        startWorkout(workoutViewModel, navController, context)
                     },
                     modifier = Modifier.padding(top = 20.dp),
                     text = Strings.START_EMPTY_WORKOUT
                 )
             }
             items(workoutListState) { workout ->
-                WorkoutItem(workout)
+                WorkoutItem(
+                    workout = workout,
+                    onClick = {
+                        startWorkout(workoutViewModel, navController, context)
+                        sessionsList.forEach { session ->
+
+                            // eta serial by hocche na coroutine er karone
+                            if (session.workoutIdForeign == workout.workoutId) {
+                                session.exerciseName?.let { name ->
+                                    session.exerciseIdForeign?.let { exerciseId ->
+                                        workoutViewModel.addExerciseAndSets(
+                                            name = name,
+                                            exerciseId = exerciseId
+                                        )
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                )
             }
 
         }
@@ -92,4 +103,25 @@ fun WorkoutHistoryScreen(
 
     }
 
+}
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun startWorkout(
+    workoutViewModel: WorkoutViewModel,
+    navController: NavHostController,
+    context: Context
+) {
+    if (!workoutViewModel.isWorkOutRunning) {
+        workoutViewModel.setWorkoutRunning(true)
+        navController.navigate(Routes.ScreenWorkout)
+        // start service
+        Intent(context, WorkoutService::class.java).also {
+            it.action = WorkoutService.Actions.START.toString()
+            context.startForegroundService(it)
+        }
+    } else {
+        Toast.makeText(context, "Already Running Workout", Toast.LENGTH_SHORT)
+            .show()
+    }
 }
