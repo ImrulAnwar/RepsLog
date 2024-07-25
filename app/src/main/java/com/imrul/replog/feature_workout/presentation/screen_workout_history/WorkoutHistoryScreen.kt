@@ -64,6 +64,7 @@ fun WorkoutHistoryScreen(
             item {
                 CustomButton(
                     onClick = {
+                        workoutViewModel.clearAllData()
                         startWorkout(workoutViewModel, navController, context)
                     },
                     modifier = Modifier.padding(top = 20.dp),
@@ -74,10 +75,11 @@ fun WorkoutHistoryScreen(
                 WorkoutItem(
                     workout = workout,
                     onClick = {
+                        workoutViewModel.clearAllData()
                         startWorkout(workoutViewModel, navController, context)
                         sessionsList.forEach { session ->
 
-                            // eta serial by hocche na coroutine er karone
+                            //
                             if (session.workoutIdForeign == workout.workoutId) {
                                 session.exerciseName?.let { name ->
                                     session.exerciseIdForeign?.let { exerciseId ->

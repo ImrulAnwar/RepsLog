@@ -66,6 +66,7 @@ class WorkoutViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { observeDuration() }
+//        clearAllData()
     }
 
     private suspend fun observeDuration() {
@@ -157,49 +158,6 @@ class WorkoutViewModel @Inject constructor(
     ) {
         listOfReps[setIndex] = content
     }
-
-//    fun addExerciseAndSets(name: String, exerciseId: Long) {
-//        listOfExerciseName.add(name)
-//        listOfExerciseId.add(exerciseId)
-//        // loading previous session
-//        viewModelScope.launch {
-//
-//            workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
-//                .collect { session ->
-//                    session?.sessionId?.let { sessionId ->
-//                        launch {
-//                            workoutUseCases.getNotesBySessionId(sessionId = sessionId)
-//                                .collect { notes ->
-//
-//                                    val exerciseIndex = listOfExerciseName.size - 1
-//                                    notes.forEach { note ->
-//                                        listOfExerciseNotes.add(Pair(exerciseIndex, note.content))
-//                                    }
-//                                }
-//                        }
-//                        launch {
-//                            workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
-//                                .collect { listOfSets ->
-//                                    val exerciseIndex = listOfExerciseName.size - 1
-//                                    listOfSets.forEach { set ->
-//                                        listOfWeights.add(Pair(exerciseIndex, ""))
-//                                        listOfReps.add("")
-//                                        listOfIsDone.add(false)
-//                                        listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
-//                                        listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
-//                                    }
-//                                    listOfWeightUnits.add(session.weightUnit)
-//                                }
-//                        }
-//
-//                    }
-//                    if (session == null) {
-//                        listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
-//                    }
-//                }
-//        }
-//
-//    }
 
     fun addExerciseAndSets(name: String, exerciseId: Long) {
         listOfExerciseName.add(name)
@@ -370,14 +328,13 @@ class WorkoutViewModel @Inject constructor(
 
     fun insertExerciseNotes(sessionId: Long, exerciseIndex: Int) {
         val listOfNotesCopy = listOfExerciseNotes.toList()
-        viewModelScope.launch {
-
-            listOfNotesCopy.forEachIndexed { index, item ->
-                val note = Note(
-                    idForeign = sessionId,
-                    belongsTo = Note.SESSION,
-                    content = item.second
-                )
+        listOfNotesCopy.forEachIndexed { _, item ->
+            val note = Note(
+                idForeign = sessionId,
+                belongsTo = Note.SESSION,
+                content = item.second
+            )
+            viewModelScope.launch {
                 if (note.content.isNotEmpty() && exerciseIndex == item.first)
                     workoutUseCases.insertNote(note)
             }
@@ -386,7 +343,7 @@ class WorkoutViewModel @Inject constructor(
 
     fun insertWorkoutNotes(workoutId: Long) {
         val listOfNotesCopy = listOfWorkoutNotes.toList()
-        listOfNotesCopy.forEachIndexed { index, item ->
+        listOfNotesCopy.forEachIndexed { _, item ->
             val note = Note(
                 idForeign = workoutId,
                 belongsTo = Note.WORKOUT,
@@ -429,7 +386,6 @@ class WorkoutViewModel @Inject constructor(
                 insertSessions(index, workoutId)
             }
             insertWorkoutNotes(workoutId = workoutId)
-//            insertExerciseNotes()
         }.invokeOnCompletion {
             clearAllData()
         }
