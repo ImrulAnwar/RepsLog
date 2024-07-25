@@ -66,12 +66,27 @@ class WorkoutViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { observeDuration() }
-//        clearAllData()
     }
 
     private suspend fun observeDuration() {
         workoutUseCases.durationUseCase.elapsedTime.collect {
             elapsedTime = it
+        }
+    }
+
+    fun setWorkoutName(workoutName: String) {
+        workoutTitle = workoutName
+    }
+
+    fun getAllWorkoutNotes(workoutId: Long) {
+        viewModelScope.launch {
+            workoutUseCases.getAllNotes().collect { notes ->
+                notes.forEach { note ->
+                    if (note.belongsTo == Note.WORKOUT && note.idForeign == workoutId) {
+                        listOfWorkoutNotes.add(note.content)
+                    }
+                }
+            }
         }
     }
 
@@ -108,6 +123,7 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun removeExerciseNote(index: Int) {
+        listOfNoteId.removeAt(index)
         listOfExerciseNotes.removeAt(index)
     }
 
@@ -243,12 +259,13 @@ class WorkoutViewModel @Inject constructor(
             }
         }
 
-        listOfNotesCopy = listOfExerciseNotes.toList()
+        listOfNotesCopy = listOfExerciseNotes.toList().reversed()
 
-        listOfNotesCopy.forEachIndexed { index, item ->
+        listOfNotesCopy.forEachIndexed { _, item ->
             if (item.first == exerciseIndex) {
+                val index = listOfExerciseNotes.indexOf(item)
+                listOfExerciseNotes.removeAt(index)
                 listOfNoteId.removeAt(index)
-                removeExerciseNote(index = index)
             }
         }
     }

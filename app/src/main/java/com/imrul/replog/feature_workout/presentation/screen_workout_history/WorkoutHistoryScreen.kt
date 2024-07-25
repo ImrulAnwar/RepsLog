@@ -76,6 +76,8 @@ fun WorkoutHistoryScreen(
                     workout = workout,
                     onClick = {
                         workoutViewModel.clearAllData()
+                        workoutViewModel.setWorkoutName(workout.name)
+                        workout.workoutId?.let { workoutViewModel.getAllWorkoutNotes(it) }
                         startWorkout(workoutViewModel, navController, context)
                         sessionsList.forEach { session ->
 
