@@ -207,8 +207,13 @@ class WorkoutViewModel @Inject constructor(
                             workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
                                 .collect { listOfSets ->
                                     listOfSets.forEach { set ->
-                                        listOfWeights.add(Pair(exerciseIndex, ""))
-                                        listOfReps.add("")
+                                        listOfWeights.add(
+                                            Pair(
+                                                exerciseIndex,
+                                                set.weightValue.toString()
+                                            )
+                                        )
+                                        listOfReps.add((set.reps.toInt() + 1).toString())
                                         listOfIsDone.add(false)
                                         listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
                                         listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
