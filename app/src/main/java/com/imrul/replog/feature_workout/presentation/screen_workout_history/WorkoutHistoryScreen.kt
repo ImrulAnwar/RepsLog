@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +31,7 @@ import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
+import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -47,65 +49,74 @@ fun WorkoutHistoryScreen(
     val sessionsList by workoutHistoryViewModel.sessionsList.collectAsState()
     val context = LocalContext.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(WhiteCustom),
-        verticalArrangement = Arrangement.Top
-    ) {
-        LazyColumn(
+    if (workoutViewModel.isInserting)
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(bottom = if (!workoutViewModel.isWorkOutRunning) 80.dp else 0.dp),
-            verticalArrangement = Arrangement.Top,
+                .fillMaxSize()
+                .background(WhiteCustom),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
-                CustomButton(
-                    onClick = {
-                        workoutViewModel.clearAllData()
-                        startWorkout(workoutViewModel, navController, context)
-                    },
-                    modifier = Modifier.padding(top = 20.dp),
-                    text = Strings.START_EMPTY_WORKOUT
-                )
-            }
-            items(workoutListState) { workout ->
-                WorkoutItem(
-                    workout = workout,
-                    onClick = {
-                        workoutViewModel.clearAllData()
-                        workoutViewModel.setWorkoutName(workout.name)
-                        workout.workoutId?.let { workoutViewModel.getAllWorkoutNotes(it) }
-                        startWorkout(workoutViewModel, navController, context)
-                        sessionsList.forEach { session ->
+            CircularProgressIndicator(color = Maroon70)
+        }
+    else
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(WhiteCustom),
+            verticalArrangement = Arrangement.Top
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(bottom = if (!workoutViewModel.isWorkOutRunning) 80.dp else 0.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    CustomButton(
+                        onClick = {
+                            workoutViewModel.clearAllData()
+                            startWorkout(workoutViewModel, navController, context)
+                        },
+                        modifier = Modifier.padding(top = 20.dp),
+                        text = Strings.START_EMPTY_WORKOUT
+                    )
+                }
+                items(workoutListState) { workout ->
+                    WorkoutItem(
+                        workout = workout,
+                        onClick = {
+                            workoutViewModel.clearAllData()
+                            workoutViewModel.setWorkoutName(workout.name)
+                            workout.workoutId?.let { workoutViewModel.getAllWorkoutNotes(it) }
+                            startWorkout(workoutViewModel, navController, context)
+                            sessionsList.forEach { session ->
 
-                            //
-                            if (session.workoutIdForeign == workout.workoutId) {
-                                session.exerciseName?.let { name ->
-                                    session.exerciseIdForeign?.let { exerciseId ->
-                                        workoutViewModel.addExerciseAndSets(
-                                            name = name,
-                                            exerciseId = exerciseId
-                                        )
+                                //
+                                if (session.workoutIdForeign == workout.workoutId) {
+                                    session.exerciseName?.let { name ->
+                                        session.exerciseIdForeign?.let { exerciseId ->
+                                            workoutViewModel.addExerciseAndSets(
+                                                name = name,
+                                                exerciseId = exerciseId,
+                                                context = context
+                                            )
+                                        }
                                     }
-                                }
 
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
-
+            if (workoutViewModel.isWorkOutRunning)
+                MiniPlayer(
+                    workoutViewModel = workoutViewModel,
+                    navController = navController
+                )
         }
-        if (workoutViewModel.isWorkOutRunning)
-            MiniPlayer(
-                workoutViewModel = workoutViewModel,
-                navController = navController
-            )
-
-    }
 
 }
 

@@ -179,6 +179,7 @@ fun ExerciseListScreenFromWorkout(
                                 workoutViewModel.addExerciseAndSets(
                                     name = exerciseListState[index].name,
                                     exerciseId = it,
+                                    context = context
                                 )
                                 navController.navigateUp()
                             }

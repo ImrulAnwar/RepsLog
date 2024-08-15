@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -28,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -75,129 +77,139 @@ fun WorkoutScreen(
             }
         },
         content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .background(
-                        color = WhiteCustom
-                    ),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                // This is the top part
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    CustomIcon(
-                        painter = rememberVectorPainter(image = Icons.AutoMirrored.Filled.ArrowBack),
-                        contentDescription = Strings.BACK_BUTTON,
-                        onClick = {
-                            navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
-                                navController.popBackStack()
-                            }
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-                    CustomIcon(
-                        painter = rememberVectorPainter(image = Icons.Filled.Done),
-                        contentDescription = Strings.FINISHED_WORKOUT_BUTTON,
-                        onClick = {
-                            if (!workoutViewModel.shouldInsertWorkout()) {
-                                Toast.makeText(
-                                    context,
-                                    Strings.COMPLETE_EXERCISE,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                workoutViewModel.insertWorkout()
-                                navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
-                                    // When navigation is complete, stop the service and pop the back stack
-                                    Intent(context, WorkoutService::class.java).also {
-                                        it.action = WorkoutService.Actions.STOP.toString()
-                                        context.startForegroundService(it)
-                                    }
-                                    navController.popBackStack()
-                                }
-                            }
-                        }
-                    )
-                }
-                // This is the body
-
-
-                Text(
-                    elapsedTime,
-                    color = Maroon70
-                )
+            if (workoutViewModel.isInserting)
                 Column(
-                    modifier = Modifier.verticalScroll(listState),
-                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(WhiteCustom),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    CircularProgressIndicator(color = Maroon70)
+                }
+            else
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .background(
+                            color = WhiteCustom
+                        ),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    // This is the top part
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(0.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.padding(10.dp)
                     ) {
-                        WorkoutTitleTextField(
-                            text = workoutTitle,
-                            onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
+                        CustomIcon(
+                            painter = rememberVectorPainter(image = Icons.AutoMirrored.Filled.ArrowBack),
+                            contentDescription = Strings.BACK_BUTTON,
+                            onClick = {
+                                navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
+                                    navController.navigateUp()
+                                }
+                            }
                         )
-                        DropDownMenuForWorkoutName(
-                            addWorkoutNoteClicked = {
-                                workoutViewModel.addWorkoutNote()
+
+                        Spacer(modifier = Modifier.weight(1f))
+                        CustomIcon(
+                            painter = rememberVectorPainter(image = Icons.Filled.Done),
+                            contentDescription = Strings.FINISHED_WORKOUT_BUTTON,
+                            onClick = {
+                                if (!workoutViewModel.shouldInsertWorkout()) {
+                                    Toast.makeText(
+                                        context,
+                                        Strings.COMPLETE_EXERCISE,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
+                                        // When navigation is complete, stop the service and pop the back stack
+                                        Intent(context, WorkoutService::class.java).also {
+                                            it.action = WorkoutService.Actions.STOP.toString()
+                                            context.startForegroundService(it)
+                                        }
+                                        navController.navigateUp()
+                                    }
+                                    workoutViewModel.insertWorkout()
+                                }
                             }
                         )
                     }
-                    if (workoutViewModel.listOfWorkoutNotes.isNotEmpty())
-                        workoutViewModel.listOfWorkoutNotes.forEachIndexed { index, item ->
-                            AddNoteTextField(
-                                text = item,
-                                onValueChange = {
-                                    workoutViewModel.onWorkoutNoteValueChanged(
-                                        index = index,
-                                        content = it
-                                    )
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(15.dp, 0.dp),
-                                onSwiped = { workoutViewModel.removeWorkoutNote(index) }
+                    // This is the body
+
+
+                    Text(
+                        elapsedTime,
+                        color = Maroon70
+                    )
+                    Column(
+                        modifier = Modifier.verticalScroll(listState),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(0.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            WorkoutTitleTextField(
+                                text = workoutTitle,
+                                onValueChange = { workoutViewModel.onWorkoutTitleChanged(it) },
+                            )
+                            DropDownMenuForWorkoutName(
+                                addWorkoutNoteClicked = {
+                                    workoutViewModel.addWorkoutNote()
+                                }
                             )
                         }
-                    listOfExercises.forEachIndexed { exerciseIndex, _ ->
-                        ExerciseItem(
-                            exerciseIndex = exerciseIndex,
-                            workoutViewModel = workoutViewModel
+                        if (workoutViewModel.listOfWorkoutNotes.isNotEmpty())
+                            workoutViewModel.listOfWorkoutNotes.forEachIndexed { index, item ->
+                                AddNoteTextField(
+                                    text = item,
+                                    onValueChange = {
+                                        workoutViewModel.onWorkoutNoteValueChanged(
+                                            index = index,
+                                            content = it
+                                        )
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(15.dp, 0.dp),
+                                    onSwiped = { workoutViewModel.removeWorkoutNote(index) }
+                                )
+                            }
+                        listOfExercises.forEachIndexed { exerciseIndex, _ ->
+                            ExerciseItem(
+                                exerciseIndex = exerciseIndex,
+                                workoutViewModel = workoutViewModel
+                            )
+                        }
+                        Text(
+                            text = Strings.CANCEL_WORKOUT,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .clickable {
+                                    navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
+                                        // When navigation is complete, stop the service and pop the back stack
+                                        Intent(context, WorkoutService::class.java).also {
+                                            it.action = WorkoutService.Actions.STOP.toString()
+                                            context.startForegroundService(it)
+                                        }
+                                        workoutViewModel.clearAllData()
+                                        navController.popBackStack()
+                                    }
+                                },
+                            color = Maroon90
                         )
                     }
-                    Text(
-                        text = Strings.CANCEL_WORKOUT,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .clickable {
-                                navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
-                                    // When navigation is complete, stop the service and pop the back stack
-                                    Intent(context, WorkoutService::class.java).also {
-                                        it.action = WorkoutService.Actions.STOP.toString()
-                                        context.startForegroundService(it)
-                                    }
-                                    navController.popBackStack()
-                                    workoutViewModel.clearAllData()
-                                }
-                            },
-                        color = Maroon90
-                    )
-                }
 
-            }
+                }
         }
     )
 }

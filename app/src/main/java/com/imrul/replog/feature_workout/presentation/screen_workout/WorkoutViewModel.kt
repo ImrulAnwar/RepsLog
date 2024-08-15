@@ -1,6 +1,8 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +27,10 @@ class WorkoutViewModel @Inject constructor(
     private val workoutUseCases: WorkoutUseCases,
 ) : ViewModel() {
     var isWorkOutRunning by mutableStateOf(
+        false
+    )
+        private set
+    var isInserting by mutableStateOf(
         false
     )
         private set
@@ -158,16 +164,6 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-    private fun extractNumbers(data: String): Pair<Float, Float> {
-        val parts = data.split(" ") // Split the string by whitespace
-
-        // Try converting the first and last elements to float
-        val firstNumber = parts.firstOrNull()?.toFloatOrNull() ?: 0.0f
-        val lastNumber = parts.lastOrNull()?.toFloatOrNull() ?: 0.0f
-
-        return Pair(firstNumber, lastNumber)
-    }
-
     fun onRepValueChanged(
         setIndex: Int,
         content: String,
@@ -175,10 +171,16 @@ class WorkoutViewModel @Inject constructor(
         listOfReps[setIndex] = content
     }
 
-    fun addExerciseAndSets(name: String, exerciseId: Long) {
+    fun addExerciseAndSets(name: String, exerciseId: Long, context: Context) {
+        if (listOfExerciseId.contains(exerciseId)) {
+            Toast.makeText(context, "The exercise is already in your workout", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
+
         listOfExerciseName.add(name)
         listOfExerciseId.add(exerciseId)
-        var exerciseIndex = listOfExerciseId.indexOf(exerciseId)
+        val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
 
         // loading previous session
         viewModelScope.launch {
@@ -232,7 +234,7 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun removeExercise(exerciseId: Long) {
-        var exerciseIndex = listOfExerciseId.indexOf(exerciseId)
+        val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
         listOfExerciseName.removeAt(exerciseIndex)
         listOfExerciseId.removeAt(exerciseIndex)
 
@@ -341,14 +343,14 @@ class WorkoutViewModel @Inject constructor(
             setCount = setCount.toLong(),
             exerciseIdForeign = listOfExerciseId[exerciseIndex],
             exerciseName = listOfExerciseName[exerciseIndex],
-            bestSet = "${convertFloatToIntIfPossible(maxWeight)} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
+            bestSet = "${maxWeight.toInt()} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
             weightUnit = listOfWeightUnits[exerciseIndex]
         )
-        insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
+//        insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
         workoutUseCases.insertSession(session)
     }
 
-    fun insertExerciseNotes(sessionId: Long, exerciseIndex: Int) {
+    private suspend fun insertExerciseNotes(sessionId: Long, exerciseIndex: Int) {
         val listOfNotesCopy = listOfExerciseNotes.toList()
         listOfNotesCopy.forEachIndexed { _, item ->
             val note = Note(
@@ -356,14 +358,12 @@ class WorkoutViewModel @Inject constructor(
                 belongsTo = Note.SESSION,
                 content = item.second
             )
-            viewModelScope.launch {
-                if (note.content.isNotEmpty() && exerciseIndex == item.first)
-                    workoutUseCases.insertNote(note)
-            }
+            if (note.content.isNotEmpty() && exerciseIndex == item.first)
+                workoutUseCases.insertNote(note)
         }
     }
 
-    fun insertWorkoutNotes(workoutId: Long) {
+    private suspend fun insertWorkoutNotes(workoutId: Long) {
         val listOfNotesCopy = listOfWorkoutNotes.toList()
         listOfNotesCopy.forEachIndexed { _, item ->
             val note = Note(
@@ -371,24 +371,14 @@ class WorkoutViewModel @Inject constructor(
                 belongsTo = Note.WORKOUT,
                 content = item
             )
-            viewModelScope.launch {
-                if (note.content.isNotEmpty())
-                    workoutUseCases.insertNote(note)
-            }
-        }
-    }
-
-    private fun convertFloatToIntIfPossible(number: Float): Number {
-        val numberAsString = number.toString()
-        return if (numberAsString.endsWith(".0") || numberAsString.endsWith(".")) {
-            number.toInt()
-        } else {
-            number
+            if (note.content.isNotEmpty())
+                workoutUseCases.insertNote(note)
         }
     }
 
     fun insertWorkout() {
         viewModelScope.launch {
+            isInserting = true
             val date = System.currentTimeMillis()
             var dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
             val dateString = dateFormat.format(Date(date))
@@ -430,8 +420,8 @@ class WorkoutViewModel @Inject constructor(
         workoutUseCases.shouldInsertWorkout(listOfIsDone, listOfWeights, listOfReps)
 
     override fun onCleared() {
-        isWorkOutRunning = false
         super.onCleared()
+        clearAllData()
     }
 
     fun clearAllData() {
@@ -450,6 +440,7 @@ class WorkoutViewModel @Inject constructor(
         listOfExerciseNotes.clear()
         listOfWorkoutNotes.clear()
         listOfNoteId.clear()
+        isInserting = false
     }
 
 }
