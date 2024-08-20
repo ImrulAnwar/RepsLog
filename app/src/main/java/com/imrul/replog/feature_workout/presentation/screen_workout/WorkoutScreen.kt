@@ -29,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -40,14 +39,13 @@ import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.core.presentation.components.CustomIcon
 import com.imrul.replog.feature_workout.presentation.components.AddNoteTextField
-import com.imrul.replog.feature_workout.presentation.components.CustomTextField
 import com.imrul.replog.feature_workout.presentation.components.WorkoutTitleTextField
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.DropDownMenuForWorkoutName
 import com.imrul.replog.feature_workout.presentation.screen_workout.components.ExerciseItem
 import com.imrul.replog.ui.theme.Maroon10
-import com.imrul.replog.ui.theme.WhiteCustom
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.Maroon90
+import com.imrul.replog.ui.theme.WhiteCustom
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
