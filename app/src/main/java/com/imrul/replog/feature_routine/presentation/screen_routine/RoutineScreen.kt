@@ -32,7 +32,6 @@ import com.imrul.replog.feature_routine.presentation.components.TemplateItem
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.WorkoutHistoryViewModel
-import com.imrul.replog.feature_workout.presentation.screen_workout_history.components.WorkoutItem
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
 
@@ -41,6 +40,7 @@ import com.imrul.replog.ui.theme.WhiteCustom
 fun RoutineScreen(
     navController: NavHostController,
     workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel(),
+    routinesViewModel: RoutinesViewModel,
     workoutViewModel: WorkoutViewModel
 ) {
     LaunchedEffect(Unit) {
@@ -51,7 +51,7 @@ fun RoutineScreen(
     val sessionsList by workoutHistoryViewModel.sessionsList.collectAsState()
     val context = LocalContext.current
 
-    if (workoutViewModel.isInserting)
+    if (routinesViewModel.isInserting)
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -71,15 +71,15 @@ fun RoutineScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(bottom = if (!workoutViewModel.isWorkOutRunning) 80.dp else 0.dp),
+                    .padding(bottom = if (!routinesViewModel.isWorkOutRunning) 80.dp else 0.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
                     CustomButton(
                         onClick = {
-                            workoutViewModel.clearAllData()
-                            startWorkout(workoutViewModel, navController, context)
+                            routinesViewModel.clearAllData()
+                            startWorkout(routinesViewModel, navController, context)
                         },
                         modifier = Modifier.padding(top = 20.dp),
                         text = Strings.CREATE_NEW_TEMPLATE
@@ -89,17 +89,17 @@ fun RoutineScreen(
                     TemplateItem(
                         workout = workout,
                         onClick = {
-                            workoutViewModel.clearAllData()
-                            workoutViewModel.setWorkoutName(workout.name)
-                            workout.workoutId?.let { workoutViewModel.getAllWorkoutNotes(it) }
-                            startWorkout(workoutViewModel, navController, context)
+                            routinesViewModel.clearAllData()
+                            routinesViewModel.setWorkoutName(workout.name)
+                            workout.workoutId?.let { routinesViewModel.getAllWorkoutNotes(it) }
+                            startWorkout(routinesViewModel, navController, context)
                             sessionsList.forEach { session ->
 
                                 //
                                 if (session.workoutIdForeign == workout.workoutId) {
                                     session.exerciseName?.let { name ->
                                         session.exerciseIdForeign?.let { exerciseId ->
-                                            workoutViewModel.addExerciseAndSets(
+                                            routinesViewModel.addExerciseAndSets(
                                                 name = name,
                                                 exerciseId = exerciseId,
                                                 context = context
@@ -113,7 +113,7 @@ fun RoutineScreen(
                     )
                 }
             }
-            if (workoutViewModel.isWorkOutRunning)
+            if (routinesViewModel.isWorkOutRunning)
                 MiniPlayer(
                     workoutViewModel = workoutViewModel,
                     navController = navController
@@ -125,12 +125,12 @@ fun RoutineScreen(
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun startWorkout(
-    workoutViewModel: WorkoutViewModel,
+    routinesViewModel: RoutinesViewModel,
     navController: NavHostController,
     context: Context
 ) {
-    if (!workoutViewModel.isWorkOutRunning) {
-        workoutViewModel.setWorkoutRunning(true)
+    if (!routinesViewModel.isWorkOutRunning) {
+        routinesViewModel.setWorkoutRunning(true)
         navController.navigate(Routes.ScreenWorkout)
         // start service
         Intent(context, WorkoutService::class.java).also {

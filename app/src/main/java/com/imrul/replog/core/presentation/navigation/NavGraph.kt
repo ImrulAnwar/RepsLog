@@ -21,6 +21,7 @@ import com.imrul.replog.feature_exercises.presentation.screen_exercises.Exercise
 import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListViewModel
 import com.imrul.replog.feature_exercises.presentation.screen_filter_exercise.FilterExerciseScreen
 import com.imrul.replog.feature_routine.presentation.screen_routine.RoutineScreen
+import com.imrul.replog.feature_routine.presentation.screen_routine.RoutinesViewModel
 import com.imrul.replog.feature_workout.presentation.screen_exercise_list_from_workout.ExerciseListScreenFromWorkout
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutScreen
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
@@ -34,7 +35,8 @@ fun NavGraph(
     context: Context = LocalContext.current,
     isLoggedIn: Boolean,
     exerciseListViewModel: ExerciseListViewModel = hiltViewModel(),
-    workoutViewModel: WorkoutViewModel = hiltViewModel()
+    workoutViewModel: WorkoutViewModel = hiltViewModel(),
+    routinesViewModel: RoutinesViewModel = hiltViewModel()
 ) {
 
     NavHost(
@@ -76,7 +78,7 @@ fun NavGraph(
             AddEditExerciseScreen(navController = navController, exerciseId = args.exerciseId)
         }
         composable<Routes.ScreenRoutine> {
-            RoutineScreen(navController = navController, workoutViewModel = workoutViewModel)
+            RoutineScreen(navController = navController, routinesViewModel = routinesViewModel, workoutViewModel = workoutViewModel)
         }
         composable<Routes.ScreenFilterExercise> {
             FilterExerciseScreen(navController = navController, viewModel = exerciseListViewModel)
