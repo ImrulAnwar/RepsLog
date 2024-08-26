@@ -1,4 +1,4 @@
-package com.imrul.replog.feature_template.domain.model
+package com.imrul.replog.feature_routine.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

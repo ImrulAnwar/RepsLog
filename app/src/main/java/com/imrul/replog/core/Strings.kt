@@ -6,6 +6,7 @@ object Strings {
     const val FINISHED_WORKOUT_BUTTON = "finish_workout_button"
     const val FINISHED_SET_BUTTON = "finish_set_button"
     const val CANCELLED_WORKOUT_BUTTON = "cancel_workout_button"
+    const val CREATE_NEW_TEMPLATE = "Create New Template"
     const val ADD_A_NOTE = "Add a note"
     const val GRANT_PERMISSION = "Grant Permission"
     const val OKAY = "Okay"
