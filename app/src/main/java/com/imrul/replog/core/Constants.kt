@@ -1,7 +1,8 @@
 package com.imrul.replog.core
 
 object Constants {
-    const val DATABASE_NAME = "workout_db"
+    const val WORKOUT_DATABASE_NAME = "workout_db"
+    const val MEASUREMENT_DATABASE_NAME = "measurement_db"
     const val TEST_DATABASE_NAME = "test_workout_db"
     const val WORKOUT_NOTIFICATION_CHANNEL_ID = "workout_channel"
     const val USERS_COLLECTION = "users"

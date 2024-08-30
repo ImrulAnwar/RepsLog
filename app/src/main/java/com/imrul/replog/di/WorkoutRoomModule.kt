@@ -2,7 +2,7 @@ package com.imrul.replog.di
 
 import android.content.Context
 import androidx.room.Room
-import com.imrul.replog.core.Constants.DATABASE_NAME
+import com.imrul.replog.core.Constants.WORKOUT_DATABASE_NAME
 import com.imrul.replog.feature_workout.data.data_source.WorkoutDao
 import com.imrul.replog.feature_workout.data.data_source.WorkoutDatabase
 import com.imrul.replog.feature_workout.data.repository.WorkoutRepositoryImp
@@ -42,12 +42,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RoomModule {
+object WorkoutRoomModule {
     @Singleton
     @Provides
     fun provideWorkoutDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(context, WorkoutDatabase::class.java, DATABASE_NAME).build()
+    ) = Room.databaseBuilder(context, WorkoutDatabase::class.java, WORKOUT_DATABASE_NAME).build()
 
     @Singleton
     @Provides
