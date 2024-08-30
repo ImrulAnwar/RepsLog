@@ -113,7 +113,7 @@ fun RoutineScreen(
                     )
                 }
             }
-            if (routinesViewModel.isWorkOutRunning)
+            if (workoutViewModel.isWorkOutRunning)
                 MiniPlayer(
                     workoutViewModel = workoutViewModel,
                     navController = navController
