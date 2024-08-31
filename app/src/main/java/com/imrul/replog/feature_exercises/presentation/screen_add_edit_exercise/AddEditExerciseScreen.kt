@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Strings
@@ -70,6 +71,7 @@ fun AddEditExerciseScreen(
                 text = selectedMuscleGroup,
                 items = viewModel.muscleGroupList,
                 onItemSelected = { viewModel.onSelectedMuscleGroup(it) },
+                fontSize = 20.sp,
             )
         }
         Row(
@@ -86,6 +88,7 @@ fun AddEditExerciseScreen(
                 text = selectedWeightType,
                 items = viewModel.weightTypeList,
                 onItemSelected = { viewModel.onSelectedWeightType(it) },
+                fontSize = 20.sp,
             )
         }
         CustomButton(

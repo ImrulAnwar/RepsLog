@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
@@ -22,6 +22,7 @@ import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
+import com.imrul.replog.ui.theme.WhiteCustom
 
 @Composable
 fun LineChartGraph(
@@ -30,15 +31,20 @@ fun LineChartGraph(
         Point(1f, 50f),
         Point(2f, 60f),
         Point(3f, 70f),
-        Point(4f, 80f)
+        Point(4f, 80f),
+        Point(6f, 50f),
+        Point(7f, 60f),
+        Point(8f, 70f),
+        Point(9f, 60f),
     )
 ) {
-    val steps = 5
+    val ySteps = 5
+    val xSteps = pointsData.size - 1
 
     val xAxisData = AxisData.Builder()
-        .axisStepSize(100.dp)
-        .backgroundColor(Color.Transparent)
-        .steps(pointsData.size - 1)
+        .axisStepSize(40.dp)
+        .backgroundColor(WhiteCustom)
+        .steps(xSteps)
         .labelData { i -> i.toString() }
         .labelAndAxisLinePadding(15.dp)
         .axisLineColor(Maroon70)
@@ -46,12 +52,12 @@ fun LineChartGraph(
         .build()
 
     val yAxisData = AxisData.Builder()
-        .steps(steps)
-        .backgroundColor(Color.Transparent)
+        .steps(ySteps)
+        .backgroundColor(WhiteCustom)
         .labelAndAxisLinePadding(20.dp)
         .labelData { i ->
             val maxNum = 100
-            val yScale = maxNum / steps
+            val yScale = maxNum / ySteps
             (i * yScale).toString()
         }
         .axisLineColor(Maroon70)
@@ -78,7 +84,7 @@ fun LineChartGraph(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Maroon20,
-                                Color.Transparent
+                                WhiteCustom
                             )
                         )
                     ),
@@ -86,7 +92,7 @@ fun LineChartGraph(
                 )
             )
         ),
-        backgroundColor = Color.Transparent,
+        backgroundColor = WhiteCustom,
         xAxisData = xAxisData,
         yAxisData = yAxisData,
         gridLines = GridLines(color = Maroon20)

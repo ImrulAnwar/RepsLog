@@ -119,7 +119,6 @@ fun WorkoutHistoryScreen(
 
 }
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 private fun startWorkout(
     workoutViewModel: WorkoutViewModel,

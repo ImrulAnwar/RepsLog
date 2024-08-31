@@ -1,5 +1,3 @@
-package com.imrul.replog.feature_exercises.presentation.components
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.imrul.replog.ui.theme.Maroon10
@@ -35,12 +32,11 @@ import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
 
 @Composable
-fun CustomDropDownMenu(
+fun DropDownMenuCategories(
     text: String,
     items: List<String>,
     onItemSelected: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    fontSize: TextUnit = 16.sp
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -50,7 +46,7 @@ fun CustomDropDownMenu(
                 .clickable { expanded = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = text, fontSize = fontSize)
+            Text(text = text, fontSize = 16.sp)
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 imageVector = Icons.Filled.ArrowDropDown,
