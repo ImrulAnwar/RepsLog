@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.imrul.replog"
-        minSdk = 25
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -102,6 +102,8 @@ dependencies {
 // Type Safe Navigation
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+// Ycharts
+    implementation (libs.ycharts)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

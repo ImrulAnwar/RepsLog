@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.imrul.replog.core.presentation.components.LineChartGraph
 import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 
@@ -16,8 +17,9 @@ fun MeasurementsScreen(
 ) {
     Column(
         Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.Center
     ) {
+        LineChartGraph()
         if (workoutViewModel.isWorkOutRunning)
             MiniPlayer(
                 workoutViewModel = workoutViewModel,
