@@ -14,8 +14,8 @@ class MeasurementRepositoryImpl(
     override suspend fun deleteMeasurement(measurement: Measurement) =
         dao.deleteMeasurement(measurement)
 
-    override fun getAllMeasurementsByCategory(category: String): Flow<List<Measurement>> =
-        dao.getAllMeasurementsByCategory(category)
+    override fun getAllMeasurements(category: String): Flow<List<Measurement>> =
+        dao.getAllMeasurementsByCategory()
 
     override fun getMeasurementsById(id: Long?): Measurement =
         dao.getAllMeasurementById(id)

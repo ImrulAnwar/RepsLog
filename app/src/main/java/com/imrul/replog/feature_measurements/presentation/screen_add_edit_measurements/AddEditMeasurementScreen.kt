@@ -24,7 +24,7 @@ import com.imrul.replog.ui.theme.WhiteCustom
 @Composable
 fun AddEditMeasurementScreen(
     navController: NavHostController,
-    viewModel: AddEditMeasurementViewModel = hiltViewModel(),
+    viewModel: AddEditMeasurementViewModel,
     context: Context = LocalContext.current,
     measurementId: Long
 ) {

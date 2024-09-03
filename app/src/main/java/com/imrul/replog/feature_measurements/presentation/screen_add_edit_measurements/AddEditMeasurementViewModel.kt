@@ -39,6 +39,10 @@ class AddEditMeasurementViewModel @Inject constructor(
         measurementUnit = string
     }
 
+    fun setCategory(string: String) {
+        measurementCategory = string
+    }
+
     fun insertMeasurement(context: Context, navController: NavHostController) {
         viewModelScope.launch {
             if (!isNumber(measurementValue) || measurementValue.trim() == "") {

@@ -28,12 +28,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.components.LineChartGraph
 import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_exercises.presentation.components.CustomDropDownMenu
 import com.imrul.replog.feature_measurements.domain.model.Measurement
+import com.imrul.replog.feature_measurements.presentation.screen_add_edit_measurements.AddEditMeasurementViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
@@ -48,6 +50,7 @@ fun MeasurementsScreen(
     navController: NavHostController,
     workoutViewModel: WorkoutViewModel,
     measurementsViewModel: MeasurementsViewModel,
+    addEditMeasurementViewModel: AddEditMeasurementViewModel,
     context: Context = LocalContext.current
 ) {
     val measurementsList by measurementsViewModel.measurementList.collectAsState()
@@ -111,13 +114,7 @@ fun MeasurementsScreen(
                                         measurementId = -1
                                     )
                                 )
-                                Toast
-                                    .makeText(
-                                        context,
-                                        "${measurementsList.size}",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                    .show()
+                                addEditMeasurementViewModel.setCategory(measurementsViewModel.selectedCategory)
                             },
                         tint = Maroon70
                     )
@@ -125,15 +122,22 @@ fun MeasurementsScreen(
             }
             items(measurementsList) { measurement ->
                 Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
                         text = measurementsViewModel.convertTimestampToFormattedDateTime(
                             measurement.timeStamp
-                        ), fontSize = 300.sp
+                        ),
+                        fontSize = 18.sp
+
                     )
-                    Text(text = measurement.value.toString() + " " + measurement.unit)
+                    Text(
+                        text = measurement.value.toString() + " " + measurement.unit,
+                        fontSize = 18.sp
+                    )
                 }
             }
         }

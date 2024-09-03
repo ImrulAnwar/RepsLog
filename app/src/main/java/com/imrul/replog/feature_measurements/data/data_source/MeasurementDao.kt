@@ -16,8 +16,8 @@ interface MeasurementDao {
     @Delete
     suspend fun deleteMeasurement(measurement: Measurement)
 
-    @Query("SELECT * FROM Measurement WHERE category = :category")
-    fun getAllMeasurementsByCategory(category: String): Flow<List<Measurement>>
+    @Query("SELECT * FROM Measurement")
+    fun getAllMeasurementsByCategory(): Flow<List<Measurement>>
 
     @Query("SELECT * FROM Measurement WHERE measurementId = :id")
     fun getAllMeasurementById(id: Long?): Measurement

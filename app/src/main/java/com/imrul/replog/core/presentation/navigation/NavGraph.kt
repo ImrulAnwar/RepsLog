@@ -21,6 +21,7 @@ import com.imrul.replog.feature_exercises.presentation.screen_exercises.Exercise
 import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListViewModel
 import com.imrul.replog.feature_exercises.presentation.screen_filter_exercise.FilterExerciseScreen
 import com.imrul.replog.feature_measurements.presentation.screen_add_edit_measurements.AddEditMeasurementScreen
+import com.imrul.replog.feature_measurements.presentation.screen_add_edit_measurements.AddEditMeasurementViewModel
 import com.imrul.replog.feature_measurements.presentation.screen_measurements.MeasurementsViewModel
 import com.imrul.replog.feature_routine.presentation.screen_routine.RoutineScreen
 import com.imrul.replog.feature_routine.presentation.screen_routine.RoutinesViewModel
@@ -39,7 +40,8 @@ fun NavGraph(
     exerciseListViewModel: ExerciseListViewModel = hiltViewModel(),
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
     routinesViewModel: RoutinesViewModel = hiltViewModel(),
-    measurementsViewModel: MeasurementsViewModel = hiltViewModel()
+    measurementsViewModel: MeasurementsViewModel = hiltViewModel(),
+    addEditMeasurementViewModel: AddEditMeasurementViewModel = hiltViewModel()
 ) {
 
     NavHost(
@@ -67,13 +69,18 @@ fun NavGraph(
             MeasurementsScreen(
                 navController = navController,
                 workoutViewModel = workoutViewModel,
-                measurementsViewModel = measurementsViewModel
+                measurementsViewModel = measurementsViewModel,
+                addEditMeasurementViewModel = addEditMeasurementViewModel
             )
         }
 
         composable<Routes.ScreenAddEditMeasurements> {
             val args = it.toRoute<Routes.ScreenAddEditMeasurements>()
-            AddEditMeasurementScreen(navController = navController, measurementId = args.measurementId)
+            AddEditMeasurementScreen(
+                navController = navController,
+                measurementId = args.measurementId,
+                viewModel = addEditMeasurementViewModel
+            )
         }
         composable<Routes.ScreenExerciseList> {
             ExerciseListScreen(
@@ -91,7 +98,10 @@ fun NavGraph(
         }
         composable<Routes.ScreenAddEditExercises> {
             val args = it.toRoute<Routes.ScreenAddEditExercises>()
-            AddEditExerciseScreen(navController = navController, exerciseId = args.exerciseId)
+            AddEditExerciseScreen(
+                navController = navController,
+                exerciseId = args.exerciseId
+            )
         }
         composable<Routes.ScreenRoutine> {
             RoutineScreen(
