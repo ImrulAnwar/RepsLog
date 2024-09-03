@@ -9,6 +9,7 @@ import com.imrul.replog.feature_measurements.data.repository.MeasurementReposito
 import com.imrul.replog.feature_measurements.domain.repository.MeasurementRepository
 import com.imrul.replog.feature_measurements.domain.use_cases.DeleteMeasurement
 import com.imrul.replog.feature_measurements.domain.use_cases.GetAllMeasurementsByCategory
+import com.imrul.replog.feature_measurements.domain.use_cases.GetMeasurementById
 import com.imrul.replog.feature_measurements.domain.use_cases.MeasurementUseCases
 import com.imrul.replog.feature_measurements.domain.use_cases.UpsertMeasurement
 import dagger.Module
@@ -44,6 +45,7 @@ object MeasurementRoomModule {
     fun provideMeasurementUseCases(repository: MeasurementRepository) = MeasurementUseCases(
         upsertMeasurement = UpsertMeasurement(repository),
         deleteMeasurement = DeleteMeasurement(repository),
-        getAllMeasurementsByCategory = GetAllMeasurementsByCategory(repository)
+        getAllMeasurementsByCategory = GetAllMeasurementsByCategory(repository),
+        getMeasurementById = GetMeasurementById(repository)
     )
 }

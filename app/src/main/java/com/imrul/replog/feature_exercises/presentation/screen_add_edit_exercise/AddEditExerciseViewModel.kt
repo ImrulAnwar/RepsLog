@@ -50,6 +50,7 @@ class AddEditExerciseViewModel @Inject constructor(
                     .show()
                 return@launch
             }
+
             val exercise: Exercise
             if (currentExerciseId == -1L) {
                 exercise = Exercise(

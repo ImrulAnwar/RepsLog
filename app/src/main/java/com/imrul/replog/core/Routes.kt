@@ -20,6 +20,11 @@ open class Routes {
     object ScreenMeasurements : Routes()
 
     @Serializable
+    data class ScreenAddEditMeasurements(
+        val measurementId: Long = -1
+    ) : Routes()
+
+    @Serializable
     object ScreenExerciseList : Routes()
 
     @Serializable

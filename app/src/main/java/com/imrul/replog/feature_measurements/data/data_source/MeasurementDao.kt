@@ -18,4 +18,7 @@ interface MeasurementDao {
 
     @Query("SELECT * FROM Measurement WHERE category = :category")
     fun getAllMeasurementsByCategory(category: String): Flow<List<Measurement>>
+
+    @Query("SELECT * FROM Measurement WHERE measurementId = :id")
+    fun getAllMeasurementById(id: Long?): Measurement
 }

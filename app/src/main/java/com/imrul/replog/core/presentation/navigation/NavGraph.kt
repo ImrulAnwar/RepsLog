@@ -20,6 +20,8 @@ import com.imrul.replog.feature_measurements.presentation.screen_measurements.Me
 import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListScreen
 import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListViewModel
 import com.imrul.replog.feature_exercises.presentation.screen_filter_exercise.FilterExerciseScreen
+import com.imrul.replog.feature_measurements.presentation.screen_add_edit_measurements.AddEditMeasurementScreen
+import com.imrul.replog.feature_measurements.presentation.screen_measurements.MeasurementsViewModel
 import com.imrul.replog.feature_routine.presentation.screen_routine.RoutineScreen
 import com.imrul.replog.feature_routine.presentation.screen_routine.RoutinesViewModel
 import com.imrul.replog.feature_workout.presentation.screen_exercise_list_from_workout.ExerciseListScreenFromWorkout
@@ -36,7 +38,8 @@ fun NavGraph(
     isLoggedIn: Boolean,
     exerciseListViewModel: ExerciseListViewModel = hiltViewModel(),
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
-    routinesViewModel: RoutinesViewModel = hiltViewModel()
+    routinesViewModel: RoutinesViewModel = hiltViewModel(),
+    measurementsViewModel: MeasurementsViewModel = hiltViewModel()
 ) {
 
     NavHost(
@@ -61,10 +64,23 @@ fun NavGraph(
             ProfileScreen(navController = navController, workoutViewModel = workoutViewModel)
         }
         composable<Routes.ScreenMeasurements> {
-            MeasurementsScreen(navController = navController, workoutViewModel = workoutViewModel)
+            MeasurementsScreen(
+                navController = navController,
+                workoutViewModel = workoutViewModel,
+                measurementsViewModel = measurementsViewModel
+            )
+        }
+
+        composable<Routes.ScreenAddEditMeasurements> {
+            val args = it.toRoute<Routes.ScreenAddEditMeasurements>()
+            AddEditMeasurementScreen(navController = navController, measurementId = args.measurementId)
         }
         composable<Routes.ScreenExerciseList> {
-            ExerciseListScreen(navController = navController, viewModel = exerciseListViewModel, workoutViewModel = workoutViewModel)
+            ExerciseListScreen(
+                navController = navController,
+                viewModel = exerciseListViewModel,
+                workoutViewModel = workoutViewModel
+            )
         }
         composable<Routes.ScreenExerciseListFromWorkout> {
             ExerciseListScreenFromWorkout(
@@ -78,7 +94,11 @@ fun NavGraph(
             AddEditExerciseScreen(navController = navController, exerciseId = args.exerciseId)
         }
         composable<Routes.ScreenRoutine> {
-            RoutineScreen(navController = navController, routinesViewModel = routinesViewModel, workoutViewModel = workoutViewModel)
+            RoutineScreen(
+                navController = navController,
+                routinesViewModel = routinesViewModel,
+                workoutViewModel = workoutViewModel
+            )
         }
         composable<Routes.ScreenFilterExercise> {
             FilterExerciseScreen(navController = navController, viewModel = exerciseListViewModel)

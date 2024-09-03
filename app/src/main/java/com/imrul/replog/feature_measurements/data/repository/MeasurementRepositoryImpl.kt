@@ -17,4 +17,7 @@ class MeasurementRepositoryImpl(
     override fun getAllMeasurementsByCategory(category: String): Flow<List<Measurement>> =
         dao.getAllMeasurementsByCategory(category)
 
+    override fun getMeasurementsById(id: Long?): Measurement =
+        dao.getAllMeasurementById(id)
+
 }
