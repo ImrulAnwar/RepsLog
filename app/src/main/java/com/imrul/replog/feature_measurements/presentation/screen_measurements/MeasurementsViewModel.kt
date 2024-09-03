@@ -36,7 +36,6 @@ class MeasurementsViewModel @Inject constructor(
         viewModelScope.launch {
             measurementUseCases.getAllMeasurementsByCategory(selectedCategory).collect {
                 _measurementList.value = it
-                Toast.makeText(context, "${_measurementList.value.size}", Toast.LENGTH_SHORT).show()
             }
         }
     }

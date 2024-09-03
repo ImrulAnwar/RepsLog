@@ -69,7 +69,7 @@ fun ExerciseListItem(
                 onEditClicked = {
                     navController.navigate(
                         Routes.ScreenAddEditExercises(
-                            exerciseId = exercise.exerciseId ?: -1
+                            exerciseId = exercise.exerciseId ?: -1L
                         )
                     )
                 },

@@ -12,7 +12,9 @@ import androidx.navigation.NavHostController
 import com.imrul.replog.feature_measurements.domain.model.Measurement
 import com.imrul.replog.feature_measurements.domain.use_cases.MeasurementUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +43,14 @@ class AddEditMeasurementViewModel @Inject constructor(
 
     fun setCategory(string: String) {
         measurementCategory = string
+    }
+
+    fun clearData() {
+        measurementValue = ""
+        measurementUnit = ""
+        measurementCategory = ""
+        currentMeasurementId = -1L
+        timestamp = -1L
     }
 
     fun insertMeasurement(context: Context, navController: NavHostController) {
@@ -81,6 +91,7 @@ class AddEditMeasurementViewModel @Inject constructor(
             try {
                 measurementUseCases.upsertMeasurement(measurement)
                 navController.navigateUp()
+                clearData()
             } catch (e: Exception) {
                 Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
             }
@@ -92,21 +103,16 @@ class AddEditMeasurementViewModel @Inject constructor(
         navController: NavHostController,
         measurementId: Long
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val measurement = measurementUseCases.getMeasurementById(measurementId)
             try {
                 if (currentMeasurementId != -1L)
                     measurementUseCases.deleteMeasurement(measurement)
-                else
-                    Toast.makeText(
-                        context,
-                        "Measurement must be inserted first",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                navController.navigateUp()
-            } catch (e: Exception) {
-                Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    navController.navigateUp()
+                }
+                clearData()
+            } catch (_: Exception) {
             }
         }
     }
@@ -115,7 +121,7 @@ class AddEditMeasurementViewModel @Inject constructor(
     fun initializeParameters(
         measurementId: Long,
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val measurement = measurementUseCases.getMeasurementById(measurementId)
             currentMeasurementId = measurementId
             measurementValue = measurement.value.toString()

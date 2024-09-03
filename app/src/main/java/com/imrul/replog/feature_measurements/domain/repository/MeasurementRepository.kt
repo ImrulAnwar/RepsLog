@@ -9,5 +9,5 @@ interface MeasurementRepository {
     suspend fun deleteMeasurement(measurement: Measurement)
 
     fun getAllMeasurements(category: String): Flow<List<Measurement>>
-    fun getMeasurementsById(id: Long?): Measurement
+    suspend fun getMeasurementsById(id: Long?): Measurement
 }

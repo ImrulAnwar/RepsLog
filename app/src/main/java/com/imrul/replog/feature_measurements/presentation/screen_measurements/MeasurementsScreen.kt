@@ -1,7 +1,6 @@
 package com.imrul.replog.feature_measurements.presentation.screen_measurements
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,7 +26,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.components.LineChartGraph
@@ -39,11 +36,6 @@ import com.imrul.replog.feature_measurements.presentation.screen_add_edit_measur
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatter.*
 
 @Composable
 fun MeasurementsScreen(
@@ -124,7 +116,14 @@ fun MeasurementsScreen(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(20.dp),
+                        .padding(20.dp)
+                        .clickable {
+                            navController.navigate(
+                                Routes.ScreenAddEditMeasurements(
+                                    measurementId = measurement.measurementId?:-1L
+                                )
+                            )
+                        },
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(

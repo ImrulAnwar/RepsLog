@@ -1,6 +1,7 @@
 package com.imrul.replog.feature_measurements.presentation.screen_add_edit_measurements
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,10 @@ fun AddEditMeasurementScreen(
         if (measurementId != -1L) {
             viewModel.initializeParameters(measurementId = measurementId)
         }
+    }
+    BackHandler {
+        navController.navigateUp()
+        viewModel.clearData()
     }
     Column(
         modifier = Modifier
@@ -69,7 +74,11 @@ fun AddEditMeasurementScreen(
         ) {
             CustomButton(
                 onClick = {
-                viewModel.deleteMeasurement(context = context, navController = navController,measurementId = measurementId)
+                    viewModel.deleteMeasurement(
+                        context = context,
+                        navController = navController,
+                        measurementId = measurementId
+                    )
                 },
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 10.dp),
@@ -77,14 +86,13 @@ fun AddEditMeasurementScreen(
             )
             CustomButton(
                 onClick = {
-                viewModel.insertMeasurement(context = context, navController = navController)
+                    viewModel.insertMeasurement(context = context, navController = navController)
                 },
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 10.dp),
                 text = Strings.SAVE_MEASUREMENT
             )
         }
-
 
     }
 }

@@ -5,6 +5,6 @@ import com.imrul.replog.feature_measurements.domain.repository.MeasurementReposi
 class GetMeasurementById(
     private val repository: MeasurementRepository
 ) {
-    operator fun invoke(id: Long?) =
+    suspend operator fun invoke(id: Long) =
         repository.getMeasurementsById(id)
 }
