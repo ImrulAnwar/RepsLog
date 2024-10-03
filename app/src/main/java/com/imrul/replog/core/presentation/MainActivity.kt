@@ -88,7 +88,6 @@ class MainActivity : ComponentActivity() {
                 val screens = listOf(
                     BottomBarScreens.WorkoutHistoryScreenObject,
                     BottomBarScreens.MeasurementsScreenObject,
-                    BottomBarScreens.RoutineScreenObject,
                     BottomBarScreens.ExercisesScreenObject,
                     BottomBarScreens.ProfileScreenObject
                 )
@@ -99,7 +98,6 @@ class MainActivity : ComponentActivity() {
                         screens[1].route::class.java.simpleName,
                         screens[2].route::class.java.simpleName,
                         screens[3].route::class.java.simpleName,
-                        screens[4].route::class.java.simpleName,
                         -> true
 
                         else -> false

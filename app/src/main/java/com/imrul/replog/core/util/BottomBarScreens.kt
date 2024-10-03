@@ -37,11 +37,4 @@ sealed class BottomBarScreens(
         unselectedIcon = R.drawable.icon_profile,
         title = Strings.PROFILE
     )
-
-    data object RoutineScreenObject : BottomBarScreens(
-        route = Routes.ScreenRoutine,
-        selectedIcon = R.drawable.icon_routine,
-        unselectedIcon = R.drawable.icon_routine,
-        title = Strings.ROUTINE
-    )
 }
