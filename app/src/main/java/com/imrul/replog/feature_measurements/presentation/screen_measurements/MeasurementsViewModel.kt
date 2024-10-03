@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.yml.charts.common.model.Point
 import com.imrul.replog.feature_measurements.domain.model.Measurement
 import com.imrul.replog.feature_measurements.domain.use_cases.MeasurementUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter.ofPattern
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +30,8 @@ class MeasurementsViewModel @Inject constructor(
 
     private val _measurementList = MutableStateFlow<List<Measurement>>(emptyList())
     val measurementList = _measurementList
+    private val _pointsList = MutableStateFlow<List<Point>>(emptyList())
+    val pointsList = _pointsList
     fun onSelectedCategory(string: String) {
         selectedCategory = string
     }
@@ -39,6 +43,30 @@ class MeasurementsViewModel @Inject constructor(
             }
         }
     }
+
+    fun updatePoints() {
+        val listOfPoints = mutableListOf<Point>()
+        _measurementList.value.forEach{ measurement ->
+            listOfPoints.add(Point(measurement.value, measurement.timeStamp.toFloat()))
+        }
+        pointsList.value = listOfPoints
+    }
+
+//    fun updatePoints() {
+//        val listOfPoints = mutableListOf<Point>()
+//        _measurementList.value.forEach { measurement ->
+//            // Convert timestamp to day of the year
+//            val calendar = Calendar.getInstance().apply {
+//                timeInMillis = measurement.timeStamp
+//            }
+//            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR) // Get the day of the year
+//
+//            // Use the dayOfYear as the y-axis value
+//            listOfPoints.add(Point(dayOfYear.toFloat(), measurement.value))
+//        }
+//        pointsList.value = listOfPoints
+//    }
+
 
     fun convertTimestampToFormattedDateTime(timestamp: Long): String {
         val instant = Instant.ofEpochMilli(timestamp)

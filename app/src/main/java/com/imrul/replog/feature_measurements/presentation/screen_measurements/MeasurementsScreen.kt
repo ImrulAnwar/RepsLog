@@ -36,6 +36,8 @@ import com.imrul.replog.feature_measurements.presentation.screen_add_edit_measur
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
 
 @Composable
 fun MeasurementsScreen(
@@ -46,9 +48,11 @@ fun MeasurementsScreen(
     context: Context = LocalContext.current
 ) {
     val measurementsList by measurementsViewModel.measurementList.collectAsState()
+    val pointsList by measurementsViewModel.pointsList.collectAsState()
 
-    LaunchedEffect(measurementsViewModel.selectedCategory) {
+    LaunchedEffect(measurementsViewModel.selectedCategory, measurementsList) {
         measurementsViewModel.getAllMeasurementsByCategory(context)
+        measurementsViewModel.updatePoints()
     }
     Column(
         modifier = Modifier
@@ -112,7 +116,7 @@ fun MeasurementsScreen(
                     )
                 }
             }
-            items(measurementsList) { measurement ->
+            items(measurementsList.reversed()) { measurement ->
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -120,7 +124,7 @@ fun MeasurementsScreen(
                         .clickable {
                             navController.navigate(
                                 Routes.ScreenAddEditMeasurements(
-                                    measurementId = measurement.measurementId?:-1L
+                                    measurementId = measurement.measurementId ?: -1L
                                 )
                             )
                         },
@@ -131,7 +135,6 @@ fun MeasurementsScreen(
                             measurement.timeStamp
                         ),
                         fontSize = 18.sp
-
                     )
                     Text(
                         text = measurement.value.toString() + " " + measurement.unit,
