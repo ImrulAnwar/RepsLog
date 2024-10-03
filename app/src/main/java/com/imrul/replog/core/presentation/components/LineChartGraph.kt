@@ -1,5 +1,6 @@
 package com.imrul.replog.core.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -7,11 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
@@ -28,10 +26,8 @@ import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun LineChartGraph(
@@ -63,45 +59,49 @@ fun LineChartGraph(
             Point(29f, 60f),
         )
 ) {
-    val steps = 5
-    val minVal = 50
-    val maxVal = 90
+    val ySteps = 5
+    val xSteps = pointsData.size - 1
+    val minValY = pointsData.minByOrNull { it.y }?.y
+    val maxValY = pointsData.maxByOrNull { it.y }?.y
+
+
     // eitar label e date thakbe, and logic change kora lagbe
+
+    // screen width calculate kortesi jate joto data ie thakuk always jate screen e fit kore graph ta
+    val minValX = pointsData.minByOrNull { it.x }?.x
+    val maxValX = pointsData.maxByOrNull { it.x }?.x
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp / 6 * 5
+    val axisStepSize =
+        if (xSteps > 0) screenWidth / ((maxValX ?: 5f) - (minValX ?: 0f)) else screenWidth
+
+    // to convert the x value to a date
+    val dateFormatter = DateTimeFormatter.ofPattern("MMM d")
+
     val xAxisData = AxisData.Builder()
         .backgroundColor(WhiteCustom)
-        .steps(pointsData.size - 1)
-        .labelData { i -> i.toString() }
+        .steps(xSteps)
+        .axisStepSize(axisStepSize)
+        .labelData { i ->
+            // Convert day of the year to a LocalDate and format it
+            val dayOfYear = (minValX?.toInt() ?: 0) + i
+            val date = LocalDate.ofYearDay(LocalDate.now().year, dayOfYear)
+            date.format(dateFormatter)  // Format to "Sep 23"
+        }
         .labelAndAxisLinePadding(20.dp)
         .build()
 
     val yAxisData = AxisData.Builder()
-        .steps(steps)
+        .steps(ySteps)
         .backgroundColor(WhiteCustom)
         .labelAndAxisLinePadding(20.dp)
         .axisLineColor(Maroon70)
         .labelData { i ->
-            val yScale = (maxVal - minVal) / steps
-            ((i * yScale) + minVal).toString()
+            val min = minValY ?: 0f  // Provide a default value in case `minVal` is null
+            val max = maxValY ?: 1f  // Provide a default value in case `maxVal` is null
+            val yScale = (max - min) / ySteps
+            ((i * yScale) + min).toInt().toString()
         }.build()
-//
-//    val lineChartData = LineChartData(
-//        linePlotData = LinePlotData(
-//            lines = listOf(
-//                Line(
-//                    dataPoints = pointsData,
-//                    LineStyle(),
-//                    IntersectionPoint(),
-//                    SelectionHighlightPoint(),
-//                    ShadowUnderLine(),
-//                    SelectionHighlightPopUp()
-//                )
-//            ),
-//        ),
-//        xAxisData = xAxisData,
-//        yAxisData = yAxisData,
-//        gridLines = GridLines(),
-//        backgroundColor = Color.White
-//    )
 
 
     val lineChartData = LineChartData(
@@ -111,7 +111,7 @@ fun LineChartGraph(
                     dataPoints = pointsData,
                     lineStyle = LineStyle(
                         color = Maroon70,
-                        lineType = LineType.Straight(isDotted = false)
+                        lineType = LineType.SmoothCurve(isDotted = true)
                     ),
                     intersectionPoint = IntersectionPoint(
                         color = Maroon70
@@ -142,10 +142,7 @@ fun LineChartGraph(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
-                .padding(0.dp)
                 .background(WhiteCustom),
-            lineChartData = lineChartData,
-
-
+            lineChartData = lineChartData
         )
 }

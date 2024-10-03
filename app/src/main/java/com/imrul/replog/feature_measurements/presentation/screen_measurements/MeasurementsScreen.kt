@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -85,7 +86,16 @@ fun MeasurementsScreen(
                 }
             }
             item {
-                LineChartGraph()
+                if (pointsList.size < 2) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = "Add at least 2 dates to see the graph"
+                    )
+                }
+            }
+            item {
+                LineChartGraph(pointsList)
             }
             item {
                 Row(

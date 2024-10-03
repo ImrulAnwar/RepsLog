@@ -46,26 +46,18 @@ class MeasurementsViewModel @Inject constructor(
 
     fun updatePoints() {
         val listOfPoints = mutableListOf<Point>()
-        _measurementList.value.forEach{ measurement ->
-            listOfPoints.add(Point(measurement.value, measurement.timeStamp.toFloat()))
+        _measurementList.value.forEach { measurement ->
+            // Convert timestamp to day of the year
+            val calendar = Calendar.getInstance().apply {
+                timeInMillis = measurement.timeStamp
+            }
+            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR) // Get the day of the year
+
+            // Use the dayOfYear as the y-axis value
+            listOfPoints.add(Point(dayOfYear.toFloat(), measurement.value))
         }
         pointsList.value = listOfPoints
     }
-
-//    fun updatePoints() {
-//        val listOfPoints = mutableListOf<Point>()
-//        _measurementList.value.forEach { measurement ->
-//            // Convert timestamp to day of the year
-//            val calendar = Calendar.getInstance().apply {
-//                timeInMillis = measurement.timeStamp
-//            }
-//            val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR) // Get the day of the year
-//
-//            // Use the dayOfYear as the y-axis value
-//            listOfPoints.add(Point(dayOfYear.toFloat(), measurement.value))
-//        }
-//        pointsList.value = listOfPoints
-//    }
 
 
     fun convertTimestampToFormattedDateTime(timestamp: Long): String {
