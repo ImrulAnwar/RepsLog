@@ -69,12 +69,12 @@ class WorkoutDaoTest {
     @Test
     fun insertExercise() = runTest {
         val workoutId = 10L
-        val exercise = Exercise(workoutIdForeign = workoutId)
+        val exercise = Exercise()
         dao.insertExercise(exercise)
         var allExercises: List<Exercise>? = null
 
         val job = launch {
-            dao.getAllExercisesByWorkoutId(workoutId).collect {
+            dao.getAllExercises().collect {
                 allExercises = it
             }
         }
@@ -123,13 +123,13 @@ class WorkoutDaoTest {
     @Test
     fun deleteExercise() = runTest {
         val workoutId = 10L
-        val exercise = Exercise(workoutIdForeign = workoutId)
+        val exercise = Exercise()
         dao.insertExercise(exercise)
         dao.deleteExercise(exercise)
         var allExercises: List<Exercise>? = null
 
         val job = launch {
-            dao.getAllExercisesByWorkoutId(workoutId).collect {
+            dao.getAllExercises().collect {
                 allExercises = it
             }
         }
