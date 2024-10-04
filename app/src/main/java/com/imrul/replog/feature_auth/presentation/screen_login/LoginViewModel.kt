@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
         authUseCases.currentUserUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    isLoggedIn = result.data != null
+                    isLoggedIn = (result.data != null)
                 }
 
                 is Resource.Error -> {
