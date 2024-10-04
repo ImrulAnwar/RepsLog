@@ -78,6 +78,28 @@ class LoginViewModel @Inject constructor(
             }
         }
 
+    fun continueAsGuest(context: Context, navController: NavHostController) =
+        viewModelScope.launch {
+            authUseCases.continueAsGuest().collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        isLoggedIn = true
+                        clearBackStackAndNavigate(navController, Routes.ScreenWorkoutHistory)
+                    }
+
+                    is Resource.Error -> {
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
+                            .show()
+                        isLoggedIn = false
+                    }
+
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+
     fun signOut(context: Context, navController: NavHostController) = viewModelScope.launch {
         authUseCases.signOutUseCase().collect { result ->
             when (result) {

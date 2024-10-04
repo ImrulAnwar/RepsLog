@@ -110,6 +110,14 @@ fun LoginScreen(
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
+            OtherAuthButton(
+                iconDrawableId = R.drawable.guest,
+                text = Constants.CONTINUE_AS_GUEST,
+                onClick = {
+                    viewModel.continueAsGuest(context, navController)
+                }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = annotatedString,
                 modifier = Modifier

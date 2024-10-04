@@ -51,17 +51,15 @@ import com.imrul.replog.ui.theme.WhiteCustom
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val permissionsToRequest = arrayOf(
         Manifest.permission.POST_NOTIFICATIONS
     )
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

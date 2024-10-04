@@ -34,6 +34,7 @@ import com.imrul.replog.feature_workout.presentation.screen_workout_history.comp
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun WorkoutHistoryScreen(
     navController: NavHostController,
@@ -118,6 +119,7 @@ fun WorkoutHistoryScreen(
 
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private fun startWorkout(
     workoutViewModel: WorkoutViewModel,
     navController: NavHostController,
