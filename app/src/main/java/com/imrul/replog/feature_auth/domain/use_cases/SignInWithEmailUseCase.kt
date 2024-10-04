@@ -25,6 +25,8 @@ class SignInWithEmailUseCase @Inject constructor(
             emit(Resource.Error(message = e.message.toString()))
         } catch (e: FirebaseNetworkException) {
             emit(Resource.Error(message = e.message.toString()))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
         }
     }
 }

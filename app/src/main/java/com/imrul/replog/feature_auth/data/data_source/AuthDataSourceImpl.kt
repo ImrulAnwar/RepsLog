@@ -18,7 +18,7 @@ class AuthDataSourceImpl(
             .await()
             .user
 
-    override suspend fun signInAnonymously(): FirebaseUser? =
+    override suspend fun continueAsGuest(): FirebaseUser? =
         auth.signInAnonymously().await().user
 
     override suspend fun register(

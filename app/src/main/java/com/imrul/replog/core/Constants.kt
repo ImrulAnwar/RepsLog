@@ -20,5 +20,6 @@ object Constants {
     const val SIGN_UP = "Sign Up"
     const val SIGN_UP_WITH = "Sign Up with"
     const val SIGN_IN_WITH = "Sign In with"
+    const val CONTINUE_AS_GUEST = "Continue as a guest"
     const val USERNAME_REGEX = "^[A-Za-z][A-Za-z0-9_]{5,12}$"
 }

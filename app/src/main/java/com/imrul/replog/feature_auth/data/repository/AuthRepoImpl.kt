@@ -10,7 +10,7 @@ class AuthRepoImpl(
     override suspend fun signInWithEmail(email: String, password: String): FirebaseUser? =
         dataSource.signInWithEmail(email, password)
 
-    override suspend fun signInAnonymously(): FirebaseUser? = dataSource.signInAnonymously()
+    override suspend fun continueAsGuest(): FirebaseUser? = dataSource.continueAsGuest()
     override suspend fun linkAccount(email: String, password: String) =
         dataSource.linkAccount(email, password)
 

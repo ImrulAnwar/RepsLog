@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
         authUseCases.currentUserUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    isLoggedIn = result.data != null
+                    isLoggedIn = (result.data != null)
                 }
 
                 is Resource.Error -> {
@@ -59,6 +59,28 @@ class LoginViewModel @Inject constructor(
     fun signInWithEmail(context: Context, navController: NavHostController) =
         viewModelScope.launch {
             authUseCases.signInWithEmailUseCase(emailText, passwordText).collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        isLoggedIn = true
+                        clearBackStackAndNavigate(navController, Routes.ScreenWorkoutHistory)
+                    }
+
+                    is Resource.Error -> {
+                        Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
+                            .show()
+                        isLoggedIn = false
+                    }
+
+                    is Resource.Loading -> {
+
+                    }
+                }
+            }
+        }
+
+    fun continueAsGuest(context: Context, navController: NavHostController) =
+        viewModelScope.launch {
+            authUseCases.continueAsGuest().collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         isLoggedIn = true

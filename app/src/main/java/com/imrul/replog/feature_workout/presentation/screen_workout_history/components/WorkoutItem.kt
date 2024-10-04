@@ -1,7 +1,9 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout_history.components
 
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +29,7 @@ import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.WorkoutHistoryViewModel
 import com.imrul.replog.ui.theme.Maroon70
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun WorkoutItem(
     workout: Workout,

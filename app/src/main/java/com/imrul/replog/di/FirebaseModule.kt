@@ -9,7 +9,7 @@ import com.imrul.replog.feature_auth.data.data_source.AuthDataSourceImpl
 import com.imrul.replog.feature_auth.data.repository.AuthRepoImpl
 import com.imrul.replog.feature_auth.domain.data_source.AuthDataSource
 import com.imrul.replog.feature_auth.domain.repository.AuthRepository
-import com.imrul.replog.feature_auth.domain.use_cases.AnonymousRegisterUseCase
+import com.imrul.replog.feature_auth.domain.use_cases.ContinueAsGuestUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
 import com.imrul.replog.feature_auth.domain.use_cases.CurrentUserUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.LinkAccountUseCase
@@ -47,7 +47,7 @@ object FirebaseModule {
     @Singleton
     @Provides
     fun provideAuthUseCases(repository: AuthRepository) = AuthUseCases(
-        anonymousRegisterUseCase = AnonymousRegisterUseCase(repository),
+        continueAsGuest = ContinueAsGuestUseCase(repository),
         linkAccountUseCase = LinkAccountUseCase(repository),
         registerEmailUseCase = RegisterWithEmailUseCase(repository),
         signInWithEmailUseCase = SignInWithEmailUseCase(repository),

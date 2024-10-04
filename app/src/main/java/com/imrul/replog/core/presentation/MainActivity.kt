@@ -34,6 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.navigation.NavGraph
 import com.imrul.replog.core.util.BottomBarScreens
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
@@ -48,17 +51,15 @@ import com.imrul.replog.ui.theme.WhiteCustom
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val permissionsToRequest = arrayOf(
         Manifest.permission.POST_NOTIFICATIONS
     )
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -69,7 +70,6 @@ class MainActivity : ComponentActivity() {
                     if (!isSystemInDarkTheme()) Maroon70.toArgb() else Maroon20.toArgb()
 
                 val navController = rememberNavController()
-                val isLoggedIn = loginViewModel.isLoggedIn
                 val dialogQueue = viewModel.visiblePermissionsDialogueQueue
                 val multiplePermissionsLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions(),
@@ -109,7 +109,8 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(selectedItemIndex) {
                     navController.popBackStack()
-                    navController.navigate(screens[selectedItemIndex].route)
+                    if (Firebase.auth.currentUser != null) navController.navigate(screens[selectedItemIndex].route)
+                    else (navController.navigate(Routes.ScreenLogin))
                 }
 
                 LaunchedEffect(navBackStackEntry) {
@@ -185,7 +186,6 @@ class MainActivity : ComponentActivity() {
                     content = { paddingValues ->
                         NavGraph(
                             navController = navController,
-                            isLoggedIn = isLoggedIn,
                             modifier = Modifier.padding(paddingValues)
                         )
                     }
@@ -194,7 +194,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onDestroy() {
         Intent(this, WorkoutService::class.java).also {
             it.action = WorkoutService.Actions.STOP.toString()
