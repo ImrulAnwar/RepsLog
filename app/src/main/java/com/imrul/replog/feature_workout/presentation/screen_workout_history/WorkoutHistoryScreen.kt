@@ -34,7 +34,6 @@ import com.imrul.replog.feature_workout.presentation.screen_workout_history.comp
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WorkoutHistoryScreen(
     navController: NavHostController,
@@ -89,8 +88,8 @@ fun WorkoutHistoryScreen(
                         onClick = {
                             workoutViewModel.clearAllData()
                             workoutViewModel.setWorkoutName(workout.name)
-                            workout.workoutId?.let { workoutViewModel.getAllWorkoutNotes(it) }
                             startWorkout(workoutViewModel, navController, context)
+                            workout.workoutId?.let { workoutViewModel.getAllWorkoutNotes(it) }
                             sessionsList.forEach { session ->
 
                                 //
@@ -119,20 +118,19 @@ fun WorkoutHistoryScreen(
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 private fun startWorkout(
     workoutViewModel: WorkoutViewModel,
     navController: NavHostController,
     context: Context
 ) {
     if (!workoutViewModel.isWorkOutRunning) {
-        workoutViewModel.setWorkoutRunning(true)
-        navController.navigate(Routes.ScreenWorkout)
         // start service
         Intent(context, WorkoutService::class.java).also {
             it.action = WorkoutService.Actions.START.toString()
             context.startForegroundService(it)
         }
+        workoutViewModel.setWorkoutRunning(true)
+        navController.navigate(Routes.ScreenWorkout)
     } else {
         Toast.makeText(context, "Already Running Workout", Toast.LENGTH_SHORT)
             .show()
