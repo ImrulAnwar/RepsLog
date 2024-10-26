@@ -42,7 +42,7 @@ class AuthDataSourceImpl(
     }
 
     override suspend fun signInWithGoogle(idToken: String): FirebaseUser? {
-
+        return null
     }
 
     private suspend fun createUserForFirestore(username: String, uid: String?, email: String?) {

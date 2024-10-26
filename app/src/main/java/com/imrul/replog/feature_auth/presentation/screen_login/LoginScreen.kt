@@ -30,8 +30,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.credentials.CredentialManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.firebase.auth.FirebaseAuth
 import com.imrul.replog.R
 import com.imrul.replog.core.Constants
@@ -54,6 +58,14 @@ fun LoginScreen(
     var passwordVisibility by remember {
         mutableStateOf(false)
     }
+    // OAuth
+//    val credentialManager = CredentialManager.create(context)
+//    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+//        .setFilterByAuthorizedAccounts(false)
+//        .setServerClientId("")
+//        .setAutoSelectEnabled(true)
+//        .setNonce("")
+//        .build()
 
     val annotatedString = buildAnnotatedString {
         append(Constants.DO_NOT_HAVE_AN_ACCOUNT)
