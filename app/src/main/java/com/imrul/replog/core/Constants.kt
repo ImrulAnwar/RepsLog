@@ -5,7 +5,6 @@ object Constants {
     const val MEASUREMENT_DATABASE_NAME = "measurement_db"
     const val TEST_DATABASE_NAME = "test_workout_db"
     const val WORKOUT_NOTIFICATION_CHANNEL_ID = "workout_channel"
-    const val USERS_COLLECTION = "users"
     const val EMAIL_PLACEHOLDER = "Email"
     const val MESSAGES_PLACEHOLDER = "Messages"
     const val MESSAGE_PLACEHOLDER = "Message"
@@ -22,4 +21,12 @@ object Constants {
     const val SIGN_IN_WITH = "Sign In with"
     const val CONTINUE_AS_GUEST = "Continue as a guest"
     const val USERNAME_REGEX = "^[A-Za-z][A-Za-z0-9_]{5,12}$"
+    const val USERS_COLLECTION = "users"
+    const val EXERCISES_COLLECTION = "exercises"
+    const val MEASUREMENTS_COLLECTION = "measurements"
+    const val NOTES_COLLECTION = "notes"
+    const val SESSIONS_COLLECTION = "sessions"
+    const val SETS_COLLECTION = "sets"
+    const val WORKOUTS_COLLECTION = "workouts"
+
 }

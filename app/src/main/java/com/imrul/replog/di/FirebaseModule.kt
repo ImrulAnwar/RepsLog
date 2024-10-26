@@ -17,6 +17,8 @@ import com.imrul.replog.feature_auth.domain.use_cases.OAuthUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.RegisterWithEmailUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.SignInWithEmailUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.SignOutUseCase
+import com.imrul.replog.feature_measurements.data.repository.MeasurementsDataSourceImpl
+import com.imrul.replog.feature_measurements.domain.repository.MeasurementsDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,6 +42,8 @@ object FirebaseModule {
         firestore: FirebaseFirestore,
         auth: FirebaseAuth
     ): AuthDataSource = AuthDataSourceImpl(auth, firestore)
+
+
 
     @Singleton
     @Provides
