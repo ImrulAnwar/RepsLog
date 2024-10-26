@@ -1,6 +1,8 @@
 package com.imrul.replog.core.presentation.navigation
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +30,7 @@ import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutScree
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout_history.WorkoutHistoryScreen
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NavGraph(
     modifier: Modifier,

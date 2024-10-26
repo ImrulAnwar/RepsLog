@@ -28,7 +28,7 @@ class AddEditMeasurementViewModel @Inject constructor(
     var measurementCategory by mutableStateOf("")
         private set
 
-    var currentMeasurementId by mutableLongStateOf(-1L)
+    var currentMeasurementId by mutableStateOf("")
         private set
     var timestamp by mutableLongStateOf(-1L)
         private set
@@ -49,7 +49,7 @@ class AddEditMeasurementViewModel @Inject constructor(
         measurementValue = ""
         measurementUnit = ""
         measurementCategory = ""
-        currentMeasurementId = -1L
+        currentMeasurementId = ""
         timestamp = -1L
     }
 
@@ -72,7 +72,7 @@ class AddEditMeasurementViewModel @Inject constructor(
             }
 
             val measurement: Measurement
-            if (currentMeasurementId == -1L) {
+            if (currentMeasurementId == "") {
                 measurement = Measurement(
                     value = measurementValue.toFloat(),
                     unit = measurementUnit,
@@ -81,7 +81,7 @@ class AddEditMeasurementViewModel @Inject constructor(
                 )
             } else {
                 measurement = Measurement(
-                    measurementId = currentMeasurementId,
+                    id = currentMeasurementId,
                     value = measurementValue.toFloat(),
                     unit = measurementUnit,
                     timeStamp = System.currentTimeMillis(),
@@ -89,8 +89,8 @@ class AddEditMeasurementViewModel @Inject constructor(
                 )
             }
             try {
-                measurementUseCases.upsertMeasurement(measurement)
                 navController.navigateUp()
+                measurementUseCases.upsertMeasurement(measurement)
                 clearData()
             } catch (e: Exception) {
                 Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
@@ -101,16 +101,16 @@ class AddEditMeasurementViewModel @Inject constructor(
     fun deleteMeasurement(
         context: Context,
         navController: NavHostController,
-        measurementId: Long
+        measurementId: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val measurement = measurementUseCases.getMeasurementById(measurementId)
             try {
-                if (currentMeasurementId != -1L)
-                    measurementUseCases.deleteMeasurement(measurement)
                 withContext(Dispatchers.Main) {
                     navController.navigateUp()
                 }
+                if (currentMeasurementId != "")
+                    measurement?.let { measurementUseCases.deleteMeasurement(it) }
                 clearData()
             } catch (_: Exception) {
             }
@@ -119,15 +119,18 @@ class AddEditMeasurementViewModel @Inject constructor(
 
 
     fun initializeParameters(
-        measurementId: Long,
+        measurementId: String,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val measurement = measurementUseCases.getMeasurementById(measurementId)
-            currentMeasurementId = measurementId
-            measurementValue = measurement.value.toString()
-            measurementUnit = measurement.unit
-            measurementCategory = measurement.category
-            timestamp = measurement.timeStamp
+            measurement?.let {
+
+                currentMeasurementId = measurementId
+                measurementValue = measurement.value.toString()
+                measurementUnit = measurement.unit
+                measurementCategory = measurement.category
+                timestamp = measurement.timeStamp
+            }
         }
     }
 

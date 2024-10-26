@@ -26,12 +26,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MeasurementRoomModule {
-    @Singleton
-    @Provides
-    fun provideMeasurementDatabase(
-        @ApplicationContext context: Context
-    ) = Room.databaseBuilder(context, MeasurementDatabase::class.java, MEASUREMENT_DATABASE_NAME)
-        .build()
 
     @Singleton
     @Provides
@@ -48,8 +42,8 @@ object MeasurementRoomModule {
 
     @Singleton
     @Provides
-    fun provideMeasurementRepository(dao: MeasurementDao, dataSource: MeasurementsDataSource): MeasurementRepository =
-        MeasurementRepositoryImpl(dao, dataSource)
+    fun provideMeasurementRepository(dataSource: MeasurementsDataSource): MeasurementRepository =
+        MeasurementRepositoryImpl(dataSource)
 
     @Singleton
     @Provides

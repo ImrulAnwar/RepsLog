@@ -37,8 +37,6 @@ import com.imrul.replog.feature_measurements.presentation.screen_add_edit_measur
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.toList
 
 @Composable
 fun MeasurementsScreen(
@@ -117,7 +115,7 @@ fun MeasurementsScreen(
                             .clickable {
                                 navController.navigate(
                                     Routes.ScreenAddEditMeasurements(
-                                        measurementId = -1
+                                        measurementId = ""
                                     )
                                 )
                                 addEditMeasurementViewModel.setCategory(measurementsViewModel.selectedCategory)
@@ -134,7 +132,7 @@ fun MeasurementsScreen(
                         .clickable {
                             navController.navigate(
                                 Routes.ScreenAddEditMeasurements(
-                                    measurementId = measurement.measurementId ?: -1L
+                                    measurementId = measurement.id ?: ""
                                 )
                             )
                         },

@@ -7,19 +7,18 @@ import com.imrul.replog.feature_measurements.domain.repository.MeasurementsDataS
 import kotlinx.coroutines.flow.Flow
 
 class MeasurementRepositoryImpl(
-    private val dao: MeasurementDao,
     private val datasource: MeasurementsDataSource
 ) : MeasurementRepository {
     override suspend fun upsertMeasurement(measurement: Measurement): Long =
         datasource.upsertMeasurement(measurement)
 
     override suspend fun deleteMeasurement(measurement: Measurement) =
-        dao.deleteMeasurement(measurement)
+        datasource.deleteMeasurement(measurement)
 
-    override fun getAllMeasurements(category: String): Flow<List<Measurement>> =
-        dao.getAllMeasurementsByCategory()
+    override suspend fun getAllMeasurements(category: String): Flow<List<Measurement>> =
+        datasource.getAllMeasurements()
 
-    override suspend fun getMeasurementsById(id: Long?): Measurement =
-        dao.getAllMeasurementById(id)
+    override suspend fun getMeasurementsById(id: String?): Measurement? =
+        datasource.getMeasurementById(id)
 
 }

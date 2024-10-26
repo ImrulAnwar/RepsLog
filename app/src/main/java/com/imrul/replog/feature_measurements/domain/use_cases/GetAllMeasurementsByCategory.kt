@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 class GetAllMeasurementsByCategory(
     private val repository: MeasurementRepository
 ) {
-    operator fun invoke(category: String): Flow<List<Measurement>> =
+    suspend operator fun invoke(category: String): Flow<List<Measurement>> =
         repository.getAllMeasurements(category)
             .map { measurements ->
                 measurements.filter { it.category == category }

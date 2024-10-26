@@ -21,7 +21,7 @@ open class Routes {
 
     @Serializable
     data class ScreenAddEditMeasurements(
-        val measurementId: Long = -1
+        val measurementId: String = ""
     ) : Routes()
 
     @Serializable

@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MeasurementDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertMeasurement(measurement: Measurement): Long
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun upsertMeasurement(measurement: Measurement): Long
+//
+//    @Delete
+//    suspend fun deleteMeasurement(measurement: Measurement)
 
-    @Delete
-    suspend fun deleteMeasurement(measurement: Measurement)
-
-    @Query("SELECT * FROM Measurement")
-    fun getAllMeasurementsByCategory(): Flow<List<Measurement>>
-
-    @Query("SELECT * FROM Measurement WHERE measurementId = :id")
-    fun getAllMeasurementById(id: Long?): Measurement
+//    @Query("SELECT * FROM Measurement")
+//    fun getAllMeasurementsByCategory(): Flow<List<Measurement>>
+//
+//    @Query("SELECT * FROM Measurement WHERE measurementId = :id")
+//    fun getAllMeasurementById(id: Long?): Measurement
 }

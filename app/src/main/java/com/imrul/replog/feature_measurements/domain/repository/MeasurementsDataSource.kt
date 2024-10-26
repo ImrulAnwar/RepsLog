@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface MeasurementsDataSource {
     suspend fun upsertMeasurement(measurement: Measurement): Long
     suspend fun deleteMeasurement(measurement: Measurement)
-    fun getAllMeasurementsByCategory(): Flow<List<Measurement>>
-    fun getAllMeasurementById(id: Long?): Measurement
+    suspend fun getAllMeasurements(): Flow<List<Measurement>>
+    suspend fun getMeasurementById(id: String?): Measurement?
 }
