@@ -19,7 +19,7 @@ interface WorkoutRepository {
     suspend fun deleteSession(session: Session)
     suspend fun deleteNote(note: Note)
     suspend fun getAllWorkouts(): Flow<List<Workout>>
-    suspend fun getExerciseById(exerciseId: String?): Exercise
+    suspend fun getExerciseById(exerciseId: String?): Exercise?
     suspend fun getAllSessionsByWorkoutId(workoutId: String?): Flow<List<Session>>
     suspend fun getLatestSessionByExerciseId(exerciseId: String?): Flow<Session?>
     suspend fun getAllNotes(): Flow<List<Note>>

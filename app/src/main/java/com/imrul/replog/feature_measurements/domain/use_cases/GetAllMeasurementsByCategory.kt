@@ -11,6 +11,8 @@ class GetAllMeasurementsByCategory(
     suspend operator fun invoke(category: String): Flow<List<Measurement>> =
         repository.getAllMeasurements(category)
             .map { measurements ->
-                measurements.filter { it.category == category }
+                measurements
+                    .filter { it.category == category }
+                    .sortedBy { it.timeStamp }
             }
 }

@@ -2,6 +2,7 @@ package com.imrul.replog.feature_measurements.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.imrul.replog.core.Constants.MEASUREMENTS_COLLECTION
 import com.imrul.replog.feature_measurements.domain.model.Measurement
 import com.imrul.replog.feature_measurements.domain.repository.MeasurementsDataSource
@@ -16,7 +17,8 @@ class MeasurementsDataSourceImpl(
 ) : MeasurementsDataSource {
     override suspend fun upsertMeasurement(measurement: Measurement): Long {
         auth.currentUser?.uid.let { userId ->
-            val documentId = measurement.id ?: fireStore.collection(MEASUREMENTS_COLLECTION).document().id
+            val documentId =
+                measurement.id ?: fireStore.collection(MEASUREMENTS_COLLECTION).document().id
             val data = hashMapOf(
                 "id" to documentId,
                 "value" to measurement.value,
@@ -57,7 +59,9 @@ class MeasurementsDataSourceImpl(
                 }
 
                 // Map each document to a Measurement object and emit the list
-                val measurements = querySnapshot?.documents?.mapNotNull { it.toObject(Measurement::class.java) } ?: emptyList()
+                val measurements =
+                    querySnapshot?.documents?.mapNotNull { it.toObject(Measurement::class.java) }
+                        ?: emptyList()
                 trySend(measurements)  // Emit the list of measurements
             }
 
@@ -77,9 +81,8 @@ class MeasurementsDataSourceImpl(
             // Check if the document exists and map it to a Measurement object
             if (documentSnapshot.exists()) {
                 documentSnapshot.toObject(Measurement::class.java)
-            } else {
+            } else
                 null  // Return null if the document doesn't exist
-            }
         }
     }
 }

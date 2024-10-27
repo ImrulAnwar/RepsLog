@@ -45,7 +45,7 @@ class WorkoutRepositoryImp(
         return datasource.getAllWorkouts()
     }
 
-    override suspend fun getExerciseById(exerciseId: String?): Exercise {
+    override suspend fun getExerciseById(exerciseId: String?): Exercise?{
         return datasource.getExerciseById(exerciseId)
     }
 
