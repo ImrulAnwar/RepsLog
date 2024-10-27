@@ -4,7 +4,7 @@ data class Measurement(
     val id: String? = null,
     val category: String = listOfCategories[0],
     val unit: String = listOfUnits[0],
-    val timeStamp: Long = 0,
+    val timeStamp: Long = System.currentTimeMillis(),
     val value: Float = 0f,
     val userId: String? = null
 ) {

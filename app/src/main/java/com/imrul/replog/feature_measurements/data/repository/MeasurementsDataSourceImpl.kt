@@ -22,7 +22,7 @@ class MeasurementsDataSourceImpl(
                 "value" to measurement.value,
                 "unit" to measurement.unit,
                 "category" to measurement.category,
-                "timestamp" to measurement.timeStamp,
+                "timeStamp" to measurement.timeStamp,
                 "userId" to userId
             )
             fireStore
