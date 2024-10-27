@@ -8,7 +8,7 @@ suspend fun deleteSetsAndExercise(
     repository: WorkoutRepository,
     exercise: Exercise
 ) {
-    val setsInThatExercise = repository.getAllSetsBySessionId(exercise.exerciseId)
+    val setsInThatExercise = repository.getAllSetsBySessionId(exercise.id)
     setsInThatExercise.collect { listOfSets ->
         for (set in listOfSets) {
             repository.deleteSet(set)

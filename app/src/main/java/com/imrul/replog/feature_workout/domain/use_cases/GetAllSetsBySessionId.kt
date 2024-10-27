@@ -5,5 +5,5 @@ import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
 class GetAllSetsBySessionId(
     private val repository: WorkoutRepository
 ) {
-    operator fun invoke(sessionId: Long) = repository.getAllSetsBySessionId(sessionId)
+    suspend operator fun invoke(sessionId: String) = repository.getAllSetsBySessionId(sessionId)
 }

@@ -160,7 +160,7 @@ class WorkoutDaoTest {
     @Test
     fun getWorkoutById() = runTest {
         val workoutId = 1L
-        val workout1 = Workout(workoutId = workoutId)
+        val workout1 = Workout(id = workoutId)
         dao.insertWorkout(workout1)
         val workout2 = dao.getWorkoutById(workoutId)
         Truth.assertThat(workout1 == workout2)

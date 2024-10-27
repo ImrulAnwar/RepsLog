@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.map
 class GetAllExercises(
     private val repository: WorkoutRepository
 ) {
-    operator fun invoke() = repository.getAllExercises().map { exercises ->
+    suspend operator fun invoke() = repository.getAllExercises().map { exercises ->
         exercises.sortedBy { it.name }
     }
 }

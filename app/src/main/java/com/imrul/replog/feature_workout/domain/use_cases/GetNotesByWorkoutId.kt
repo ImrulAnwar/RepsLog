@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 class GetNotesByWorkoutId(
     private val repository: WorkoutRepository
 ) {
-    operator fun invoke(sessionId: Long) =
+    suspend operator fun invoke(sessionId: String) =
         repository.getNotesByForeignId(foreignId = sessionId).map { notes ->
             notes.filter { it.belongsTo == Note.WORKOUT }
         }

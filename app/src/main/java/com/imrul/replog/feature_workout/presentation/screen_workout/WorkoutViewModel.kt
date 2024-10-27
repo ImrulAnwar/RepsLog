@@ -64,10 +64,10 @@ class WorkoutViewModel @Inject constructor(
 
     var listOfWeightUnits = mutableStateListOf<String>()
         private set
-    var listOfExerciseId = mutableStateListOf<Long>()
+    var listOfExerciseId = mutableStateListOf<String>()
         private set
 
-    var listOfNoteId = mutableStateListOf<Long>()
+    var listOfNoteId = mutableStateListOf<String>()
         private set
 
     init {
@@ -84,7 +84,7 @@ class WorkoutViewModel @Inject constructor(
         workoutTitle = workoutName
     }
 
-    fun getAllWorkoutNotes(workoutId: Long) {
+    fun getAllWorkoutNotes(workoutId: String) {
         viewModelScope.launch {
             workoutUseCases.getAllNotes().collect { notes ->
                 notes.forEach { note ->
@@ -171,7 +171,7 @@ class WorkoutViewModel @Inject constructor(
         listOfReps[setIndex] = content
     }
 
-    fun addExerciseAndSets(name: String, exerciseId: Long, context: Context) {
+    fun addExerciseAndSets(name: String, exerciseId: String, context: Context) {
         if (listOfExerciseId.contains(exerciseId)) {
             Toast.makeText(context, "The exercise is already in your workout", Toast.LENGTH_SHORT)
                 .show()
@@ -187,13 +187,13 @@ class WorkoutViewModel @Inject constructor(
 
             workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
                 .collect { session ->
-                    session?.sessionId?.let { sessionId ->
+                    session?.id?.let { sessionId ->
                         launch {
                             workoutUseCases.getNotesBySessionId(sessionId = sessionId)
                                 .collect { notes ->
                                     notes.forEach { note ->
-                                        if (!listOfNoteId.contains(note.noteId)) {
-                                            note.noteId?.let { listOfNoteId.add(it) }
+                                        if (!listOfNoteId.contains(note.id)) {
+                                            note.id?.let { listOfNoteId.add(it) }
                                             listOfExerciseNotes.add(
                                                 Pair(
                                                     exerciseIndex,
@@ -233,7 +233,7 @@ class WorkoutViewModel @Inject constructor(
 
     }
 
-    fun removeExercise(exerciseId: Long) {
+    fun removeExercise(exerciseId: String) {
         val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
         listOfExerciseName.removeAt(exerciseIndex)
         listOfExerciseId.removeAt(exerciseIndex)
@@ -301,7 +301,7 @@ class WorkoutViewModel @Inject constructor(
     }
 
 
-    private suspend fun insertSessions(exerciseIndex: Int, workoutId: Long) {
+    private suspend fun insertSessions(exerciseIndex: Int, workoutId: String) {
 
         var session = Session(
             workoutIdForeign = workoutId
@@ -338,7 +338,7 @@ class WorkoutViewModel @Inject constructor(
             }
         }
         session = Session(
-            sessionId = sessionId,
+            id = sessionId,
             workoutIdForeign = workoutId,
             setCount = setCount.toLong(),
             exerciseIdForeign = listOfExerciseId[exerciseIndex],
@@ -350,7 +350,7 @@ class WorkoutViewModel @Inject constructor(
         workoutUseCases.insertSession(session)
     }
 
-    private suspend fun insertExerciseNotes(sessionId: Long, exerciseIndex: Int) {
+    private suspend fun insertExerciseNotes(sessionId: String, exerciseIndex: Int) {
         val listOfNotesCopy = listOfExerciseNotes.toList()
         listOfNotesCopy.forEachIndexed { _, item ->
             val note = Note(
@@ -363,7 +363,7 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-    private suspend fun insertWorkoutNotes(workoutId: Long) {
+    private suspend fun insertWorkoutNotes(workoutId: String) {
         val listOfNotesCopy = listOfWorkoutNotes.toList()
         listOfNotesCopy.forEachIndexed { _, item ->
             val note = Note(
@@ -392,7 +392,7 @@ class WorkoutViewModel @Inject constructor(
                 dateString = dateString,
                 weekdayString = weekDayString
             )
-            val workoutId: Long = workoutUseCases.insertWorkout(workout)
+            val workoutId: String = workoutUseCases.insertWorkout(workout)
             val exerciseNamesCopy = listOfExerciseName.toList()
             exerciseNamesCopy.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)

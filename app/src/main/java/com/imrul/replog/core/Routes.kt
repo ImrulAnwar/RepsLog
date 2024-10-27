@@ -32,7 +32,7 @@ open class Routes {
 
     @Serializable
     data class ScreenAddEditExercises(
-        val exerciseId: Long = -1
+        val exerciseId: String = ""
     ) : Routes()
 
     @Serializable

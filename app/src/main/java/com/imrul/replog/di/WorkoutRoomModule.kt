@@ -2,6 +2,8 @@ package com.imrul.replog.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.imrul.replog.core.Constants.WORKOUT_DATABASE_NAME
 import com.imrul.replog.feature_workout.data.data_source.WorkoutDao
 import com.imrul.replog.feature_workout.data.data_source.WorkoutDatabase
@@ -25,6 +27,10 @@ import com.imrul.replog.feature_workout.domain.use_cases.GetAllWorkouts
 import com.imrul.replog.feature_workout.domain.use_cases.GetLatestSessionByExerciseId
 import com.imrul.replog.feature_workout.domain.use_cases.GetWorkoutById
 import com.imrul.replog.feature_exercises.domain.use_cases.InsertExercise
+import com.imrul.replog.feature_measurements.data.repository.MeasurementsDataSourceImpl
+import com.imrul.replog.feature_measurements.domain.repository.MeasurementsDataSource
+import com.imrul.replog.feature_workout.data.repository.WorkoutDatasourceImpl
+import com.imrul.replog.feature_workout.domain.repository.WorkoutDatasource
 import com.imrul.replog.feature_workout.domain.use_cases.GetNotesBySessionId
 import com.imrul.replog.feature_workout.domain.use_cases.GetNotesByWorkoutId
 import com.imrul.replog.feature_workout.domain.use_cases.InsertNote
@@ -57,7 +63,15 @@ object WorkoutRoomModule {
 
     @Singleton
     @Provides
-    fun provideWorkoutRepository(dao: WorkoutDao): WorkoutRepository = WorkoutRepositoryImp(dao)
+    fun provideWorkoutRepository(datasource: WorkoutDatasource): WorkoutRepository = WorkoutRepositoryImp(datasource)
+
+    @Provides
+    @Singleton
+    fun provideWorkoutDataSource(
+        firestore: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): WorkoutDatasource = WorkoutDatasourceImpl(auth, firestore)
+
 
     @Singleton
     @Provides

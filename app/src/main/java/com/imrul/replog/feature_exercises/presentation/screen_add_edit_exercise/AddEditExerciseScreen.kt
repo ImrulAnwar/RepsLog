@@ -30,14 +30,14 @@ fun AddEditExerciseScreen(
     navController: NavHostController,
     viewModel: AddEditExerciseViewModel = hiltViewModel(),
     context: Context = LocalContext.current,
-    exerciseId: Long
+    exerciseId: String
 ) {
 
     val selectedMuscleGroup = viewModel.selectedMuscleGroup
     val selectedWeightType = viewModel.selectedWeightType
     val exerciseName = viewModel.exerciseName
     LaunchedEffect(Unit) {
-        if (exerciseId != -1L) {
+        if (exerciseId != "") {
             viewModel.initializeParameters(exerciseId = exerciseId)
         }
     }
