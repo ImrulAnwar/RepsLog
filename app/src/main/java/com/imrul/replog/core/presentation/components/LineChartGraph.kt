@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import co.yml.charts.axis.AxisData
@@ -77,7 +78,7 @@ fun LineChartGraph(
     val dateFormatter = DateTimeFormatter.ofPattern("MMM d")
 
     val xAxisData = AxisData.Builder()
-        .backgroundColor(WhiteCustom)
+        .backgroundColor(Color.Transparent)
         .steps(xSteps)
         .axisStepSize(axisStepSize)
         .labelData { i ->
@@ -91,7 +92,6 @@ fun LineChartGraph(
 
     val yAxisData = AxisData.Builder()
         .steps(ySteps)
-        .backgroundColor(WhiteCustom)
         .labelAndAxisLinePadding(20.dp)
         .axisLineColor(Maroon70)
         .labelData { i ->
@@ -122,7 +122,7 @@ fun LineChartGraph(
                         brush = Brush.verticalGradient(
                             colors = listOf(
                                 Maroon20,
-                                WhiteCustom
+                                Color.Transparent
                             )
                         )
                     ),
@@ -130,17 +130,17 @@ fun LineChartGraph(
                 )
             )
         ),
-        backgroundColor = WhiteCustom,
+        backgroundColor = Color.Transparent,
         xAxisData = xAxisData,
         yAxisData = yAxisData,
-        gridLines = GridLines(color = WhiteCustom)
+        gridLines = GridLines(color = Color.Transparent)
     )
     if (pointsData.isNotEmpty())
         LineChart(
             modifier = Modifier
+                .background(Color.Transparent)
                 .fillMaxWidth()
-                .height(300.dp)
-                .background(WhiteCustom),
+                .height(300.dp),
             lineChartData = lineChartData
         )
 }

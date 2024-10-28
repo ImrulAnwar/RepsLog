@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +60,15 @@ fun MeasurementsScreen(
             .background(WhiteCustom),
         verticalArrangement = Arrangement.Top
     ) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent)
+                .weight(1f)
+                .padding(bottom = if (!workoutViewModel.isWorkOutRunning) 80.dp else 0.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             item {
                 Row(
                     modifier = Modifier
