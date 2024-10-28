@@ -7,7 +7,7 @@ import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
 import kotlinx.coroutines.flow.Flow
 
-interface WorkoutRepository {
+interface WorkoutDatasource {
     suspend fun insertWorkout(workout: Workout): String
     suspend fun insertExercise(exercise: Exercise): String
     suspend fun insertSet(set: Set): String

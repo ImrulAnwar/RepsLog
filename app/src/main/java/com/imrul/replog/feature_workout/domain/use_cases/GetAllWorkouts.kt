@@ -5,6 +5,6 @@ import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
 class GetAllWorkouts(
     private val repository: WorkoutRepository
 ) {
-    operator fun invoke() =
+    suspend operator fun invoke() =
         repository.getAllWorkouts()
 }

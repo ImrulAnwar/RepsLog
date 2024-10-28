@@ -7,6 +7,7 @@ interface AuthDataSource {
     suspend fun continueAsGuest(): FirebaseUser?
     suspend fun register(username: String, email: String, password: String): FirebaseUser?
     suspend fun linkAccount(email: String, password: String)
+    suspend fun signInWithGoogle(idToken: String): FirebaseUser?
     fun currentUser(): FirebaseUser?
     fun signOut()
 }

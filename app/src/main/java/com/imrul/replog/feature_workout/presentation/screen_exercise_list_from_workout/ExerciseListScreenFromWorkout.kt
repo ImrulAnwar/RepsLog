@@ -92,7 +92,7 @@ fun ExerciseListScreenFromWorkout(
                     onClick = {
                         navController.navigate(
                             Routes.ScreenAddEditExercises(
-                                exerciseId = -1
+                                exerciseId = ""
                             )
                         )
                     },
@@ -175,7 +175,7 @@ fun ExerciseListScreenFromWorkout(
                         navController = navController,
                         exercise = exerciseListState[index],
                         onClick = {
-                            exerciseListState[index].exerciseId?.let {
+                            exerciseListState[index].id?.let {
                                 workoutViewModel.addExerciseAndSets(
                                     name = exerciseListState[index].name,
                                     exerciseId = it,

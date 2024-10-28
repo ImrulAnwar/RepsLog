@@ -1,16 +1,12 @@
 package com.imrul.replog.feature_workout.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity
 data class Exercise(
-    @PrimaryKey
-    val exerciseId: Long? = null,
+    val id: String? = null,
     val name: String = "",
     val imageUrl: String? = null,
     val targetMuscleGroup: String? = muscleGroups[0],
-    val weightType: String? = weightTypes[0]
+    val weightType: String? = weightTypes[0],
+    val userId: String? = null
 ) {
     companion object {
         val muscleGroups = listOf(

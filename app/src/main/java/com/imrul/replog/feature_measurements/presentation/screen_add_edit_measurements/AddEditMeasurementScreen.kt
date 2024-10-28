@@ -27,11 +27,11 @@ fun AddEditMeasurementScreen(
     navController: NavHostController,
     viewModel: AddEditMeasurementViewModel,
     context: Context = LocalContext.current,
-    measurementId: Long
+    measurementId: String
 ) {
 
     LaunchedEffect(Unit) {
-        if (measurementId != -1L) {
+        if (measurementId != "") {
             viewModel.initializeParameters(measurementId = measurementId)
         }
     }

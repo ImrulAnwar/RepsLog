@@ -93,7 +93,7 @@ fun ExerciseListScreen(
                     onClick = {
                         navController.navigate(
                             Routes.ScreenAddEditExercises(
-                                exerciseId = -1
+                                exerciseId = ""
                             )
                         )
                     },

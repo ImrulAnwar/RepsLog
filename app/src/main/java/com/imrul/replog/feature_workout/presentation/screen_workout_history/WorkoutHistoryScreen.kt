@@ -90,11 +90,11 @@ fun WorkoutHistoryScreen(
                             workoutViewModel.clearAllData()
                             workoutViewModel.setWorkoutName(workout.name)
                             startWorkout(workoutViewModel, navController, context)
-                            workout.workoutId?.let { workoutViewModel.getAllWorkoutNotes(it) }
+                            workout.id?.let { workoutViewModel.getAllWorkoutNotes(it) }
                             sessionsList.forEach { session ->
 
                                 //
-                                if (session.workoutIdForeign == workout.workoutId) {
+                                if (session.workoutIdForeign == workout.id) {
                                     session.exerciseName?.let { name ->
                                         session.exerciseIdForeign?.let { exerciseId ->
                                             workoutViewModel.addExerciseAndSets(

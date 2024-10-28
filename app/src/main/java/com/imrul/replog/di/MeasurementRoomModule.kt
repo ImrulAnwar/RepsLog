@@ -2,11 +2,15 @@ package com.imrul.replog.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.imrul.replog.core.Constants.MEASUREMENT_DATABASE_NAME
 import com.imrul.replog.feature_measurements.data.data_source.MeasurementDao
 import com.imrul.replog.feature_measurements.data.data_source.MeasurementDatabase
 import com.imrul.replog.feature_measurements.data.repository.MeasurementRepositoryImpl
+import com.imrul.replog.feature_measurements.data.repository.MeasurementsDataSourceImpl
 import com.imrul.replog.feature_measurements.domain.repository.MeasurementRepository
+import com.imrul.replog.feature_measurements.domain.repository.MeasurementsDataSource
 import com.imrul.replog.feature_measurements.domain.use_cases.DeleteMeasurement
 import com.imrul.replog.feature_measurements.domain.use_cases.GetAllMeasurementsByCategory
 import com.imrul.replog.feature_measurements.domain.use_cases.GetMeasurementById
@@ -22,12 +26,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MeasurementRoomModule {
-    @Singleton
-    @Provides
-    fun provideMeasurementDatabase(
-        @ApplicationContext context: Context
-    ) = Room.databaseBuilder(context, MeasurementDatabase::class.java, MEASUREMENT_DATABASE_NAME)
-        .build()
 
     @Singleton
     @Provides
@@ -35,10 +33,17 @@ object MeasurementRoomModule {
         database: MeasurementDatabase
     ) = database.measurementDao()
 
+    @Provides
+    @Singleton
+    fun provideMeasurementsDataSource(
+        firestore: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): MeasurementsDataSource = MeasurementsDataSourceImpl(auth, firestore)
+
     @Singleton
     @Provides
-    fun provideMeasurementRepository(dao: MeasurementDao): MeasurementRepository =
-        MeasurementRepositoryImpl(dao)
+    fun provideMeasurementRepository(dataSource: MeasurementsDataSource): MeasurementRepository =
+        MeasurementRepositoryImpl(dataSource)
 
     @Singleton
     @Provides

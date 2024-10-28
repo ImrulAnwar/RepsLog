@@ -28,7 +28,7 @@ class AddEditExerciseViewModel @Inject constructor(
     var exerciseName by mutableStateOf("")
         private set
 
-    var currentExerciseId by mutableLongStateOf(-1L)
+    var currentExerciseId by mutableStateOf("")
         private set
 
     fun onSelectedMuscleGroup(string: String) {
@@ -52,7 +52,7 @@ class AddEditExerciseViewModel @Inject constructor(
             }
 
             val exercise: Exercise
-            if (currentExerciseId == -1L) {
+            if (currentExerciseId == "") {
                 exercise = Exercise(
                     name = exerciseName,
                     targetMuscleGroup = selectedMuscleGroup,
@@ -61,7 +61,7 @@ class AddEditExerciseViewModel @Inject constructor(
                 )
             } else {
                 exercise = Exercise(
-                    exerciseId = currentExerciseId,
+                    id = currentExerciseId,
                     name = exerciseName,
                     targetMuscleGroup = selectedMuscleGroup,
                     weightType = selectedWeightType,
@@ -78,7 +78,7 @@ class AddEditExerciseViewModel @Inject constructor(
     }
 
     fun initializeParameters(
-        exerciseId: Long,
+        exerciseId: String,
     ) {
         viewModelScope.launch {
             val exercise = workoutUseCases.getExerciseById(exerciseId)

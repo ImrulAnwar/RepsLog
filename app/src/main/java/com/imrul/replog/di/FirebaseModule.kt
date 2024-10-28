@@ -13,9 +13,12 @@ import com.imrul.replog.feature_auth.domain.use_cases.ContinueAsGuestUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
 import com.imrul.replog.feature_auth.domain.use_cases.CurrentUserUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.LinkAccountUseCase
+import com.imrul.replog.feature_auth.domain.use_cases.OAuthUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.RegisterWithEmailUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.SignInWithEmailUseCase
 import com.imrul.replog.feature_auth.domain.use_cases.SignOutUseCase
+import com.imrul.replog.feature_measurements.data.repository.MeasurementsDataSourceImpl
+import com.imrul.replog.feature_measurements.domain.repository.MeasurementsDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,6 +43,8 @@ object FirebaseModule {
         auth: FirebaseAuth
     ): AuthDataSource = AuthDataSourceImpl(auth, firestore)
 
+
+
     @Singleton
     @Provides
     fun provideAuthRepository(dataSource: AuthDataSource): AuthRepository = AuthRepoImpl(dataSource)
@@ -52,6 +57,7 @@ object FirebaseModule {
         registerEmailUseCase = RegisterWithEmailUseCase(repository),
         signInWithEmailUseCase = SignInWithEmailUseCase(repository),
         signOutUseCase = SignOutUseCase(repository),
-        currentUserUseCase = CurrentUserUseCase(repository)
+        currentUserUseCase = CurrentUserUseCase(repository),
+        oAuthUseCase = OAuthUseCase(repository)
     )
 }

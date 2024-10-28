@@ -2,7 +2,6 @@ package com.imrul.replog.feature_workout.presentation.screen_workout_history.com
 
 import android.content.Context
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -117,7 +116,7 @@ fun WorkoutItem(
             modifier = Modifier.fillMaxWidth()
         ) {
             sessionsList.forEach { session ->
-                if (session.workoutIdForeign == workout.workoutId) {
+                if (session.workoutIdForeign == workout.id) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
