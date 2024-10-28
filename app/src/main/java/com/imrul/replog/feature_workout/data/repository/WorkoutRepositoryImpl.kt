@@ -53,7 +53,7 @@ class WorkoutRepositoryImp(
         datasource.getAllSessionsByWorkoutId(workoutId)
 
 
-    override suspend fun getLatestSessionByExerciseId(exerciseId: String?): Flow<Session?> =
+    override suspend fun getLatestSessionByExerciseId(exerciseId: String?): Flow<List<Session>> =
         datasource.getLatestSessionByExerciseId(exerciseId)
 
     override suspend fun getAllNotes(): Flow<List<Note>> = datasource.getAllNotes()
@@ -75,7 +75,7 @@ class WorkoutRepositoryImp(
         return datasource.getAllSets()
     }
 
-    override suspend fun getWorkoutById(workoutId: String?): Workout {
+    override suspend fun getWorkoutById(workoutId: String?): Workout? {
         return datasource.getWorkoutById(workoutId)
     }
 }

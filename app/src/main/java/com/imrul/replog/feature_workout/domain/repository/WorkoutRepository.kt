@@ -21,12 +21,12 @@ interface WorkoutRepository {
     suspend fun getAllWorkouts(): Flow<List<Workout>>
     suspend fun getExerciseById(exerciseId: String?): Exercise?
     suspend fun getAllSessionsByWorkoutId(workoutId: String?): Flow<List<Session>>
-    suspend fun getLatestSessionByExerciseId(exerciseId: String?): Flow<Session?>
+    suspend fun getLatestSessionByExerciseId(exerciseId: String?): Flow<List<Session>>
     suspend fun getAllNotes(): Flow<List<Note>>
     suspend fun getNotesByForeignId(foreignId: String): Flow<List<Note>>
     suspend fun getAllSessions(): Flow<List<Session>>
     suspend fun getAllSetsBySessionId(exerciseId: String?): Flow<List<Set>>
-    suspend fun getWorkoutById(workoutId: String?): Workout
+    suspend fun getWorkoutById(workoutId: String?): Workout?
     suspend fun getAllExercises(): Flow<List<Exercise>>
     suspend fun getAllSets(): Flow<List<Set>>
 }

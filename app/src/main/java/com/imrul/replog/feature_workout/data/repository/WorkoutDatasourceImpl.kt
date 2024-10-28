@@ -2,6 +2,7 @@ package com.imrul.replog.feature_workout.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.imrul.replog.core.Constants.EXERCISES_COLLECTION
 import com.imrul.replog.core.Constants.NOTES_COLLECTION
 import com.imrul.replog.core.Constants.SESSIONS_COLLECTION
@@ -16,6 +17,7 @@ import com.imrul.replog.feature_workout.domain.repository.WorkoutDatasource
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 class WorkoutDatasourceImpl(
@@ -99,7 +101,8 @@ class WorkoutDatasourceImpl(
                 "setCount" to session.setCount,
                 "isTimerEnabled" to session.isTimerEnabled,
                 "bestSet" to session.bestSet,
-                "userId" to userId
+                "userId" to userId,
+                "timestamp" to session.timestamp
             )
             fireStore
                 .collection(SESSIONS_COLLECTION)
@@ -249,35 +252,192 @@ class WorkoutDatasourceImpl(
         }
 
 
-    override suspend fun getLatestSessionByExerciseId(exerciseId: String?): Flow<Session?> {
-        TODO("Not yet implemented")
+    override suspend fun getLatestSessionByExerciseId(exerciseId: String?): Flow<List<Session>> =
+        callbackFlow {
+            auth.currentUser?.uid?.let { userId ->
+                // Reference to the collection with a query filter by userId
+                val query = fireStore.collection(SESSIONS_COLLECTION)
+                    .whereEqualTo("userId", userId)
+                    .whereEqualTo("exerciseIdForeign", exerciseId)
+
+                val listener = query.addSnapshotListener { querySnapshot, error ->
+                    if (error != null) {
+                        close(error)  // Close the flow if there's an error
+                        return@addSnapshotListener
+                    }
+
+                    // Map each document to a Measurement object and emit the list
+                    val sessions =
+                        querySnapshot?.documents?.mapNotNull { it.toObject(Session::class.java) }
+                            ?: emptyList()
+                    trySend(sessions)  // Emit the list of measurements
+                }
+
+                // Close the listener when the flow collector is done
+                awaitClose { listener.remove() }
+            }
+        }
+
+
+    override suspend fun getAllNotes(): Flow<List<Note>> = callbackFlow {
+        auth.currentUser?.uid?.let { userId ->
+            // Reference to the collection with a query filter by userId
+            val query = fireStore.collection(NOTES_COLLECTION)
+                .whereEqualTo("userId", userId)
+
+            val listener = query.addSnapshotListener { querySnapshot, error ->
+                if (error != null) {
+                    close(error)  // Close the flow if there's an error
+                    return@addSnapshotListener
+                }
+
+                // Map each document to a Measurement object and emit the list
+                val notes =
+                    querySnapshot?.documents?.mapNotNull { it.toObject(Note::class.java) }
+                        ?: emptyList()
+                trySend(notes)  // Emit the list of measurements
+            }
+
+            // Close the listener when the flow collector is done
+            awaitClose { listener.remove() }
+        }
     }
 
-    override suspend fun getAllNotes(): Flow<List<Note>> {
-        TODO("Not yet implemented")
+    override suspend fun getNotesByForeignId(foreignId: String): Flow<List<Note>> = callbackFlow {
+        auth.currentUser?.uid?.let { userId ->
+            // Reference to the collection with a query filter by userId
+            val query = fireStore.collection(NOTES_COLLECTION)
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("idForeign", foreignId)
+
+            val listener = query.addSnapshotListener { querySnapshot, error ->
+                if (error != null) {
+                    close(error)  // Close the flow if there's an error
+                    return@addSnapshotListener
+                }
+
+                // Map each document to a Measurement object and emit the list
+                val notes =
+                    querySnapshot?.documents?.mapNotNull { it.toObject(Note::class.java) }
+                        ?: emptyList()
+                trySend(notes)  // Emit the list of measurements
+            }
+
+            // Close the listener when the flow collector is done
+            awaitClose { listener.remove() }
+        }
     }
 
-    override suspend fun getNotesByForeignId(foreignId: String): Flow<List<Note>> {
-        TODO("Not yet implemented")
+
+    override suspend fun getAllSessions(): Flow<List<Session>> = callbackFlow {
+        auth.currentUser?.uid?.let { userId ->
+            // Reference to the collection with a query filter by userId
+            val query = fireStore.collection(SESSIONS_COLLECTION)
+                .whereEqualTo("userId", userId)
+
+            val listener = query.addSnapshotListener { querySnapshot, error ->
+                if (error != null) {
+                    close(error)  // Close the flow if there's an error
+                    return@addSnapshotListener
+                }
+
+                // Map each document to a Measurement object and emit the list
+                val sessions =
+                    querySnapshot?.documents?.mapNotNull { it.toObject(Session::class.java) }
+                        ?: emptyList()
+                trySend(sessions)  // Emit the list of measurements
+            }
+
+            // Close the listener when the flow collector is done
+            awaitClose { listener.remove() }
+        }
     }
 
-    override suspend fun getAllSessions(): Flow<List<Session>> {
-        TODO("Not yet implemented")
+    override suspend fun getAllSetsBySessionId(exerciseId: String?): Flow<List<Set>> = callbackFlow {
+        auth.currentUser?.uid?.let { userId ->
+            // Reference to the collection with a query filter by userId
+            val query = fireStore.collection(SETS_COLLECTION)
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("sessionIdForeign", exerciseId)
+
+            val listener = query.addSnapshotListener { querySnapshot, error ->
+                if (error != null) {
+                    close(error)  // Close the flow if there's an error
+                    return@addSnapshotListener
+                }
+
+                // Map each document to a Measurement object and emit the list
+                val sets =
+                    querySnapshot?.documents?.mapNotNull { it.toObject(Set::class.java) }
+                        ?: emptyList()
+                trySend(sets)  // Emit the list of measurements
+            }
+
+            // Close the listener when the flow collector is done
+            awaitClose { listener.remove() }
+        }
+    }
+    override suspend fun getWorkoutById(workoutId: String?): Workout? {
+        return workoutId?.let { documentId ->
+            val documentSnapshot = fireStore
+                .collection(WORKOUTS_COLLECTION)
+                .document(documentId)
+                .get()
+                .await()
+
+            // Check if the document exists and map it to a Measurement object
+            if (documentSnapshot.exists()) {
+                documentSnapshot.toObject(Workout::class.java)
+            } else
+                null
+        }
     }
 
-    override suspend fun getAllSetsBySessionId(exerciseId: String?): Flow<List<Set>> {
-        TODO("Not yet implemented")
+    override suspend fun getAllExercises(): Flow<List<Exercise>> = callbackFlow {
+        auth.currentUser?.uid?.let { userId ->
+            // Reference to the collection with a query filter by userId
+            val query = fireStore.collection(EXERCISES_COLLECTION)
+                .whereEqualTo("userId", userId)
+
+            val listener = query.addSnapshotListener { querySnapshot, error ->
+                if (error != null) {
+                    close(error)  // Close the flow if there's an error
+                    return@addSnapshotListener
+                }
+
+                // Map each document to a Measurement object and emit the list
+                val exercises =
+                    querySnapshot?.documents?.mapNotNull { it.toObject(Exercise::class.java) }
+                        ?: emptyList()
+                trySend(exercises)  // Emit the list of measurements
+            }
+
+            // Close the listener when the flow collector is done
+            awaitClose { listener.remove() }
+        }
     }
 
-    override suspend fun getWorkoutById(workoutId: String?): Workout {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getAllSets(): Flow<List<Set>> = callbackFlow {
+        auth.currentUser?.uid?.let { userId ->
+            // Reference to the collection with a query filter by userId
+            val query = fireStore.collection(SETS_COLLECTION)
+                .whereEqualTo("userId", userId)
 
-    override suspend fun getAllExercises(): Flow<List<Exercise>> {
-        TODO("Not yet implemented")
-    }
+            val listener = query.addSnapshotListener { querySnapshot, error ->
+                if (error != null) {
+                    close(error)  // Close the flow if there's an error
+                    return@addSnapshotListener
+                }
 
-    override suspend fun getAllSets(): Flow<List<Set>> {
-        TODO("Not yet implemented")
+                // Map each document to a Measurement object and emit the list
+                val sets =
+                    querySnapshot?.documents?.mapNotNull { it.toObject(Set::class.java) }
+                        ?: emptyList()
+                trySend(sets)  // Emit the list of measurements
+            }
+
+            // Close the listener when the flow collector is done
+            awaitClose { listener.remove() }
+        }
     }
 }
