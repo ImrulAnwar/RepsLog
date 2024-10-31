@@ -1,12 +1,13 @@
 package com.imrul.replog.feature_auth.data.data_source
 
+import CRED
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.imrul.replog.core.Constants.USERS_COLLECTION
 import com.imrul.replog.feature_auth.domain.data_source.AuthDataSource
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.tasks.await
 
 class AuthDataSourceImpl(
@@ -53,6 +54,12 @@ class AuthDataSourceImpl(
     }
 
     override suspend fun signInWithGoogle(idToken: String): FirebaseUser? {
+        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(true)
+            .setServerClientId(CRED.WEB_CLIENT_ID)
+            .setAutoSelectEnabled(true)
+            .setNonce("")
+            .build()
         return null
     }
 

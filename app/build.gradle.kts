@@ -10,7 +10,6 @@ plugins {
 android {
     namespace = "com.imrul.replog"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.imrul.replog"
         minSdk = 26
