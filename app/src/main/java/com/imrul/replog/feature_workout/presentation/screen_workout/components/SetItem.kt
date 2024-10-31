@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
@@ -100,6 +101,7 @@ fun SetItem(
             ) {
                 Text(
                     if (!listOfTillFailure[setIndex]) "W" else "F",
+                    fontSize = 12.sp,
                     modifier = Modifier.padding(0.dp),
                     fontWeight = FontWeight.Bold
                 )
@@ -107,6 +109,7 @@ fun SetItem(
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = workoutViewModel.listOfPrevious[setIndex],
+                fontSize = 12.sp,
                 color = Maroon70,
                 modifier = Modifier
                     .weight(1f)
@@ -121,7 +124,7 @@ fun SetItem(
                         setIndex = setIndex,
                         content = it
                     )
-                }, modifier = Modifier.width(80.dp)
+                }, modifier = Modifier.width(50.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
             NumberTextField(
@@ -132,7 +135,7 @@ fun SetItem(
                         setIndex = setIndex,
                         content = it
                     )
-                }, modifier = Modifier.width(80.dp)
+                }, modifier = Modifier.width(50.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
             SetIsDoneIcon(

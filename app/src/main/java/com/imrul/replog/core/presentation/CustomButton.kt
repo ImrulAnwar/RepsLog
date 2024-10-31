@@ -23,7 +23,7 @@ fun CustomButton(
         disabledContentColor = Maroon70,
         disabledContainerColor = WhiteCustom
     ),
-    fontSize: TextUnit = 18.sp
+    fontSize: TextUnit = 14.sp
 ) {
     Button(
         modifier = modifier,

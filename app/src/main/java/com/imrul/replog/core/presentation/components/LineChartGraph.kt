@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
@@ -25,9 +26,11 @@ import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
+import dagger.Provides
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@Preview(showBackground = true)
 @Composable
 fun LineChartGraph(
     pointsData: List<Point> =
@@ -78,7 +81,7 @@ fun LineChartGraph(
     val dateFormatter = DateTimeFormatter.ofPattern("MMM d")
 
     val xAxisData = AxisData.Builder()
-        .backgroundColor(Color.Transparent)
+        .backgroundColor(WhiteCustom)
         .steps(xSteps)
         .axisStepSize(axisStepSize)
         .labelData { i ->
@@ -91,6 +94,7 @@ fun LineChartGraph(
         .build()
 
     val yAxisData = AxisData.Builder()
+        .backgroundColor(WhiteCustom)
         .steps(ySteps)
         .labelAndAxisLinePadding(20.dp)
         .axisLineColor(Maroon70)
@@ -130,7 +134,7 @@ fun LineChartGraph(
                 )
             )
         ),
-        backgroundColor = Color.Transparent,
+        backgroundColor = WhiteCustom,
         xAxisData = xAxisData,
         yAxisData = yAxisData,
         gridLines = GridLines(color = Color.Transparent)
@@ -138,8 +142,6 @@ fun LineChartGraph(
     if (pointsData.isNotEmpty())
         LineChart(
             modifier = Modifier
-                .background(Color.Transparent)
-                .fillMaxWidth()
                 .height(300.dp),
             lineChartData = lineChartData
         )

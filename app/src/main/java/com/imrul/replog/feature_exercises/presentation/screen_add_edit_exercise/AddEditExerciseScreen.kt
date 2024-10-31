@@ -71,7 +71,7 @@ fun AddEditExerciseScreen(
                 text = selectedMuscleGroup,
                 items = viewModel.muscleGroupList,
                 onItemSelected = { viewModel.onSelectedMuscleGroup(it) },
-                fontSize = 20.sp,
+                fontSize = 16.sp,
             )
         }
         Row(
@@ -88,7 +88,7 @@ fun AddEditExerciseScreen(
                 text = selectedWeightType,
                 items = viewModel.weightTypeList,
                 onItemSelected = { viewModel.onSelectedWeightType(it) },
-                fontSize = 20.sp,
+                fontSize = 16.sp,
             )
         }
         CustomButton(

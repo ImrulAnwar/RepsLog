@@ -98,7 +98,7 @@ fun ExerciseItem(
             Text(
                 text = "\t ${Strings.SET}",
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+                fontSize = 10.sp,
                 color = Maroon70,
                 modifier = Modifier.width(60.dp)
             )
@@ -106,7 +106,7 @@ fun ExerciseItem(
             Text(
                 text = "\t ${Strings.PREVIOUS}",
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = Maroon70,
                 modifier = Modifier.weight(1f)
             )
@@ -117,24 +117,24 @@ fun ExerciseItem(
                     "\t${workoutViewModel.listOfWeightUnits[exerciseIndex].uppercase()}"
                 else Session.WEIGHT_UNIT_KG,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = Maroon70,
-                modifier = Modifier.width(80.dp)
+                modifier = Modifier.width(50.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
 
             Text(
                 text = "\t ${Strings.REPS}",
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = Maroon70,
-                modifier = Modifier.width(80.dp)
+                modifier = Modifier.width(50.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = "",
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = Maroon70,
                 modifier = Modifier.width(44.dp)
             )
