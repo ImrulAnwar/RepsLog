@@ -14,8 +14,12 @@ class AuthRepoImpl(
         dataSource.signInWithGoogle(idToken)
 
     override suspend fun continueAsGuest(): FirebaseUser? = dataSource.continueAsGuest()
-    override suspend fun linkAccount(email: String, password: String) =
-        dataSource.linkAccount(email, password)
+    override suspend fun linkAccount(
+        username: String,
+        email: String,
+        password: String
+    ): FirebaseUser? =
+        dataSource.linkAccount(username = username, email = email, password = password)
 
     override suspend fun register(
         username: String,

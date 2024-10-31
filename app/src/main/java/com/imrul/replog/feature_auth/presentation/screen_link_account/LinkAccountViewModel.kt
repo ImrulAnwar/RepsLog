@@ -49,34 +49,34 @@ class LinkAccountViewModel @Inject constructor(
 
     fun linkAccount(context: Context, navController: NavHostController) =
         viewModelScope.launch {
-//            authUseCases.(
-//                email = emailText,
-//                username = usernameText,
-//                password = passwordText
-//            )
-//                .collect { result ->
-//                    when (result) {
-//                        is Resource.Success -> {
-//                            // show toast
-//                            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_SHORT)
-//                                .show()
-//                            navController.navigateUp()
-//                        }
-//
-//                        is Resource.Error -> {
-//                            Toast.makeText(
-//                                context,
-//                                result.message,
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                            // show toast
-//                        }
-//
-//                        is Resource.Loading -> {
-//                            // show progressbar
-//                        }
-//                    }
-//                }
+            authUseCases.linkAccountUseCase(
+                email = emailText,
+                username = usernameText,
+                password = passwordText
+            )
+                .collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            // show toast
+                            Toast.makeText(context, "Successfully Linked", Toast.LENGTH_SHORT)
+                                .show()
+                            navController.navigateUp()
+                        }
+
+                        is Resource.Error -> {
+                            Toast.makeText(
+                                context,
+                                result.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            // show toast
+                        }
+
+                        is Resource.Loading -> {
+                            // show progressbar
+                        }
+                    }
+                }
         }
 
 }

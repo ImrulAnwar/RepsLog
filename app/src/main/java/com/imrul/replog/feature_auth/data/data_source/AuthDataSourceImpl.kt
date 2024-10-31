@@ -36,9 +36,19 @@ class AuthDataSourceImpl(
             )
         }
 
-    override suspend fun linkAccount(email: String, password: String) {
+    override suspend fun linkAccount(
+        username: String,
+        email: String,
+        password: String
+    ): FirebaseUser? {
         val credential = EmailAuthProvider.getCredential(email, password)
-        currentUser()?.linkWithCredential(credential)?.await()
+        return currentUser()?.linkWithCredential(credential)?.await()?.user.apply {
+            createUserForFirestore(
+                username = username,
+                uid = this?.uid,
+                email = email
+            )
+        }
     }
 
     override suspend fun signInWithGoogle(idToken: String): FirebaseUser? {
