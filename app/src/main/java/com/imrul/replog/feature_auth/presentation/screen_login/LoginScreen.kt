@@ -50,7 +50,7 @@ import com.imrul.replog.ui.theme.WhiteCustom
 fun LoginScreen(
     navController: NavHostController,
     viewModel: LoginViewModel = hiltViewModel(),
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
 ) {
 
     val emailText = viewModel.emailText

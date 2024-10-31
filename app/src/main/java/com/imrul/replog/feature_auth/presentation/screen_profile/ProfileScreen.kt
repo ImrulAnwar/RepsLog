@@ -23,6 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +46,7 @@ import com.imrul.replog.core.Constants
 import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
+import com.imrul.replog.feature_workout.presentation.screen_workout_history.WorkoutHistoryViewModel
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
@@ -53,8 +56,13 @@ fun ProfileScreen(
     navController: NavHostController,
     viewModel: LoginViewModel = hiltViewModel(),
     context: Context = LocalContext.current,
-    workoutViewModel: WorkoutViewModel
+    workoutViewModel: WorkoutViewModel,
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val userName = profileViewModel.userName
+    val userEmail = profileViewModel.userEmail
+    val numberOfWorkouts = profileViewModel.numberOfWorkouts
+    val isAnonymous = profileViewModel.isAnonymous
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -92,25 +100,25 @@ fun ProfileScreen(
                 ) {
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "ImrulAnwar",
+                        text = userName,
                         modifier = Modifier.padding(20.dp, 0.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "35 Workouts",
+                        text = "$numberOfWorkouts Workouts",
                         modifier = Modifier.padding(20.dp, 0.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "imrulanwar1@gmail.com",
+                        text = userEmail,
                         modifier = Modifier.padding(20.dp, 0.dp)
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                 }
 
             }
-            Text(
-                text = "Edit Profile",
+            if (isAnonymous) Text(
+                text = "Link Account",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold
                 ),
@@ -122,6 +130,7 @@ fun ProfileScreen(
             Button(
                 onClick = {
                     viewModel.signOut(context, navController)
+                    profileViewModel.clearData()
                 },
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Maroon70)
