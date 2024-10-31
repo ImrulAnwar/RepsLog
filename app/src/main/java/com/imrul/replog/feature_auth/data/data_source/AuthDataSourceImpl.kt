@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.imrul.replog.core.Constants.USERS_COLLECTION
 import com.imrul.replog.feature_auth.domain.data_source.AuthDataSource
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.tasks.await
 
 class AuthDataSourceImpl(

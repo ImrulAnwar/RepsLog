@@ -30,12 +30,29 @@ class ProfileViewModel @Inject constructor(
         initParam()
     }
 
+    fun setUserNameAndEmail() = viewModelScope.launch {
+        authUseCases.currentUserUseCase().collect { result ->
+            when (result) {
+                is Resource.Success -> {
+                    userEmail = result.data?.email ?: "No Email"
+                    userName = result.data?.displayName ?: "Anonymous"
+                }
+
+                is Resource.Error -> {
+                }
+
+                is Resource.Loading -> {
+                }
+            }
+        }
+    }
+
     private fun initParam() = viewModelScope.launch {
         authUseCases.currentUserUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    userName = result.data?.displayName ?: "Anonymous"
                     userEmail = result.data?.email ?: "No Email"
+                    userName = result.data?.displayName ?: "Anonymous"
                     isAnonymous = result.data?.isAnonymous ?: false
                     if (userName == "" || userEmail == "") {
                         userName = "Anonymous"

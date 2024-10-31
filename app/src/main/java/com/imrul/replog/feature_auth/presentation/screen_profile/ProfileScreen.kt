@@ -51,6 +51,8 @@ import com.imrul.replog.feature_workout.presentation.screen_workout_history.Work
 import com.imrul.replog.ui.theme.Maroon20
 import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.WhiteCustom
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 
 @Composable
 fun ProfileScreen(
@@ -64,6 +66,10 @@ fun ProfileScreen(
     val userEmail = profileViewModel.userEmail
     val numberOfWorkouts = profileViewModel.numberOfWorkouts
     val isAnonymous = profileViewModel.isAnonymous
+
+    LaunchedEffect(isAnonymous) {
+        profileViewModel.setUserNameAndEmail()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()

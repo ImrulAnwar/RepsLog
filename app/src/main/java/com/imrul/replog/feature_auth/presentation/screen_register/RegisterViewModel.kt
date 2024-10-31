@@ -49,34 +49,52 @@ class RegisterViewModel @Inject constructor(
 
     fun registerWithEmail(context: Context, navController: NavHostController) =
         viewModelScope.launch {
-            authUseCases.registerEmailUseCase(
-                email = emailText,
-                username = usernameText,
-                password = passwordText
+            if (emailText.trim().isNotEmpty()
+                && usernameText.trim().isNotEmpty()
+                && passwordText.trim().isNotEmpty()
+                && confirmPasswordText.trim().isNotEmpty()
+                && passwordText.trim() == confirmPasswordText.trim()
             )
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            // show toast
-                            Toast.makeText(context, "Successfully Registered", Toast.LENGTH_SHORT)
-                                .show()
-                            navController.navigateUp()
-                        }
+                authUseCases.registerEmailUseCase(
+                    email = emailText,
+                    username = usernameText,
+                    password = passwordText
+                )
+                    .collect { result ->
+                        when (result) {
+                            is Resource.Success -> {
+                                // show toast
+                                Toast.makeText(
+                                    context,
+                                    "Successfully Registered",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                navController.navigateUp()
+                            }
 
-                        is Resource.Error -> {
-                            Toast.makeText(
-                                context,
-                                result.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            // show toast
-                        }
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    context,
+                                    result.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                // show toast
+                            }
 
-                        is Resource.Loading -> {
-                            // show progressbar
+                            is Resource.Loading -> {
+                                // show progressbar
+                            }
                         }
                     }
-                }
+            else {
+                Toast.makeText(
+                    context,
+                    "Please Fill Up the information correctly ",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
         }
 
 }
