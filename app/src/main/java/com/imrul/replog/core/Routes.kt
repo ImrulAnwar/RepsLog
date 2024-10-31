@@ -43,4 +43,7 @@ open class Routes {
 
     @Serializable
     object ScreenFilterExercise : Routes()
+
+    @Serializable
+    object ScreenLinkAccount : Routes()
 }

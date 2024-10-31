@@ -15,6 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.imrul.replog.core.Routes
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginScreen
+import com.imrul.replog.feature_auth.presentation.screen_link_account.LinkAccountScreen
 import com.imrul.replog.feature_auth.presentation.screen_profile.ProfileScreen
 import com.imrul.replog.feature_auth.presentation.screen_profile.ProfileViewModel
 import com.imrul.replog.feature_auth.presentation.screen_register.RegisterScreen
@@ -42,7 +43,6 @@ fun NavGraph(
     workoutViewModel: WorkoutViewModel = hiltViewModel(),
     measurementsViewModel: MeasurementsViewModel = hiltViewModel(),
     addEditMeasurementViewModel: AddEditMeasurementViewModel = hiltViewModel(),
-//    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
 
     NavHost(
@@ -57,6 +57,10 @@ fun NavGraph(
         }
         composable<Routes.ScreenWorkout> {
             WorkoutScreen(navController = navController, workoutViewModel = workoutViewModel)
+        }
+
+        composable<Routes.ScreenLinkAccount> {
+            LinkAccountScreen(navController = navController)
         }
 
         composable<Routes.ScreenLogin> {

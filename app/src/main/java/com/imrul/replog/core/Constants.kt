@@ -17,6 +17,7 @@ object Constants {
     const val SIGN_IN = "Sign In"
     const val SIGN_OUT = "Sign Out"
     const val SIGN_UP = "Sign Up"
+    const val LINK_ACCOUNT = "Link Account"
     const val SIGN_UP_WITH = "Sign Up with"
     const val SIGN_IN_WITH = "Sign In with"
     const val CONTINUE_AS_GUEST = "Continue as a guest"

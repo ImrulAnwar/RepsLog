@@ -43,6 +43,7 @@ import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.imrul.replog.R
 import com.imrul.replog.core.Constants
+import com.imrul.replog.core.Routes
 import com.imrul.replog.core.presentation.components.MiniPlayer
 import com.imrul.replog.feature_auth.presentation.screen_login.LoginViewModel
 import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutViewModel
@@ -118,19 +119,18 @@ fun ProfileScreen(
 
             }
             if (isAnonymous) Text(
-                text = "Link Account",
+                text = Constants.LINK_ACCOUNT,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.clickable {
-//                    navController.navigate(EDIT_PROFILE_SCREEN_ROUTE)
+                    navController.navigate(Routes.ScreenLinkAccount)
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = {
                     viewModel.signOut(context, navController)
-                    profileViewModel.clearData()
                 },
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Maroon70)

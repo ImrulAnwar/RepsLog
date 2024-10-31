@@ -30,13 +30,7 @@ class ProfileViewModel @Inject constructor(
         initParam()
     }
 
-    fun clearData() {
-        userName = "Anonymous"
-        userEmail = "No Email"
-        isAnonymous = false
-    }
-
-    fun initParam() = viewModelScope.launch {
+    private fun initParam() = viewModelScope.launch {
         authUseCases.currentUserUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {
@@ -50,7 +44,6 @@ class ProfileViewModel @Inject constructor(
                 }
 
                 is Resource.Error -> {
-//                    isLoggedIn = false
                 }
 
                 is Resource.Loading -> {
