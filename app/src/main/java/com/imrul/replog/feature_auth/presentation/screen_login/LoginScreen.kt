@@ -58,14 +58,7 @@ fun LoginScreen(
     var passwordVisibility by remember {
         mutableStateOf(false)
     }
-    // OAuth
-//    val credentialManager = CredentialManager.create(context)
-//    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-//        .setFilterByAuthorizedAccounts(false)
-//        .setServerClientId("")
-//        .setAutoSelectEnabled(true)
-//        .setNonce("")
-//        .build()
+
 
     val annotatedString = buildAnnotatedString {
         append(Constants.DO_NOT_HAVE_AN_ACCOUNT)
@@ -119,6 +112,7 @@ fun LoginScreen(
                 iconDrawableId = R.drawable.google_logo,
                 text = Constants.SIGN_IN_WITH,
                 onClick = {
+                    viewModel.continueWithGoogle(context = context, navController = navController)
                 }
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -139,15 +133,7 @@ fun LoginScreen(
                     },
                 color = Maroon70
             )
-//            Button(onClick = {
-//                Toast.makeText(
-//                    context,
-//                    FirebaseAuth.getInstance().currentUser?.email.toString() + "\n${viewModel.isLoggedIn}",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }) {
-//                Text(text = "currentUser")
-//            }
+
         }
     }
 }

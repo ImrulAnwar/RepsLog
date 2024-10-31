@@ -5,14 +5,20 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.util.Resource
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -114,6 +120,59 @@ class LoginViewModel @Inject constructor(
 
                 is Resource.Loading -> {
                 }
+            }
+        }
+    }
+
+    fun continueWithGoogle(context: Context, navController: NavHostController) {
+        val credentialManager = CredentialManager.create(context)
+        //generating a nonce
+        val rawNonce = UUID.randomUUID().toString()
+        val bytes = rawNonce.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it) }
+
+        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(CRED.WEB_CLIENT_ID)
+            .setAutoSelectEnabled(true)
+            .setNonce(hashedNonce)
+            .build()
+
+        val request: GetCredentialRequest =
+            GetCredentialRequest.Builder().addCredentialOption(googleIdOption).build()
+        viewModelScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    request = request,
+                    context = context
+                )
+                Toast.makeText(context, "successful", Toast.LENGTH_SHORT).show()
+                val credential = result.credential
+                val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                val googleIdToken = googleIdTokenCredential.idToken
+                //passing the id token to signInWithCredential
+                authUseCases.oAuthUseCase(googleIdToken).collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            isLoggedIn = true
+                            clearBackStackAndNavigate(navController, Routes.ScreenWorkoutHistory)
+                        }
+
+                        is Resource.Error -> {
+                            Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
+                                .show()
+                            isLoggedIn = false
+                        }
+
+                        is Resource.Loading -> {
+
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+//                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

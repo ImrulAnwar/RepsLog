@@ -1,10 +1,9 @@
 package com.imrul.replog.feature_auth.data.data_source
 
-import CRED
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.imrul.replog.core.Constants.USERS_COLLECTION
 import com.imrul.replog.feature_auth.domain.data_source.AuthDataSource
@@ -54,14 +53,29 @@ class AuthDataSourceImpl(
     }
 
     override suspend fun signInWithGoogle(idToken: String): FirebaseUser? {
-        val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(true)
-            .setServerClientId(CRED.WEB_CLIENT_ID)
-            .setAutoSelectEnabled(true)
-            .setNonce("")
-            .build()
-        return null
+        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+
+        val user = auth.signInWithCredential(firebaseCredential).await().user
+        user?.let {
+            // Retrieve the user information from FirebaseUser
+            val uid = it.uid
+            val email = it.email
+            val username = it.displayName ?: "Username" // Placeholder if displayName is null
+
+            // Check if user exists in Firestore
+            val userDoc = fireStore.collection("users").document(uid).get().await()
+            if (!userDoc.exists()) {
+                // User is new, create a Firestore document
+                createUserForFirestore(
+                    username = username,
+                    uid = uid,
+                    email = email
+                )
+            }
+        }
+        return user
     }
+
 
     private suspend fun createUserForFirestore(username: String, uid: String?, email: String?) {
         uid?.let {

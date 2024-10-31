@@ -8,6 +8,7 @@ import com.imrul.replog.core.util.Resource
 import com.imrul.replog.feature_auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class OAuthUseCase @Inject constructor(
@@ -24,7 +25,7 @@ class OAuthUseCase @Inject constructor(
 //                it.displayName = username
                 it.build()
             }
-            user?.updateProfile(profileChangeRequest)
+            user?.updateProfile(profileChangeRequest)?.await()
             emit(Resource.Success(user))
         } catch (e: FirebaseAuthException) {
             emit(Resource.Error(message = e.message.toString()))
