@@ -330,7 +330,7 @@ class WorkoutViewModel @Inject constructor(
                 // for best set
                 val weightString = listOfWeights[i].second
                 val repString = listOfReps[i]
-                if (weightString.isNotEmpty() && repString.isNotEmpty())
+                if (weightString.isValidNumber() && weightString.isNotEmpty() && weightString.isNotEmpty() && repString.isNotEmpty())
                     if (maxWeight < listOfWeights[i].second.toFloat()) {
                         maxWeight = listOfWeights[i].second.toFloat()
                         maxReps = listOfReps[i].toInt()
@@ -348,6 +348,9 @@ class WorkoutViewModel @Inject constructor(
         )
 //        insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
         workoutUseCases.insertSession(session)
+    }
+    fun String.isValidNumber(): Boolean {
+        return toFloatOrNull() != null
     }
 
     private suspend fun insertExerciseNotes(sessionId: String, exerciseIndex: Int) {

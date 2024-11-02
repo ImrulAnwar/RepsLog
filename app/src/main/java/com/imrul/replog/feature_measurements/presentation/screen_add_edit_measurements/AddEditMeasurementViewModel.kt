@@ -104,8 +104,8 @@ class AddEditMeasurementViewModel @Inject constructor(
         measurementId: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val measurement = measurementUseCases.getMeasurementById(measurementId)
             try {
+                val measurement = measurementUseCases.getMeasurementById(measurementId)
                 withContext(Dispatchers.Main) {
                     navController.navigateUp()
                 }
