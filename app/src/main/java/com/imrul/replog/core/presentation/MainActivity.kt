@@ -13,7 +13,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,6 +25,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -108,9 +109,13 @@ class MainActivity : ComponentActivity() {
                 }
 
                 LaunchedEffect(selectedItemIndex) {
-                    navController.popBackStack()
-                    if (Firebase.auth.currentUser != null) navController.navigate(screens[selectedItemIndex].route)
-                    else (navController.navigate(Routes.ScreenLogin))
+                    try {
+
+                        navController.popBackStack()
+                        if (Firebase.auth.currentUser != null) navController.navigate(screens[selectedItemIndex].route)
+                        else (navController.navigate(Routes.ScreenLogin))
+                    } catch (_: Exception) {
+                    }
                 }
 
                 LaunchedEffect(navBackStackEntry) {
