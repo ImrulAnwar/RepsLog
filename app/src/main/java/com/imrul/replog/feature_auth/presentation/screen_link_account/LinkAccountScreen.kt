@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -96,17 +97,21 @@ fun LinkAccountScreen(
                 Constants.CONFIRM_PASSWORD_PLACEHOLDER
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Button(
-                onClick = {
-                    viewModel.linkAccount(context, navController)
-                },
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Maroon70,
-                    contentColor = WhiteCustom
-                )
-            ) {
-                Text(text = Constants.LINK_ACCOUNT, fontSize = 14.sp)
+            if (viewModel.isLinking) {
+                CircularProgressIndicator(color = Maroon70)
+            } else {
+                Button(
+                    onClick = {
+                        viewModel.linkAccount(context, navController)
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Maroon70,
+                        contentColor = WhiteCustom
+                    )
+                ) {
+                    Text(text = Constants.LINK_ACCOUNT, fontSize = 14.sp)
+                }
             }
         }
     }

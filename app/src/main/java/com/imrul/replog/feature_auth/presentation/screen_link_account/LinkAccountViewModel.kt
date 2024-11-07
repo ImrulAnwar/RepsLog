@@ -31,6 +31,9 @@ class LinkAccountViewModel @Inject constructor(
     var confirmPasswordText by mutableStateOf("")
         private set
 
+    var isLinking by mutableStateOf(false)
+        private set
+
     fun onEmailChanged(value: String) {
         emailText = value
     }
@@ -54,7 +57,8 @@ class LinkAccountViewModel @Inject constructor(
                 && passwordText.trim().isNotEmpty()
                 && confirmPasswordText.trim().isNotEmpty()
                 && passwordText.trim() == confirmPasswordText.trim()
-            )
+            ){
+                isLinking = true
                 authUseCases.linkAccountUseCase(
                     email = emailText,
                     username = usernameText,
@@ -67,6 +71,7 @@ class LinkAccountViewModel @Inject constructor(
                                 Toast.makeText(context, "Successfully Linked", Toast.LENGTH_SHORT)
                                     .show()
                                 navController.navigateUp()
+                                isLinking = false
                             }
 
                             is Resource.Error -> {
@@ -75,6 +80,7 @@ class LinkAccountViewModel @Inject constructor(
                                     result.message,
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                isLinking = false
                                 // show toast
                             }
 
@@ -83,6 +89,7 @@ class LinkAccountViewModel @Inject constructor(
                             }
                         }
                     }
+            }
             else {
                 Toast.makeText(
                     context,
