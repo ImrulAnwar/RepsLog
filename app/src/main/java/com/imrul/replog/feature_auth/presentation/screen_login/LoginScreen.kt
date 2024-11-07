@@ -71,7 +71,9 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = WhiteCustom) // Set the background color here
+            .background(color = WhiteCustom)
+            .padding(top = 220.dp)
+        // Set the background color here
     ) {
         Column(
             modifier = Modifier
@@ -79,7 +81,7 @@ fun LoginScreen(
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
 
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             EmailTextField(
@@ -111,24 +113,27 @@ fun LoginScreen(
                 ) {
                     Text(text = Constants.SIGN_IN, fontSize = 14.sp)
                 }
+                Spacer(modifier = Modifier.height(20.dp))
+                OtherAuthButton(
+                    iconDrawableId = R.drawable.google_logo,
+                    text = Constants.SIGN_IN_WITH,
+                    onClick = {
+                        viewModel.continueWithGoogle(
+                            context = context,
+                            navController = navController
+                        )
+                    }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                OtherAuthButton(
+                    iconDrawableId = R.drawable.guest,
+                    text = Constants.CONTINUE_AS_GUEST,
+                    onClick = {
+                        viewModel.continueAsGuest(context, navController)
+                    }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
             }
-            Spacer(modifier = Modifier.height(20.dp))
-            OtherAuthButton(
-                iconDrawableId = R.drawable.google_logo,
-                text = Constants.SIGN_IN_WITH,
-                onClick = {
-                    viewModel.continueWithGoogle(context = context, navController = navController)
-                }
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            OtherAuthButton(
-                iconDrawableId = R.drawable.guest,
-                text = Constants.CONTINUE_AS_GUEST,
-                onClick = {
-                    viewModel.continueAsGuest(context, navController)
-                }
-            )
-            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = annotatedString,
                 modifier = Modifier

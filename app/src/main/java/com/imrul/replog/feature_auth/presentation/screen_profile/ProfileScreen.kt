@@ -140,6 +140,7 @@ fun ProfileScreen(
             } else {
                 Button(
                     onClick = {
+                        workoutViewModel.clearAllData()
                         viewModel.signOut(context, navController)
                     },
                     shape = RoundedCornerShape(16.dp),

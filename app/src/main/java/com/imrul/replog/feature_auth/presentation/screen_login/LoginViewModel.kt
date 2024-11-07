@@ -1,6 +1,7 @@
 package com.imrul.replog.feature_auth.presentation.screen_login
 
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +16,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.imrul.replog.core.Routes
 import com.imrul.replog.core.util.Resource
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
+import com.imrul.replog.feature_workout.presentation.screen_workout.WorkoutService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
@@ -94,17 +96,20 @@ class LoginViewModel @Inject constructor(
 
     fun continueAsGuest(context: Context, navController: NavHostController) =
         viewModelScope.launch {
+            isSigningIn = true
             authUseCases.continueAsGuest().collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         isLoggedIn = true
                         clearBackStackAndNavigate(navController, Routes.ScreenWorkoutHistory)
+                        isSigningIn = false
                     }
 
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
                             .show()
                         isLoggedIn = false
+                        isSigningIn = false
                     }
 
                     is Resource.Loading -> {
@@ -119,6 +124,10 @@ class LoginViewModel @Inject constructor(
         authUseCases.signOutUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {
+                    Intent(context, WorkoutService::class.java).also {
+                        it.action = WorkoutService.Actions.STOP.toString()
+                        context.startForegroundService(it)
+                    }
                     clearBackStackAndNavigate(navController, Routes.ScreenLogin)
                     isLoggedIn = false
                     isSigningOut = false
@@ -154,6 +163,7 @@ class LoginViewModel @Inject constructor(
         val request: GetCredentialRequest =
             GetCredentialRequest.Builder().addCredentialOption(googleIdOption).build()
         viewModelScope.launch {
+            isSigningIn = true
             try {
                 val result = credentialManager.getCredential(
                     request = request,
@@ -169,12 +179,14 @@ class LoginViewModel @Inject constructor(
                         is Resource.Success -> {
                             isLoggedIn = true
                             clearBackStackAndNavigate(navController, Routes.ScreenWorkoutHistory)
+                            isSigningIn = false
                         }
 
                         is Resource.Error -> {
                             Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
                                 .show()
                             isLoggedIn = false
+                            isSigningIn = false
                         }
 
                         is Resource.Loading -> {
@@ -184,6 +196,7 @@ class LoginViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
 //                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                isSigningIn = false
             }
         }
     }

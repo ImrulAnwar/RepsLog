@@ -64,14 +64,16 @@ fun RegisterScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = WhiteCustom) // Set the background color here
+            .background(color = WhiteCustom)
+            .padding(top = 220.dp)
+        // Set the background color here
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             EmailTextField(
