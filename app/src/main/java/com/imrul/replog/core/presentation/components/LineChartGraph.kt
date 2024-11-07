@@ -143,6 +143,6 @@ fun LineChartGraph(
         LineChart(
             modifier = Modifier
                 .height(300.dp),
-            lineChartData = lineChartData
+            lineChartData = lineChartData,
         )
 }

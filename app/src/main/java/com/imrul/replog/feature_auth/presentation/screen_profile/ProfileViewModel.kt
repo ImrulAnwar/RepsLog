@@ -8,13 +8,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.imrul.replog.core.util.Resource
 import com.imrul.replog.feature_auth.domain.use_cases.AuthUseCases
+import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val workoutUseCases: WorkoutUseCases
 ) : ViewModel() {
     var userName by mutableStateOf("Anonymous")
         private set
@@ -29,6 +31,7 @@ class ProfileViewModel @Inject constructor(
 
     init {
         initParam()
+        getWorkoutCount()
     }
 
     fun setUserNameAndEmail() = viewModelScope.launch {
@@ -66,6 +69,14 @@ class ProfileViewModel @Inject constructor(
 
                 is Resource.Loading -> {
                 }
+            }
+        }
+    }
+
+    fun getWorkoutCount() {
+        viewModelScope.launch {
+            workoutUseCases.getAllWorkouts().collect {
+                numberOfWorkouts = it.size
             }
         }
     }
