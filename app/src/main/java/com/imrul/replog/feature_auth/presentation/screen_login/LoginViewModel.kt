@@ -33,6 +33,11 @@ class LoginViewModel @Inject constructor(
     var isLoggedIn by mutableStateOf(false)
         private set
 
+    var isSigningOut by mutableStateOf(false)
+        private set
+    var isSigningIn by mutableStateOf(false)
+        private set
+
     fun onEmailChanged(value: String) {
         emailText = value
     }
@@ -64,17 +69,20 @@ class LoginViewModel @Inject constructor(
 
     fun signInWithEmail(context: Context, navController: NavHostController) =
         viewModelScope.launch {
+            isSigningIn = true
             authUseCases.signInWithEmailUseCase(emailText, passwordText).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         isLoggedIn = true
                         clearBackStackAndNavigate(navController, Routes.ScreenWorkoutHistory)
+                        isSigningIn = false
                     }
 
                     is Resource.Error -> {
                         Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
                             .show()
                         isLoggedIn = false
+                        isSigningIn = false
                     }
 
                     is Resource.Loading -> {
@@ -107,15 +115,18 @@ class LoginViewModel @Inject constructor(
         }
 
     fun signOut(context: Context, navController: NavHostController) = viewModelScope.launch {
+        isSigningOut = true
         authUseCases.signOutUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {
                     clearBackStackAndNavigate(navController, Routes.ScreenLogin)
                     isLoggedIn = false
+                    isSigningOut = false
                 }
 
                 is Resource.Error -> {
                     Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                    isSigningOut = false
                 }
 
                 is Resource.Loading -> {
@@ -136,7 +147,7 @@ class LoginViewModel @Inject constructor(
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(CRED.WEB_CLIENT_ID)
-            .setAutoSelectEnabled(true)
+            .setAutoSelectEnabled(false)
             .setNonce(hashedNonce)
             .build()
 

@@ -26,6 +26,7 @@ class ProfileViewModel @Inject constructor(
     var isAnonymous by mutableStateOf(false)
         private set
 
+
     init {
         initParam()
     }

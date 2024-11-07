@@ -31,6 +31,9 @@ class RegisterViewModel @Inject constructor(
     var confirmPasswordText by mutableStateOf("")
         private set
 
+    var isRegistering by mutableStateOf(false)
+        private set
+
     fun onEmailChanged(value: String) {
         emailText = value
     }
@@ -54,7 +57,8 @@ class RegisterViewModel @Inject constructor(
                 && passwordText.trim().isNotEmpty()
                 && confirmPasswordText.trim().isNotEmpty()
                 && passwordText.trim() == confirmPasswordText.trim()
-            )
+            ){
+                isRegistering = true
                 authUseCases.registerEmailUseCase(
                     email = emailText,
                     username = usernameText,
@@ -63,6 +67,7 @@ class RegisterViewModel @Inject constructor(
                     .collect { result ->
                         when (result) {
                             is Resource.Success -> {
+                                navController.navigateUp()
                                 // show toast
                                 Toast.makeText(
                                     context,
@@ -70,7 +75,7 @@ class RegisterViewModel @Inject constructor(
                                     Toast.LENGTH_SHORT
                                 )
                                     .show()
-                                navController.navigateUp()
+                                isRegistering = false
                             }
 
                             is Resource.Error -> {
@@ -79,6 +84,7 @@ class RegisterViewModel @Inject constructor(
                                     result.message,
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                isRegistering = false
                                 // show toast
                             }
 
@@ -87,6 +93,7 @@ class RegisterViewModel @Inject constructor(
                             }
                         }
                     }
+            }
             else {
                 Toast.makeText(
                     context,
