@@ -72,7 +72,6 @@ fun LoginScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = WhiteCustom)
-            .padding(top = 220.dp)
         // Set the background color here
     ) {
         Column(
@@ -81,7 +80,7 @@ fun LoginScreen(
                 .padding(20.dp)
                 .verticalScroll(rememberScrollState()),
 
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             EmailTextField(

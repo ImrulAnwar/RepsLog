@@ -66,7 +66,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RepLogTheme {
-
                 val window = (LocalView.current.context as Activity).window
                 window.statusBarColor =
                     if (!isSystemInDarkTheme()) Maroon70.toArgb() else Maroon20.toArgb()

@@ -7,6 +7,7 @@ import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,20 +19,24 @@ class WorkoutService : Service() {
     private val notificationId = 1
     private var isRunning = false
 
+    private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
-    }
-
-    override fun onCreate() {
-        super.onCreate()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             Actions.START.toString() -> {
                 if (!isRunning) {
-                    CoroutineScope(Dispatchers.Default).launch { start() }
-                }
+                    isRunning = true
+                    // Start foreground immediately to avoid timing issues
+                    startForeground(
+                        notificationId,
+                        workoutUseCases.createRunningWorkoutNotificationUseCase(context = applicationContext)
+                    )
+                    // Launch the rest of the start logic in the serviceScope
+                    serviceScope.launch { start() }                }
             }
 
             Actions.STOP.toString() -> {
@@ -41,18 +46,11 @@ class WorkoutService : Service() {
         return START_STICKY
     }
 
-
     private suspend fun start() {
-        isRunning = true
         workoutUseCases.durationUseCase.start()
-        startForeground(
-            notificationId,
-            workoutUseCases.createRunningWorkoutNotificationUseCase(context = applicationContext)
-        )
 
-        workoutUseCases.durationUseCase.elapsedTime.collect {
-            val notification =
-                workoutUseCases.createRunningWorkoutNotificationUseCase(it, applicationContext)
+        workoutUseCases.durationUseCase.elapsedTime.collect { elapsedTime ->
+            val notification = workoutUseCases.createRunningWorkoutNotificationUseCase(elapsedTime, applicationContext)
             startForeground(notificationId, notification)
         }
     }
