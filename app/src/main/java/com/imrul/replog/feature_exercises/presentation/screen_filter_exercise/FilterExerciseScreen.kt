@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.imrul.replog.core.Strings
+import com.imrul.replog.core.presentation.CustomButton
 import com.imrul.replog.feature_exercises.presentation.components.CustomFlowRow
 import com.imrul.replog.feature_exercises.presentation.screen_exercises.ExerciseListViewModel
 import com.imrul.replog.feature_workout.domain.model.Exercise
@@ -46,13 +48,16 @@ fun FilterExerciseScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(WhiteCustom),
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = Strings.TARGET_MUSCLE_GROUP,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(15.dp)
+            modifier = Modifier
+                .padding(15.dp)
+                .padding(top = 35.dp)
         )
         HorizontalDivider(color = Maroon70)
         CustomFlowRow(
@@ -105,6 +110,14 @@ fun FilterExerciseScreen(
                 viewModel.toggleWeightTypeFilter(it)
             },
             modifier = Modifier.padding(5.dp)
+        )
+        CustomButton(
+            onClick = {
+                navController.navigateUp()
+            },
+            fontSize = 16.sp,
+            modifier = Modifier.padding(20.dp),
+            text = "<   Continue  "
         )
     }
 }
