@@ -115,7 +115,7 @@ fun FilterExerciseScreen(
             onClick = {
                 navController.navigateUp()
             },
-            fontSize = 16.sp,
+            fontSize = 18.sp,
             modifier = Modifier.padding(20.dp),
             text = "<   Continue  "
         )
