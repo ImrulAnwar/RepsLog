@@ -41,19 +41,21 @@ fun WorkoutHistoryScreen(
     workoutHistoryViewModel: WorkoutHistoryViewModel = hiltViewModel(),
     workoutViewModel: WorkoutViewModel
 ) {
-    LaunchedEffect(Unit) {
-        workoutHistoryViewModel.getAllWorkouts()
-    }
 
     val workoutListState by workoutHistoryViewModel.workoutListState.collectAsState()
     val sessionsList by workoutHistoryViewModel.sessionsList.collectAsState()
     val context = LocalContext.current
+    val isInserting = workoutViewModel.isInserting
+    LaunchedEffect(Unit) {
+        workoutHistoryViewModel.getAllWorkouts()
+    }
 
-    if (workoutViewModel.isInserting)
+    if (isInserting)
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(WhiteCustom),
+                .background(WhiteCustom)
+                .padding(40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularProgressIndicator(color = Maroon70)

@@ -47,7 +47,6 @@ import com.imrul.replog.ui.theme.Maroon70
 import com.imrul.replog.ui.theme.Maroon90
 import com.imrul.replog.ui.theme.WhiteCustom
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WorkoutScreen(
     navController: NavHostController,
@@ -122,19 +121,18 @@ fun WorkoutScreen(
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 } else {
-                                    navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
-                                        // When navigation is complete, stop the service and pop the back stack
-                                        try {
-                                            navController.navigateUp()
-                                            Intent(context, WorkoutService::class.java).also {
-                                                it.action = WorkoutService.Actions.STOP.toString()
-                                                context.startForegroundService(it)
-                                            }
-                                        } catch (e: Exception) {
-                                            e.printStackTrace()
+                                    try {
+                                        Intent(context, WorkoutService::class.java).also {
+                                            it.action = WorkoutService.Actions.STOP.toString()
+                                            context.startForegroundService(it)
                                         }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
                                     }
-                                    workoutViewModel.insertWorkout()
+                                    workoutViewModel.insertWorkout(
+                                        context = context,
+                                        navController = navController
+                                    )
                                 }
                             }
                         )

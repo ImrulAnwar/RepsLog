@@ -22,7 +22,7 @@ class WorkoutDatasourceImpl(
     private val auth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ) : WorkoutDatasource {
-    val batch = fireStore.batch()
+    private var batch = fireStore.batch()
     override suspend fun insertWorkout(workout: Workout): String {
         val documentId = workout.id ?: fireStore.collection(WORKOUTS_COLLECTION).document().id
         auth.currentUser?.uid.let { userId ->
@@ -42,6 +42,13 @@ class WorkoutDatasourceImpl(
             batch.set(workoutRef, data)
         }
         return documentId
+    }
+
+    private suspend fun ensureBatchIsActive() {
+        // If the batch has been committed, reinitialize it
+        if (batch == null) {
+            batch = fireStore.batch()
+        }
     }
 
     override suspend fun insertExercise(exercise: Exercise): String {
@@ -439,6 +446,6 @@ class WorkoutDatasourceImpl(
     }
 
     override suspend fun commitBatch() {
-        batch.commit().await()
+        batch.commit()
     }
 }

@@ -9,6 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
+import com.imrul.replog.core.Routes
 import com.imrul.replog.core.Strings
 import com.imrul.replog.feature_workout.domain.model.Note
 import com.imrul.replog.feature_workout.domain.model.Session
@@ -389,9 +391,9 @@ class WorkoutViewModel @Inject constructor(
         }
     }
 
-    fun insertWorkout() {
+    fun insertWorkout(context: Context, navController: NavHostController) {
+        isInserting = true
         viewModelScope.launch {
-            isInserting = true
             val date = System.currentTimeMillis()
             var dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
             val dateString = dateFormat.format(Date(date))
@@ -410,9 +412,24 @@ class WorkoutViewModel @Inject constructor(
             exerciseNamesCopy.forEachIndexed { index, _ ->
                 insertSessions(index, workoutId)
             }
+            navController.navigateUp()
             insertWorkoutNotes(workoutId = workoutId)
-            clearAllData()
             workoutUseCases.batchCommitUseCase()
+            delay(1000)
+            clearAllData()
+        }.invokeOnCompletion {
+        }
+    }
+
+    private fun clearBackStackAndNavigate(
+        navController: NavHostController,
+        newDestination: Routes
+    ) {
+        navController.navigate(newDestination) {
+            popUpTo(0) {
+                inclusive = true
+            }
+            launchSingleTop = true
         }
     }
 
