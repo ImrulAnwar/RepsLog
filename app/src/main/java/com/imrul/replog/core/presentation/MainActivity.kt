@@ -201,9 +201,13 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
-        Intent(this, WorkoutService::class.java).also {
-            it.action = WorkoutService.Actions.STOP.toString()
-            this.startForegroundService(it)
+        try {
+            Intent(this, WorkoutService::class.java).also {
+                it.action = WorkoutService.Actions.STOP.toString()
+                this.startForegroundService(it)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         super.onDestroy()
     }

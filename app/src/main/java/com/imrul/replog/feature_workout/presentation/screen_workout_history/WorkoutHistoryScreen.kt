@@ -127,12 +127,16 @@ private fun startWorkout(
 ) {
     if (!workoutViewModel.isWorkOutRunning) {
         // start service
-        Intent(context, WorkoutService::class.java).also {
-            it.action = WorkoutService.Actions.START.toString()
-            context.startForegroundService(it)
+        try {
+            Intent(context, WorkoutService::class.java).also {
+                it.action = WorkoutService.Actions.START.toString()
+                context.startForegroundService(it)
+            }
+            workoutViewModel.setWorkoutRunning(true)
+            navController.navigate(Routes.ScreenWorkout)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        workoutViewModel.setWorkoutRunning(true)
-        navController.navigate(Routes.ScreenWorkout)
     } else {
         Toast.makeText(context, "Already Running Workout", Toast.LENGTH_SHORT)
             .show()

@@ -124,9 +124,13 @@ class LoginViewModel @Inject constructor(
         authUseCases.signOutUseCase().collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    Intent(context, WorkoutService::class.java).also {
-                        it.action = WorkoutService.Actions.STOP.toString()
-                        context.startForegroundService(it)
+                    try {
+                        Intent(context, WorkoutService::class.java).also {
+                            it.action = WorkoutService.Actions.STOP.toString()
+                            context.startForegroundService(it)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                     clearBackStackAndNavigate(navController, Routes.ScreenLogin)
                     isLoggedIn = false

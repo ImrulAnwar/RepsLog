@@ -69,10 +69,10 @@ class AddEditExerciseViewModel @Inject constructor(
                 )
             }
             try {
-                workoutUseCases.insertExercise(exercise)
                 navController.navigateUp()
+                workoutUseCases.insertExercise(exercise)
             } catch (e: Exception) {
-                Toast.makeText(context, "${e.message}", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
             }
         }
     }

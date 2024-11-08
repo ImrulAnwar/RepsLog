@@ -124,11 +124,15 @@ fun WorkoutScreen(
                                 } else {
                                     navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
                                         // When navigation is complete, stop the service and pop the back stack
-                                        Intent(context, WorkoutService::class.java).also {
-                                            it.action = WorkoutService.Actions.STOP.toString()
-                                            context.startForegroundService(it)
+                                        try {
+                                            navController.navigateUp()
+                                            Intent(context, WorkoutService::class.java).also {
+                                                it.action = WorkoutService.Actions.STOP.toString()
+                                                context.startForegroundService(it)
+                                            }
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
                                         }
-                                        navController.navigateUp()
                                     }
                                     workoutViewModel.insertWorkout()
                                 }
@@ -195,12 +199,16 @@ fun WorkoutScreen(
                                 .clickable {
                                     navController.navigate(Routes.ScreenWorkoutHistory) { // Navigate to the destination
                                         // When navigation is complete, stop the service and pop the back stack
-                                        Intent(context, WorkoutService::class.java).also {
-                                            it.action = WorkoutService.Actions.STOP.toString()
-                                            context.startForegroundService(it)
+                                        try {
+                                            navController.navigateUp()
+                                            Intent(context, WorkoutService::class.java).also {
+                                                it.action = WorkoutService.Actions.STOP.toString()
+                                                context.startForegroundService(it)
+                                            }
+                                            workoutViewModel.clearAllData()
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
                                         }
-                                        workoutViewModel.clearAllData()
-                                        navController.popBackStack()
                                     }
                                 },
                             color = Maroon90

@@ -8,6 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,13 +31,20 @@ class WorkoutService : Service() {
             Actions.START.toString() -> {
                 if (!isRunning) {
                     isRunning = true
+                    try {
+                        startForeground(
+                            notificationId,
+                            workoutUseCases.createRunningWorkoutNotificationUseCase(context = applicationContext)
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()  // Log or handle the exception
+                        stopSelf()  // Stop service if starting in foreground fails
+                        return START_NOT_STICKY
+                    }
                     // Start foreground immediately to avoid timing issues
-                    startForeground(
-                        notificationId,
-                        workoutUseCases.createRunningWorkoutNotificationUseCase(context = applicationContext)
-                    )
                     // Launch the rest of the start logic in the serviceScope
-                    serviceScope.launch { start() }                }
+                    serviceScope.launch { start() }
+                }
             }
 
             Actions.STOP.toString() -> {
@@ -47,15 +55,23 @@ class WorkoutService : Service() {
     }
 
     private suspend fun start() {
-        workoutUseCases.durationUseCase.start()
-
-        workoutUseCases.durationUseCase.elapsedTime.collect { elapsedTime ->
-            val notification = workoutUseCases.createRunningWorkoutNotificationUseCase(elapsedTime, applicationContext)
-            startForeground(notificationId, notification)
+        try {
+            workoutUseCases.durationUseCase.start()
+            workoutUseCases.durationUseCase.elapsedTime.collect { elapsedTime ->
+                val notification = workoutUseCases.createRunningWorkoutNotificationUseCase(
+                    elapsedTime,
+                    applicationContext
+                )
+                startForeground(notificationId, notification)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()  // Log or handle any exception in workout logic
+            stopSelf()
         }
     }
 
     override fun onDestroy() {
+        serviceScope.cancel()
         super.onDestroy()
         isRunning = false
     }
