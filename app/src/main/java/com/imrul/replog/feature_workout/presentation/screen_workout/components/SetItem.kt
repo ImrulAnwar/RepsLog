@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -106,14 +107,13 @@ fun SetItem(
                     fontWeight = FontWeight.Bold
                 )
             }
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(20.dp))
             Text(
                 text = workoutViewModel.listOfPrevious[setIndex],
                 fontSize = 12.sp,
                 color = Maroon70,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(5.dp)
             )
             Spacer(modifier = Modifier.width(10.dp))
             NumberTextField(

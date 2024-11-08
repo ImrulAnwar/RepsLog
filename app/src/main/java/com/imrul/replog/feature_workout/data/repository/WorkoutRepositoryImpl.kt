@@ -10,11 +10,12 @@ import com.imrul.replog.feature_workout.domain.repository.WorkoutRepository
 import kotlinx.coroutines.flow.Flow
 
 class WorkoutRepositoryImp(
-    private val datasource : WorkoutDatasource
+    private val datasource: WorkoutDatasource
 ) : WorkoutRepository {
     override suspend fun insertWorkout(workout: Workout): String = datasource.insertWorkout(workout)
 
-    override suspend fun insertExercise(exercise: Exercise): String = datasource.insertExercise(exercise)
+    override suspend fun insertExercise(exercise: Exercise): String =
+        datasource.insertExercise(exercise)
 
     override suspend fun insertSet(set: Set): String = datasource.insertSet(set)
     override suspend fun insertSession(session: Session): String = datasource.insertSession(session)
@@ -45,7 +46,7 @@ class WorkoutRepositoryImp(
         return datasource.getAllWorkouts()
     }
 
-    override suspend fun getExerciseById(exerciseId: String?): Exercise?{
+    override suspend fun getExerciseById(exerciseId: String?): Exercise? {
         return datasource.getExerciseById(exerciseId)
     }
 
@@ -73,6 +74,10 @@ class WorkoutRepositoryImp(
 
     override suspend fun getAllSets(): Flow<List<Set>> {
         return datasource.getAllSets()
+    }
+
+    override suspend fun commitBatch() {
+        return datasource.commitBatch()
     }
 
     override suspend fun getWorkoutById(workoutId: String?): Workout? {

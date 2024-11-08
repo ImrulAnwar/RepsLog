@@ -31,6 +31,7 @@ import com.imrul.replog.feature_measurements.data.repository.MeasurementsDataSou
 import com.imrul.replog.feature_measurements.domain.repository.MeasurementsDataSource
 import com.imrul.replog.feature_workout.data.repository.WorkoutDatasourceImpl
 import com.imrul.replog.feature_workout.domain.repository.WorkoutDatasource
+import com.imrul.replog.feature_workout.domain.use_cases.BatchCommitUseCase
 import com.imrul.replog.feature_workout.domain.use_cases.GetNotesBySessionId
 import com.imrul.replog.feature_workout.domain.use_cases.GetNotesByWorkoutId
 import com.imrul.replog.feature_workout.domain.use_cases.InsertNote
@@ -63,7 +64,8 @@ object WorkoutRoomModule {
 
     @Singleton
     @Provides
-    fun provideWorkoutRepository(datasource: WorkoutDatasource): WorkoutRepository = WorkoutRepositoryImp(datasource)
+    fun provideWorkoutRepository(datasource: WorkoutDatasource): WorkoutRepository =
+        WorkoutRepositoryImp(datasource)
 
     @Provides
     @Singleton
@@ -100,6 +102,7 @@ object WorkoutRoomModule {
         getLatestSessionByExerciseId = GetLatestSessionByExerciseId(repository),
         insertSession = InsertSession(repository),
         getNotesByWorkoutId = GetNotesByWorkoutId(repository),
-        getNotesBySessionId = GetNotesBySessionId(repository)
+        getNotesBySessionId = GetNotesBySessionId(repository),
+        batchCommitUseCase = BatchCommitUseCase(repository)
     )
 }

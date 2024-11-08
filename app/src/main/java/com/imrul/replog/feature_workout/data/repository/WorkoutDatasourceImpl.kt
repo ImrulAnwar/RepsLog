@@ -2,7 +2,6 @@ package com.imrul.replog.feature_workout.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.imrul.replog.core.Constants.EXERCISES_COLLECTION
 import com.imrul.replog.core.Constants.NOTES_COLLECTION
 import com.imrul.replog.core.Constants.SESSIONS_COLLECTION
@@ -17,13 +16,13 @@ import com.imrul.replog.feature_workout.domain.repository.WorkoutDatasource
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 class WorkoutDatasourceImpl(
     private val auth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ) : WorkoutDatasource {
+    val batch = fireStore.batch()
     override suspend fun insertWorkout(workout: Workout): String {
         val documentId = workout.id ?: fireStore.collection(WORKOUTS_COLLECTION).document().id
         auth.currentUser?.uid.let { userId ->
@@ -37,11 +36,10 @@ class WorkoutDatasourceImpl(
                 "durationString" to workout.durationString,
                 "userId" to userId
             )
-            fireStore
+            val workoutRef = fireStore
                 .collection(WORKOUTS_COLLECTION)
                 .document(documentId)
-                .set(data)
-                .await()
+            batch.set(workoutRef, data)
         }
         return documentId
     }
@@ -79,11 +77,10 @@ class WorkoutDatasourceImpl(
                 "timerDuration" to set.timerDuration,
                 "userId" to userId
             )
-            fireStore
+            val setRef = fireStore
                 .collection(SETS_COLLECTION)
                 .document(documentId)
-                .set(data)
-                .await()
+            batch.set(setRef, data)
         }
         return documentId
     }
@@ -104,11 +101,10 @@ class WorkoutDatasourceImpl(
                 "userId" to userId,
                 "timestamp" to session.timestamp
             )
-            fireStore
+            val sessionRef = fireStore
                 .collection(SESSIONS_COLLECTION)
                 .document(documentId)
-                .set(data)
-                .await()
+            batch.set(sessionRef, data)
         }
         return documentId
     }
@@ -124,11 +120,10 @@ class WorkoutDatasourceImpl(
                 "content" to note.content,
                 "userId" to userId
             )
-            fireStore
+            val noteRef = fireStore
                 .collection(NOTES_COLLECTION)
                 .document(documentId)
-                .set(data)
-                .await()
+            batch.set(noteRef, data)
         }
         return documentId
     }
@@ -353,30 +348,32 @@ class WorkoutDatasourceImpl(
         }
     }
 
-    override suspend fun getAllSetsBySessionId(exerciseId: String?): Flow<List<Set>> = callbackFlow {
-        auth.currentUser?.uid?.let { userId ->
-            // Reference to the collection with a query filter by userId
-            val query = fireStore.collection(SETS_COLLECTION)
-                .whereEqualTo("userId", userId)
-                .whereEqualTo("sessionIdForeign", exerciseId)
+    override suspend fun getAllSetsBySessionId(exerciseId: String?): Flow<List<Set>> =
+        callbackFlow {
+            auth.currentUser?.uid?.let { userId ->
+                // Reference to the collection with a query filter by userId
+                val query = fireStore.collection(SETS_COLLECTION)
+                    .whereEqualTo("userId", userId)
+                    .whereEqualTo("sessionIdForeign", exerciseId)
 
-            val listener = query.addSnapshotListener { querySnapshot, error ->
-                if (error != null) {
-                    close(error)  // Close the flow if there's an error
-                    return@addSnapshotListener
+                val listener = query.addSnapshotListener { querySnapshot, error ->
+                    if (error != null) {
+                        close(error)  // Close the flow if there's an error
+                        return@addSnapshotListener
+                    }
+
+                    // Map each document to a Measurement object and emit the list
+                    val sets =
+                        querySnapshot?.documents?.mapNotNull { it.toObject(Set::class.java) }
+                            ?: emptyList()
+                    trySend(sets)  // Emit the list of measurements
                 }
 
-                // Map each document to a Measurement object and emit the list
-                val sets =
-                    querySnapshot?.documents?.mapNotNull { it.toObject(Set::class.java) }
-                        ?: emptyList()
-                trySend(sets)  // Emit the list of measurements
+                // Close the listener when the flow collector is done
+                awaitClose { listener.remove() }
             }
-
-            // Close the listener when the flow collector is done
-            awaitClose { listener.remove() }
         }
-    }
+
     override suspend fun getWorkoutById(workoutId: String?): Workout? {
         return workoutId?.let { documentId ->
             val documentSnapshot = fireStore
@@ -439,5 +436,9 @@ class WorkoutDatasourceImpl(
             // Close the listener when the flow collector is done
             awaitClose { listener.remove() }
         }
+    }
+
+    override suspend fun commitBatch() {
+        batch.commit().await()
     }
 }

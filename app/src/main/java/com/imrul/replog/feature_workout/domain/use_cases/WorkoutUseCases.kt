@@ -30,5 +30,6 @@ data class WorkoutUseCases(
     val getAllSets: GetAllSets,
     val shouldInsertWorkout: ShouldInsertWorkout,
     val durationUseCase: DurationUseCase,
-    val createRunningWorkoutNotificationUseCase: CreateRunningWorkoutNotificationUseCase
+    val createRunningWorkoutNotificationUseCase: CreateRunningWorkoutNotificationUseCase,
+    val batchCommitUseCase: BatchCommitUseCase
 )

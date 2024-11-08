@@ -16,6 +16,7 @@ import com.imrul.replog.feature_workout.domain.model.Set
 import com.imrul.replog.feature_workout.domain.model.Workout
 import com.imrul.replog.feature_workout.domain.use_cases.WorkoutUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -306,7 +307,6 @@ class WorkoutViewModel @Inject constructor(
         var session = Session(
             workoutIdForeign = workoutId
         )
-        val sessionId = workoutUseCases.insertSession(session)
         var setCount = 0
         var maxWeight = 0f
         var maxReps = 0
@@ -314,41 +314,51 @@ class WorkoutViewModel @Inject constructor(
         val listOfWeightsCopy = listOfWeights.toList()
         listOfWeightsCopy.forEachIndexed { i, item ->
             if (item.first == exerciseIndex) {
-                //this set belongs to the exercise
-                val set = Set(
-                    weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
-                    reps = listOfReps[i].toFloatOrNull() ?: 0f,
-                    sessionIdForeign = sessionId,
-                    isDone = true,
-                    setType = if (listOfTillFailure[i]) Set.SET_TYPE_FAILURE else Set.SET_TYPE_WARM_UP
-                )
                 if (listOfIsDone[i]) {
                     setCount++
-                    workoutUseCases.insertSet(set)
                 }
-
-                // for best set
-                val weightString = listOfWeights[i].second
-                val repString = listOfReps[i]
-                if (weightString.isValidNumber() && weightString.isNotEmpty() && weightString.isNotEmpty() && repString.isNotEmpty())
-                    if (maxWeight < listOfWeights[i].second.toFloat()) {
-                        maxWeight = listOfWeights[i].second.toFloat()
-                        maxReps = listOfReps[i].toInt()
-                    }
             }
         }
-        session = Session(
-            id = sessionId,
-            workoutIdForeign = workoutId,
-            setCount = setCount.toLong(),
-            exerciseIdForeign = listOfExerciseId[exerciseIndex],
-            exerciseName = listOfExerciseName[exerciseIndex],
-            bestSet = "${maxWeight.toInt()} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
-            weightUnit = listOfWeightUnits[exerciseIndex]
-        )
+        val sessionId: String? = if (setCount != 0) workoutUseCases.insertSession(session) else null
+        sessionId?.let {
+            listOfWeightsCopy.forEachIndexed { i, item ->
+                if (item.first == exerciseIndex) {
+                    //this set belongs to the exercise
+                    val set = Set(
+                        weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
+                        reps = listOfReps[i].toFloatOrNull() ?: 0f,
+                        sessionIdForeign = sessionId,
+                        isDone = true,
+                        setType = if (listOfTillFailure[i]) Set.SET_TYPE_FAILURE else Set.SET_TYPE_WARM_UP
+                    )
+                    if (listOfIsDone[i]) {
+                        workoutUseCases.insertSet(set)
+                    }
+
+                    // for best set
+                    val weightString = listOfWeights[i].second
+                    val repString = listOfReps[i]
+                    if (weightString.isValidNumber() && weightString.isNotEmpty() && weightString.isNotEmpty() && repString.isNotEmpty())
+                        if (maxWeight < listOfWeights[i].second.toFloat()) {
+                            maxWeight = listOfWeights[i].second.toFloat()
+                            maxReps = listOfReps[i].toInt()
+                        }
+                }
+            }
 //        insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
-        workoutUseCases.insertSession(session)
+            session = Session(
+                id = sessionId,
+                workoutIdForeign = workoutId,
+                setCount = setCount.toLong(),
+                exerciseIdForeign = listOfExerciseId[exerciseIndex],
+                exerciseName = listOfExerciseName[exerciseIndex],
+                bestSet = "${maxWeight.toInt()} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
+                weightUnit = listOfWeightUnits[exerciseIndex]
+            )
+            workoutUseCases.insertSession(session)
+        }
     }
+
     fun String.isValidNumber(): Boolean {
         return toFloatOrNull() != null
     }
@@ -401,8 +411,8 @@ class WorkoutViewModel @Inject constructor(
                 insertSessions(index, workoutId)
             }
             insertWorkoutNotes(workoutId = workoutId)
-        }.invokeOnCompletion {
             clearAllData()
+            workoutUseCases.batchCommitUseCase()
         }
     }
 

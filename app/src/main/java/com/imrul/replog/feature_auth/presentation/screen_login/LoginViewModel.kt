@@ -125,6 +125,11 @@ class LoginViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     try {
+                        // might start if is not already
+                        Intent(context, WorkoutService::class.java).also {
+                            it.action = WorkoutService.Actions.START.toString()
+                            context.startForegroundService(it)
+                        }
                         Intent(context, WorkoutService::class.java).also {
                             it.action = WorkoutService.Actions.STOP.toString()
                             context.startForegroundService(it)

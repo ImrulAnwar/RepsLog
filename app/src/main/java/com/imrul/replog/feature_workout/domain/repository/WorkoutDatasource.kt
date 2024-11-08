@@ -29,4 +29,5 @@ interface WorkoutDatasource {
     suspend fun getWorkoutById(workoutId: String?): Workout?
     suspend fun getAllExercises(): Flow<List<Exercise>>
     suspend fun getAllSets(): Flow<List<Set>>
+    suspend fun commitBatch()
 }

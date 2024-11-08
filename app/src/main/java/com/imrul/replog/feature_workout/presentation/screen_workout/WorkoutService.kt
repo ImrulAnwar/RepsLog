@@ -18,7 +18,7 @@ class WorkoutService : Service() {
     @Inject
     lateinit var workoutUseCases: WorkoutUseCases
     private val notificationId = 1
-    private var isRunning = false
+    var isRunning = false
 
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
@@ -48,7 +48,11 @@ class WorkoutService : Service() {
             }
 
             Actions.STOP.toString() -> {
-                if (isRunning) stopSelf()
+                try {
+                    if (isRunning) stopSelf()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
         return START_STICKY
