@@ -125,45 +125,61 @@ class WorkoutViewModel @Inject constructor(
         setIndex: Int,
         content: String,
     ) {
-        listOfWeights[setIndex] = Pair(
-            first = listOfWeights[setIndex].first,
-            second = content
-        )
+        try {
+            listOfWeights[setIndex] = Pair(
+                first = listOfWeights[setIndex].first,
+                second = content
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun removeExerciseNote(index: Int) {
-        listOfNoteId.removeAt(index)
-        listOfExerciseNotes.removeAt(index)
+        try {
+            listOfNoteId.removeAt(index)
+            listOfExerciseNotes.removeAt(index)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun removeWorkoutNote(index: Int) {
-        listOfWorkoutNotes.removeAt(index)
+        try {
+            listOfWorkoutNotes.removeAt(index)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun changeWeightUnit(exerciseIndex: Int) {
-        val lisOfWeightsCopy = listOfWeights.toList()
-        if (listOfWeightUnits[exerciseIndex] == Session.WEIGHT_UNIT_KG) {
-            listOfWeightUnits[exerciseIndex] = Session.WEIGHT_UNIT_LB
-            lisOfWeightsCopy.forEachIndexed { index, item ->
-                if (item.first == exerciseIndex) {
-                    val newWeight = item.second.toFloatOrNull()
-                    newWeight?.let {
-                        val formattedWeight = "%.2f".format(it * 2.205)
-                        listOfWeights[index] = Pair(exerciseIndex, formattedWeight)
+        try {
+            val lisOfWeightsCopy = listOfWeights.toList()
+            if (listOfWeightUnits[exerciseIndex] == Session.WEIGHT_UNIT_KG) {
+                listOfWeightUnits[exerciseIndex] = Session.WEIGHT_UNIT_LB
+                lisOfWeightsCopy.forEachIndexed { index, item ->
+                    if (item.first == exerciseIndex) {
+                        val newWeight = item.second.toFloatOrNull()
+                        newWeight?.let {
+                            val formattedWeight = "%.2f".format(it * 2.205)
+                            listOfWeights[index] = Pair(exerciseIndex, formattedWeight)
+                        }
+                    }
+                }
+            } else {
+                listOfWeightUnits[exerciseIndex] = Session.WEIGHT_UNIT_KG
+                lisOfWeightsCopy.forEachIndexed { index, item ->
+                    if (item.first == exerciseIndex) {
+                        val newWeight = item.second.toFloatOrNull()
+                        newWeight?.let {
+                            val formattedWeight = "%.2f".format(it / 2.205)
+                            listOfWeights[index] = Pair(exerciseIndex, formattedWeight)
+                        }
                     }
                 }
             }
-        } else {
-            listOfWeightUnits[exerciseIndex] = Session.WEIGHT_UNIT_KG
-            lisOfWeightsCopy.forEachIndexed { index, item ->
-                if (item.first == exerciseIndex) {
-                    val newWeight = item.second.toFloatOrNull()
-                    newWeight?.let {
-                        val formattedWeight = "%.2f".format(it / 2.205)
-                        listOfWeights[index] = Pair(exerciseIndex, formattedWeight)
-                    }
-                }
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -171,121 +187,140 @@ class WorkoutViewModel @Inject constructor(
         setIndex: Int,
         content: String,
     ) {
-        listOfReps[setIndex] = content
+        try {
+            listOfReps[setIndex] = content
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun addExerciseAndSets(name: String, exerciseId: String, context: Context) {
-        if (listOfExerciseId.contains(exerciseId)) {
-            Toast.makeText(context, "The exercise is already in your workout", Toast.LENGTH_SHORT)
-                .show()
-            return
-        }
+        try {
+            if (listOfExerciseId.contains(exerciseId)) {
+                Toast.makeText(
+                    context,
+                    "The exercise is already in your workout",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                return
+            }
 
-        listOfExerciseName.add(name)
-        listOfExerciseId.add(exerciseId)
-        val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
+            listOfExerciseName.add(name)
+            listOfExerciseId.add(exerciseId)
+            val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
 
-        // loading previous session
-        viewModelScope.launch {
+            // loading previous session
+            viewModelScope.launch {
 
-            workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
-                .collect { session ->
-                    session?.id?.let { sessionId ->
-                        launch {
-                            workoutUseCases.getNotesBySessionId(sessionId = sessionId)
-                                .collect { notes ->
-                                    notes.forEach { note ->
-                                        if (!listOfNoteId.contains(note.id)) {
-                                            note.id?.let { listOfNoteId.add(it) }
-                                            listOfExerciseNotes.add(
+                workoutUseCases.getLatestSessionByExerciseId(exerciseId = exerciseId)
+                    .collect { session ->
+                        session?.id?.let { sessionId ->
+                            launch {
+                                workoutUseCases.getNotesBySessionId(sessionId = sessionId)
+                                    .collect { notes ->
+                                        notes.forEach { note ->
+                                            if (!listOfNoteId.contains(note.id)) {
+                                                note.id?.let { listOfNoteId.add(it) }
+                                                listOfExerciseNotes.add(
+                                                    Pair(
+                                                        exerciseIndex,
+                                                        note.content
+                                                    )
+                                                )
+                                            }
+
+                                        }
+                                    }
+                            }
+                            launch {
+                                workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
+                                    .collect { listOfSets ->
+                                        listOfSets.forEach { set ->
+                                            listOfWeights.add(
                                                 Pair(
                                                     exerciseIndex,
-                                                    note.content
+                                                    set.weightValue.toString()
                                                 )
                                             )
+                                            listOfReps.add((set.reps.toInt() + 1).toString())
+                                            listOfIsDone.add(false)
+                                            listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
+                                            listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
                                         }
-
+                                        listOfWeightUnits.add(session.weightUnit)
                                     }
-                                }
-                        }
-                        launch {
-                            workoutUseCases.getAllSetsBySessionId(sessionId = sessionId)
-                                .collect { listOfSets ->
-                                    listOfSets.forEach { set ->
-                                        listOfWeights.add(
-                                            Pair(
-                                                exerciseIndex,
-                                                set.weightValue.toString()
-                                            )
-                                        )
-                                        listOfReps.add((set.reps.toInt() + 1).toString())
-                                        listOfIsDone.add(false)
-                                        listOfTillFailure.add(set.setType == Set.SET_TYPE_FAILURE)
-                                        listOfPrevious.add("${set.weightValue} ${session.weightUnit} x ${set.reps.toInt()}")
-                                    }
-                                    listOfWeightUnits.add(session.weightUnit)
-                                }
-                        }
+                            }
 
+                        }
+                        if (session == null) {
+                            listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
+                        }
                     }
-                    if (session == null) {
-                        listOfWeightUnits.add(Session.WEIGHT_UNIT_KG)
-                    }
-                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
     }
 
     fun removeExercise(exerciseId: String) {
-        val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
-        listOfExerciseName.removeAt(exerciseIndex)
-        listOfExerciseId.removeAt(exerciseIndex)
+        try {
+            val exerciseIndex = listOfExerciseId.indexOf(exerciseId)
+            listOfExerciseName.removeAt(exerciseIndex)
+            listOfExerciseId.removeAt(exerciseIndex)
 
-        val listOfWeightsCopy = listOfWeights.toList()
-        val listOfIndicesToRemove = mutableListOf<Int>()
-        listOfWeightsCopy.forEachIndexed { i, item ->
-            if (item.first == exerciseIndex) {
-                listOfIndicesToRemove.add(i)
+            val listOfWeightsCopy = listOfWeights.toList()
+            val listOfIndicesToRemove = mutableListOf<Int>()
+            listOfWeightsCopy.forEachIndexed { i, item ->
+                if (item.first == exerciseIndex) {
+                    listOfIndicesToRemove.add(i)
+                }
             }
-        }
-        // removing Sets
-        // since I am using index to determine which set belong to which exercise
-        // so when i remove an exercise, I will have to update to the new index
-        listOfWeightsCopy.forEachIndexed { index, item ->
-            if (item.first > exerciseIndex) {
-                listOfWeights[index] = Pair(item.first - 1, item.second)
+            // removing Sets
+            // since I am using index to determine which set belong to which exercise
+            // so when i remove an exercise, I will have to update to the new index
+            listOfWeightsCopy.forEachIndexed { index, item ->
+                if (item.first > exerciseIndex) {
+                    listOfWeights[index] = Pair(item.first - 1, item.second)
+                }
             }
-        }
-        // descending because removed item doesn't change the next items index
-        listOfIndicesToRemove.sortedDescending().forEach { index ->
-            removeSet(index)
-        }
+            // descending because removed item doesn't change the next items index
+            listOfIndicesToRemove.sortedDescending().forEach { index ->
+                removeSet(index)
+            }
 
-        // removing notes
-        var listOfNotesCopy = listOfExerciseNotes.toList()
-        listOfNotesCopy.forEachIndexed { index, item ->
-            if (item.first > exerciseIndex) {
-                listOfExerciseNotes[index] = Pair(item.first - 1, item.second)
+            // removing notes
+            var listOfNotesCopy = listOfExerciseNotes.toList()
+            listOfNotesCopy.forEachIndexed { index, item ->
+                if (item.first > exerciseIndex) {
+                    listOfExerciseNotes[index] = Pair(item.first - 1, item.second)
+                }
             }
-        }
 
-        listOfNotesCopy = listOfExerciseNotes.toList().reversed()
+            listOfNotesCopy = listOfExerciseNotes.toList().reversed()
 
-        listOfNotesCopy.forEachIndexed { _, item ->
-            if (item.first == exerciseIndex) {
-                val index = listOfExerciseNotes.indexOf(item)
-                listOfExerciseNotes.removeAt(index)
-                listOfNoteId.removeAt(index)
+            listOfNotesCopy.forEachIndexed { _, item ->
+                if (item.first == exerciseIndex) {
+                    val index = listOfExerciseNotes.indexOf(item)
+                    listOfExerciseNotes.removeAt(index)
+                    listOfNoteId.removeAt(index)
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     fun removeSet(index: Int) {
-        listOfWeights.removeAt(index)
-        listOfReps.removeAt(index)
-        listOfIsDone.removeAt(index)
-        listOfTillFailure.removeAt(index)
-        listOfPrevious.removeAt(index)
+        try {
+            listOfWeights.removeAt(index)
+            listOfReps.removeAt(index)
+            listOfIsDone.removeAt(index)
+            listOfTillFailure.removeAt(index)
+            listOfPrevious.removeAt(index)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun onExerciseNoteValueChanged(
@@ -293,131 +328,157 @@ class WorkoutViewModel @Inject constructor(
         content: String,
         noteIndex: Int
     ) {
-        listOfExerciseNotes[noteIndex] = Pair(exerciseIndex, content)
+        try {
+            listOfExerciseNotes[noteIndex] = Pair(exerciseIndex, content)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun onWorkoutNoteValueChanged(
         index: Int,
         content: String,
     ) {
-        listOfWorkoutNotes[index] = content
+        try {
+            listOfWorkoutNotes[index] = content
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 
     private suspend fun insertSessions(exerciseIndex: Int, workoutId: String) {
+        try {
+            var session = Session(
+                workoutIdForeign = workoutId
+            )
+            var setCount = 0
+            var maxWeight = 0f
+            var maxReps = 0
 
-        var session = Session(
-            workoutIdForeign = workoutId
-        )
-        var setCount = 0
-        var maxWeight = 0f
-        var maxReps = 0
-
-        val listOfWeightsCopy = listOfWeights.toList()
-        listOfWeightsCopy.forEachIndexed { i, item ->
-            if (item.first == exerciseIndex) {
-                if (listOfIsDone[i]) {
-                    setCount++
-                }
-            }
-        }
-        val sessionId: String? = if (setCount != 0) workoutUseCases.insertSession(session) else null
-        sessionId?.let {
+            val listOfWeightsCopy = listOfWeights.toList()
             listOfWeightsCopy.forEachIndexed { i, item ->
                 if (item.first == exerciseIndex) {
-                    //this set belongs to the exercise
-                    val set = Set(
-                        weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
-                        reps = listOfReps[i].toFloatOrNull() ?: 0f,
-                        sessionIdForeign = sessionId,
-                        isDone = true,
-                        setType = if (listOfTillFailure[i]) Set.SET_TYPE_FAILURE else Set.SET_TYPE_WARM_UP
-                    )
                     if (listOfIsDone[i]) {
-                        workoutUseCases.insertSet(set)
+                        setCount++
                     }
-
-                    // for best set
-                    val weightString = listOfWeights[i].second
-                    val repString = listOfReps[i]
-                    if (weightString.isValidNumber() && weightString.isNotEmpty() && weightString.isNotEmpty() && repString.isNotEmpty())
-                        if (maxWeight < listOfWeights[i].second.toFloat()) {
-                            maxWeight = listOfWeights[i].second.toFloat()
-                            maxReps = listOfReps[i].toInt()
-                        }
                 }
             }
+            val sessionId: String? =
+                if (setCount != 0) workoutUseCases.insertSession(session) else null
+            sessionId?.let {
+                listOfWeightsCopy.forEachIndexed { i, item ->
+                    if (item.first == exerciseIndex) {
+                        //this set belongs to the exercise
+                        val set = Set(
+                            weightValue = listOfWeights[i].second.toFloatOrNull() ?: 0f,
+                            reps = listOfReps[i].toFloatOrNull() ?: 0f,
+                            sessionIdForeign = sessionId,
+                            isDone = true,
+                            setType = if (listOfTillFailure[i]) Set.SET_TYPE_FAILURE else Set.SET_TYPE_WARM_UP
+                        )
+                        if (listOfIsDone[i]) {
+                            workoutUseCases.insertSet(set)
+                        }
+
+                        // for best set
+                        val weightString = listOfWeights[i].second
+                        val repString = listOfReps[i]
+                        if (weightString.isValidNumber() && weightString.isNotEmpty() && weightString.isNotEmpty() && repString.isNotEmpty())
+                            if (maxWeight < listOfWeights[i].second.toFloat()) {
+                                maxWeight = listOfWeights[i].second.toFloat()
+                                maxReps = listOfReps[i].toInt()
+                            }
+                    }
+                }
 //        insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
-            session = Session(
-                id = sessionId,
-                workoutIdForeign = workoutId,
-                setCount = setCount.toLong(),
-                exerciseIdForeign = listOfExerciseId[exerciseIndex],
-                exerciseName = listOfExerciseName[exerciseIndex],
-                bestSet = "${maxWeight.toInt()} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
-                weightUnit = listOfWeightUnits[exerciseIndex]
-            )
-            workoutUseCases.insertSession(session)
+                session = Session(
+                    id = sessionId,
+                    workoutIdForeign = workoutId,
+                    setCount = setCount.toLong(),
+                    exerciseIdForeign = listOfExerciseId[exerciseIndex],
+                    exerciseName = listOfExerciseName[exerciseIndex],
+                    bestSet = "${maxWeight.toInt()} ${listOfWeightUnits[exerciseIndex]} x $maxReps ",
+                    weightUnit = listOfWeightUnits[exerciseIndex]
+                )
+                workoutUseCases.insertSession(session)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    fun String.isValidNumber(): Boolean {
+    private fun String.isValidNumber(): Boolean {
         return toFloatOrNull() != null
     }
 
     private suspend fun insertExerciseNotes(sessionId: String, exerciseIndex: Int) {
-        val listOfNotesCopy = listOfExerciseNotes.toList()
-        listOfNotesCopy.forEachIndexed { _, item ->
-            val note = Note(
-                idForeign = sessionId,
-                belongsTo = Note.SESSION,
-                content = item.second
-            )
-            if (note.content.isNotEmpty() && exerciseIndex == item.first)
+        try {
+            val listOfNotesCopy = listOfExerciseNotes.toList()
+            listOfNotesCopy.forEachIndexed { _, item ->
+                val note = Note(
+                    idForeign = sessionId,
+                    belongsTo = Note.SESSION,
+                    content = item.second
+                )
+                if (note.content.isNotEmpty() && exerciseIndex == item.first) {
+                }
                 workoutUseCases.insertNote(note)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     private suspend fun insertWorkoutNotes(workoutId: String) {
-        val listOfNotesCopy = listOfWorkoutNotes.toList()
-        listOfNotesCopy.forEachIndexed { _, item ->
-            val note = Note(
-                idForeign = workoutId,
-                belongsTo = Note.WORKOUT,
-                content = item
-            )
-            if (note.content.isNotEmpty())
+        try {
+            val listOfNotesCopy = listOfWorkoutNotes.toList()
+            listOfNotesCopy.forEachIndexed { _, item ->
+                val note = Note(
+                    idForeign = workoutId,
+                    belongsTo = Note.WORKOUT,
+                    content = item
+                )
+                if (note.content.isNotEmpty()) {
+                }
                 workoutUseCases.insertNote(note)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     fun insertWorkout(context: Context, navController: NavHostController) {
-        isInserting = true
-        viewModelScope.launch {
-            val date = System.currentTimeMillis()
-            var dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
-            val dateString = dateFormat.format(Date(date))
-            dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
-            val weekDayString = dateFormat.format(Date(date))
+        try {
+            isInserting = true
+            viewModelScope.launch {
+                val date = System.currentTimeMillis()
+                var dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
+                val dateString = dateFormat.format(Date(date))
+                dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+                val weekDayString = dateFormat.format(Date(date))
 
-            val workout = Workout(
-                name = workoutTitle,
-                durationString = elapsedTime.split(":")[0].toInt().toString() + "m",
-                date = date,
-                dateString = dateString,
-                weekdayString = weekDayString
-            )
-            val workoutId: String = workoutUseCases.insertWorkout(workout)
-            val exerciseNamesCopy = listOfExerciseName.toList()
-            exerciseNamesCopy.forEachIndexed { index, _ ->
-                insertSessions(index, workoutId)
+                val workout = Workout(
+                    name = workoutTitle,
+                    durationString = elapsedTime.split(":")[0].toInt().toString() + "m",
+                    date = date,
+                    dateString = dateString,
+                    weekdayString = weekDayString
+                )
+                val workoutId: String = workoutUseCases.insertWorkout(workout)
+                val exerciseNamesCopy = listOfExerciseName.toList()
+                exerciseNamesCopy.forEachIndexed { index, _ ->
+                    insertSessions(index, workoutId)
+                }
+                navController.navigateUp()
+                insertWorkoutNotes(workoutId = workoutId)
+                workoutUseCases.batchCommitUseCase()
+                delay(1000)
+                clearAllData()
+            }.invokeOnCompletion {
             }
-            navController.navigateUp()
-            insertWorkoutNotes(workoutId = workoutId)
-            workoutUseCases.batchCommitUseCase()
-            delay(1000)
-            clearAllData()
-        }.invokeOnCompletion {
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -434,8 +495,11 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun toggleIsDone(setIndex: Int) {
-        listOfIsDone[setIndex] = !listOfIsDone[setIndex]
-        Log.d("Amar Problem", "addExerciseAndSets: ${listOfWeights[setIndex].first}")
+        try {
+            listOfIsDone[setIndex] = !listOfIsDone[setIndex]
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun setWorkoutRunning(flag: Boolean) {
@@ -443,7 +507,11 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun toggleTillFailure(setIndex: Int) {
-        listOfTillFailure[setIndex] = !listOfTillFailure[setIndex]
+        try {
+            listOfTillFailure[setIndex] = !listOfTillFailure[setIndex]
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun shouldInsertWorkout(): Boolean =
@@ -455,22 +523,26 @@ class WorkoutViewModel @Inject constructor(
     }
 
     fun clearAllData() {
-        isWorkOutRunning = false
-        workoutTitle = Strings.WORKOUT_TITLE
-        elapsedTime = "00:00"
-        listOfWeights.clear()
-        listOfReps.clear()
-        listOfIsDone.clear()
-        listOfTillFailure.clear()
-        listOfExerciseName.clear()
-        listOfWeightUnits.clear()
-        listOfExerciseId.clear()
-        listOfExerciseNotes.clear()
-        listOfPrevious.clear()
-        listOfExerciseNotes.clear()
-        listOfWorkoutNotes.clear()
-        listOfNoteId.clear()
-        isInserting = false
+        try {
+            isWorkOutRunning = false
+            workoutTitle = Strings.WORKOUT_TITLE
+            elapsedTime = "00:00"
+            listOfWeights.clear()
+            listOfReps.clear()
+            listOfIsDone.clear()
+            listOfTillFailure.clear()
+            listOfExerciseName.clear()
+            listOfWeightUnits.clear()
+            listOfExerciseId.clear()
+            listOfExerciseNotes.clear()
+            listOfPrevious.clear()
+            listOfExerciseNotes.clear()
+            listOfWorkoutNotes.clear()
+            listOfNoteId.clear()
+            isInserting = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }
