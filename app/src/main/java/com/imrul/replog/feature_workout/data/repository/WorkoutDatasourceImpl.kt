@@ -2,6 +2,7 @@ package com.imrul.replog.feature_workout.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.WriteBatch
 import com.imrul.replog.core.Constants.EXERCISES_COLLECTION
 import com.imrul.replog.core.Constants.NOTES_COLLECTION
 import com.imrul.replog.core.Constants.SESSIONS_COLLECTION
@@ -22,7 +23,14 @@ class WorkoutDatasourceImpl(
     private val auth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ) : WorkoutDatasource {
-    private var batch = fireStore.batch()
+    //    private var batch = fireStore.batch()
+    private var batches: MutableList<WriteBatch> = mutableListOf()
+    private var batchIndex: Int = 0
+
+    init {
+        batches.add(fireStore.batch())
+    }
+
     override suspend fun insertWorkout(workout: Workout): String {
         val documentId = workout.id ?: fireStore.collection(WORKOUTS_COLLECTION).document().id
         auth.currentUser?.uid.let { userId ->
@@ -39,17 +47,11 @@ class WorkoutDatasourceImpl(
             val workoutRef = fireStore
                 .collection(WORKOUTS_COLLECTION)
                 .document(documentId)
-            batch.set(workoutRef, data)
+            batches[batchIndex].set(workoutRef, data)
         }
         return documentId
     }
 
-    private suspend fun ensureBatchIsActive() {
-        // If the batch has been committed, reinitialize it
-        if (batch == null) {
-            batch = fireStore.batch()
-        }
-    }
 
     override suspend fun insertExercise(exercise: Exercise): String {
         val documentId = exercise.id ?: fireStore.collection(EXERCISES_COLLECTION).document().id
@@ -87,7 +89,7 @@ class WorkoutDatasourceImpl(
             val setRef = fireStore
                 .collection(SETS_COLLECTION)
                 .document(documentId)
-            batch.set(setRef, data)
+            batches[batchIndex].set(setRef, data)
         }
         return documentId
     }
@@ -111,7 +113,7 @@ class WorkoutDatasourceImpl(
             val sessionRef = fireStore
                 .collection(SESSIONS_COLLECTION)
                 .document(documentId)
-            batch.set(sessionRef, data)
+            batches[batchIndex].set(sessionRef, data)
         }
         return documentId
     }
@@ -130,7 +132,7 @@ class WorkoutDatasourceImpl(
             val noteRef = fireStore
                 .collection(NOTES_COLLECTION)
                 .document(documentId)
-            batch.set(noteRef, data)
+            batches[batchIndex].set(noteRef, data)
         }
         return documentId
     }
@@ -446,6 +448,8 @@ class WorkoutDatasourceImpl(
     }
 
     override suspend fun commitBatch() {
-        batch.commit()
+        batches[batchIndex].commit()
+        batchIndex++
+        batches.add(fireStore.batch())
     }
 }
