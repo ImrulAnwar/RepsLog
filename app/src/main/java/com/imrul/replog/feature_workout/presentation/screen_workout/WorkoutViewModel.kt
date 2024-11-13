@@ -1,7 +1,6 @@
 package com.imrul.replog.feature_workout.presentation.screen_workout
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -391,7 +390,7 @@ class WorkoutViewModel @Inject constructor(
                             }
                     }
                 }
-//        insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
+                insertExerciseNotes(sessionId = sessionId, exerciseIndex = exerciseIndex)
                 session = Session(
                     id = sessionId,
                     workoutIdForeign = workoutId,
@@ -422,8 +421,8 @@ class WorkoutViewModel @Inject constructor(
                     content = item.second
                 )
                 if (note.content.isNotEmpty() && exerciseIndex == item.first) {
+                    workoutUseCases.insertNote(note)
                 }
-                workoutUseCases.insertNote(note)
             }
         } catch (e: Exception) {
             e.printStackTrace()

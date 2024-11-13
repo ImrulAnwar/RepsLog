@@ -53,11 +53,7 @@ fun ExerciseItem(
                 color = Maroon70,
                 modifier = Modifier
                     .padding(start = 5.dp)
-                    .clickable {
-                        Toast
-                            .makeText(context, listOfNotes.toString(), Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    .clickable {}
             )
             DropDownMenuForExerciseName(
                 addExerciseNoteClicked = {
