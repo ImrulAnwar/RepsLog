@@ -73,7 +73,10 @@ fun ExerciseListItem(
                         )
                     )
                 },
-                onDeleteClicked = { showDialog = true })
+//                onDeleteClicked = {
+//                    showDialog = true
+//                }
+            )
         }
         Row(
             modifier = Modifier

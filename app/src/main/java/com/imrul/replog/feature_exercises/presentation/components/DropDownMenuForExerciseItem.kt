@@ -29,7 +29,7 @@ import com.imrul.replog.ui.theme.WhiteCustom
 fun DropDownMenuForExerciseItem(
     modifier: Modifier = Modifier,
     onEditClicked: () -> Unit,
-    onDeleteClicked: () -> Unit,
+//    onDeleteClicked: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -61,17 +61,6 @@ fun DropDownMenuForExerciseItem(
                         modifier = Modifier
                             .padding(8.dp),
                         text = Strings.EDIT,
-                        color = Maroon70
-                    )
-                })
-                DropdownMenuItem(onClick = {
-                    onDeleteClicked()
-                    expanded = false
-                }, text = {
-                    Text(
-                        modifier = Modifier
-                            .padding(8.dp),
-                        text = Strings.DELETE,
                         color = Maroon70
                     )
                 })
