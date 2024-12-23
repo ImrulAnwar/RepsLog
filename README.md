@@ -1,10 +1,19 @@
 <h1><strong>RepsLog</strong></h1>
-
-<p>RepsLog is a comprehensive app designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
+<img src = "https://github.com/user-attachments/assets/4123c2f3-7eaf-49e9-8f60-fa0c1cf1f708">
+<p>This application is designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
 
 <h2><strong>Installation</strong></h2>
 
-<p>To get started with RepsLog, download the app from the <a href="https://www.amazon.com/gp/product/B0DP3Y8KVW?dplnkId=574faa8b-9c4b-4299-ab63-7982878b1e47">Amazon Appstore</a>.</p>
+<p>To get started with RepsLog, download the app from any of the following platforms:
+    <a href="YOUR_PLAYSTORE_LINK">
+        <img src="https://github.com/user-attachments/assets/798f1a1d-266a-4446-8e9f-c9259c55038f" 
+          alt="Play Store Icon" style="width: 20px; height: 20px;">
+    </a>
+    <a href="https://www.amazon.com/gp/product/B0DP3Y8KVW">
+        <img src="https://github.com/user-attachments/assets/43ac96c1-17fc-4be2-a9da-62e2c921772c" 
+          alt="Appstore Icon" style="width: 20px; height: 20px;">
+    </a>
+</p>
 
 <img src="https://github.com/user-attachments/assets/53b2d34d-15af-4851-86ea-6d2295e9b8b1" alt="Screen History" style="width: 200px;">
 <img src="https://github.com/user-attachments/assets/17e03df6-d213-46a3-8a1e-89d2c7a7fb42" alt="Screen Workout" style="width: 200px;">
