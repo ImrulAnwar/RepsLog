@@ -1,7 +1,6 @@
 <h1><strong>RepsLog</strong></h1>
 <img src = "https://github.com/user-attachments/assets/4123c2f3-7eaf-49e9-8f60-fa0c1cf1f708">
 <p>This application is designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
-
 <h2><strong>Installation</strong></h2>
 
 <p>To get started with RepsLog, download the app from any of the following platforms:
@@ -80,13 +79,32 @@
     </ul>
 </li>
 
-<li><strong>Custom Workout Routines</strong>: Personalize your fitness plan by designing custom workout routines tailored to your goals & preferences.</li>
-
-<li><strong>Progress Tracking</strong>: Track your progress for each exercise to monitor improvements over time.</li>
-
 <li><strong>Body Measurements</strong>: Log body measurements like muscle size & body weight to visualize your fitness progress.</li>
-
+<ul>
+    <li>Track Measurements like weight, muscle size & calories:</li>
+    <li>
+        <img src="https://github.com/user-attachments/assets/b6c8738f-91c5-4c6a-bd7b-566156990504" alt="Measurements" style="width: 200px;">
+    </li>
+</ul>
 <li><strong>Authentication Options</strong>: Login/Register using email & password, OAuth with Gmail, or continue as a guest with the option to link your data later.</li>
+<ul>
+    <li>Login with Email:</li>
+    <li>
+        <img src="https://github.com/user-attachments/assets/067a7db4-c311-4af5-bdfc-c81654741382" alt="Login with email" style="width: 200px;">
+    </li>
+    <li>Login with Google:</li>
+    <li>
+        <img src="https://github.com/user-attachments/assets/0577369e-8e57-4bcb-8949-f90da4318881" alt="Login with Google" style="width: 200px;">
+    </li>
+    <li>Continue as Guest:</li>
+    <li>
+        <img src="https://github.com/user-attachments/assets/cd9df0cb-b91e-4e78-bec9-aafcc0fd349e" alt="guest user" style="width: 200px;">
+    </li>
+    <li>Link guest account to an Email:</li>
+    <li>
+        <img src="https://github.com/user-attachments/assets/da4bee04-c3b8-4768-83f6-e08ea7882d11" alt="link account" style="width: 200px;">
+    </li>
+</ul>
 
 <li><strong>Offline & Online Sync</strong>: Intelligent caching ensures seamless data access both offline & online.</li>
 </ul>
