@@ -5,7 +5,7 @@
 <h2><strong>Installation</strong></h2>
 
 <p>To get started with RepsLog, download the app from any of the following platforms:
-    <a href="YOUR_PLAYSTORE_LINK">
+    <a href="https://play.google.com/store/apps/details?id=com.imrul.replog&pcampaignid=web_share">
         <img src="https://github.com/user-attachments/assets/798f1a1d-266a-4446-8e9f-c9259c55038f" 
           alt="Play Store Icon" style="width: 20px; height: 20px;">
     </a>
