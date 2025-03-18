@@ -3,11 +3,7 @@
 <p>This application is designed to help you track & improve your fitness journey. Whether you're a beginner or a seasoned athlete, this app provides the tools you need to achieve your fitness goals effectively.</p>
 <h2><strong>Installation</strong></h2>
 
-<p>To get started with RepsLog, download the app from any of the following platforms:
-    <a href="https://play.google.com/store/apps/details?id=com.imrul.replog&pcampaignid=web_share">
-        <img src="https://github.com/user-attachments/assets/798f1a1d-266a-4446-8e9f-c9259c55038f" 
-          alt="Play Store Icon" style="width: 20px; height: 20px;">
-    </a>
+<p>To get started with RepsLog, download the app from the following platform:
     <a href="https://www.amazon.com/gp/product/B0DP3Y8KVW">
         <img src="https://github.com/user-attachments/assets/43ac96c1-17fc-4be2-a9da-62e2c921772c" 
           alt="Appstore Icon" style="width: 20px; height: 20px;">
